@@ -1,0 +1,270 @@
+# Dados qualitativos: mapa corocromático ordinal{#quali2}
+
+Mapas corocromáticos ordinais são usados para representar dados **qualitativos** que se ordenam. Esses dados podem ser derivados de dados quantitativos para os quais se atribuem classes ordenadas do tipo "baixo-médio-alto", "ruim-regular-bom" ou outras que sigam esta lógica.
+
+O exemplo usado aqui é o do mapa de potencial de agressividade climática na Amazônia Legal do Brasil, elaborado pela Coordenação de Recursos Naturais e Estudos Ambientais - CREN, da Diretoria de Geociências do IBGE. São três classes: alta (fatores 1 e 2), média (fatores 1, 2 e 3) e baixa (fatores 1, 2 e 3). 
+Aqui, **Fator** é a causa predominante que explica o potencial de agressividade do clima: os fatores determinantes que explicam cada grau, expressos pelos dígitos 1, 2 e 3, que representam, respectivamente o Excesso de Umidade, a Deficiência de Umidade e a Ocorrência de Ambos Fatores (http://geoftp.ibge.gov.br/cartas_e_mapas/mapas_regionais/sociedade_e_economia/integrado_zee_amazonia_legal/Potencial_de_Agressividade_Climatica.pdf).
+
+A ideia é seguir as cores segundo classe (alta, média e baixa) com variações de tonalidade dentro de cada classe.
+
+## Banco de dados
+
+Iniciamos limpando a memória.
+
+```{r }
+#para limpar a memória
+rm(list=ls())
+```
+
+Definimos o diretório de trabalho.
+```{r eval = FALSE}
+#para verificar o diretório
+getwd()
+```
+
+Carregamos os pacotes que serão utilizados.
+```{r warning=FALSE, message=FALSE}
+#para carregar os pacotes que serao usados
+library(geobr)
+library(sf)
+library(rgdal)
+library(ggplot2,warn.conflicts=FALSE)
+library(dplyr)
+library(ggsn)
+library(cowplot)
+library(ggspatial)
+library(broom)
+library(rnaturalearth)
+library(rnaturalearthdata)
+```
+
+Vamos criar o objeto **mundo** usando a função `ne_countries` do pacote *rnaturalearth*.
+
+```{r }
+mundo <- ne_countries(scale = "medium", returnclass = "sf")
+```
+
+Vamos examinar o objeto gerado.
+```{r }
+head(mundo)
+```
+Observe que o CRS de **mundo** é WGS84.
+Na sequência, baixamos o arquivo "BR_UF_2020.zip" que contém o shapefile dos limites estaduais do Brasil, do site do IBGE.
+```{r }
+#para identificar o url, faca o download do arquivo shapefile e clique em Ctrl+J
+download.file(url = "https://geoftp.ibge.gov.br/organizacao_do_territorio/malhas_territoriais/malhas_municipais/municipio_2020/Brasil/BR/BR_UF_2020.zip",        destfile = "BR_UF_2020.zip")
+```
+
+Precisamos descompactar o arquivo tipo zip.
+```{r }
+#para abrir o arquivo zip
+unzip(zipfile = "BR_UF_2020.zip")
+```
+
+Fazemos a leitura do arquivo shapefile no **R**. O arquivo receberá o nome de UFBR.
+```{r }
+#para abrir o arquivo shapefile dos estados
+UFBR <- st_read("./BR_UF_2020.shp")
+```
+
+A função **head** fornece uma série de informações, tais como os limites e o CRS.
+```{r }
+#para ver informações do objeto
+head(UFBR)
+```
+Observe que o CRS é SIRGAS 2000.
+Para ver a unidade de medida do arquivo UFBR.
+```{r }
+st_crs(UFBR)$units_gdal
+```
+
+Vamos solicitar a visualização das colunas de UFBR.
+
+```{r }
+#para visualizar os mapas de UFBR
+plot(UFBR)
+```
+
+Para saber o tipo de dados de UFBR, usamos a função **class**. 
+```{r }
+class(UFBR)
+```
+
+A segunda camada shapefile que precisamos é a de potencial de agressividade climática na Amazônia, que se encontra no site do IBGE.
+```{r }
+#para fazer o download do arquivo da Amazônia
+download.file(url = "https://geoftp.ibge.gov.br/informacoes_ambientais/climatologia/vetores/regionais/shapes_potencial_agressividade_climatica.zip",
+              destfile = "shapes_potencial_agressividade_climatica.zip")
+```
+Usamos a função já conhecida para descompactar o arquivo.
+
+```{r }
+#para abrir o arquivo zip
+unzip(zipfile = "shapes_potencial_agressividade_climatica.zip")
+```
+E fazemos a leitura do shapefile no **R**, já atribuindo a projeção SIRGAS 2000 (CRS = 4674). 
+```{r }
+#para abrir o arquivo shapefile da Amazonia
+amazonia <- st_read("./VetoresIntegrados.shp", crs = 4674)
+```
+Damos uma olhada nos limites, colunas e projeção do arquivo.
+```{r }
+#para ver as 6 primeiras linhas do arquivo
+head(amazonia)
+```
+Podemos visualizar o shapefile "amazonia" (Figura \@ref(fig:plot-amazon)).
+```{r plot-amazon, fig.align = 'center', fig.cap='Mapa para cada coluna da tabela de dados'}
+#para visualizar o arquivo amazonia
+plot(amazonia)
+```
+Os objetos que iremos utilizar estão em projeções diferentes: **mundo** (CRS = WGS84), **amazonia** e **UFBR** (CRS = SIRGAS 2000). Como estas projeções são compatíveis, vamos mantê-las como estão.
+
+## Potencial de agressividade climática na Amazônia Legal do Brasil
+
+Vamos iniciar a elaboração do mapa usando o **ggplot2**. 
+A primeira camada a ser mapeada será **mundo**. Como um objeto de classe *sf*, usaremos a função **geom_sf**, indicando a cor do contorno ("white", branco) e do preenchimento ("grey90", cinza claro) (Figura \@ref(fig:plot-mundo1)).
+
+```{r plot-mundo1, fig.align = 'center', fig.cap='Mapa-mundi'}
+ggplot() +
+  geom_sf(data = mundo, colour = "white", fill = "grey90")
+```
+A segunda camada será a dos limites dos estados brasileiros (UFBR), com contorno em cinza médio (grey50) e preenchimento em cinza mais claro do que o contorno (grey85) e leve transparência (alpha = 0.2) (Figura \@ref(fig:plot-mundoUF)).
+
+```{r plot-mundoUF, fig.align = 'center', fig.cap='Mapa-mundi com UFs do Brasil'}
+ggplot() +
+  geom_sf(data = mundo, colour = "white", fill = "grey90")+
+  geom_sf(data = UFBR, colour = "grey50", fill = "grey85", alpha = 0.2)
+```
+A terceira camada corresponde à "amazonia", com o preenchimento da coluna "Classe", sem contorno dos polígonos (colour = NA). As cores do potencial de agressividade ("Classe") são preenchidas manualmente com o comando **scale_fill_manual** (Figura \@ref(fig:plot-mundoUF-amazon)). Vamos seguir a ordem das cores como em http://geoftp.ibge.gov.br/cartas_e_mapas/mapas_regionais/sociedade_e_economia/integrado_zee_amazonia_legal/Potencial_de_Agressividade_Climatica.pdf.
+```{r plot-mundoUF-amazon, fig.align = 'center', fig.cap='Mapa-mundi com UFs do Brasil e classes de agressividade climática da Amazônia'}
+ggplot() +
+  geom_sf(data = mundo, colour = "white", fill = "grey90")+
+  geom_sf(data = UFBR, colour = "grey50", fill = "grey85", alpha = 0.2)+
+  geom_sf(data = amazonia, aes(fill = Classe), colour = NA)+
+  scale_fill_manual(values= c("A1" = "red3",
+                              "A2" = "red1",
+                              "M1" = "darkorange3",
+                              "M2" = "darkorange",
+                              "M3" = "goldenrod1",
+                              "B1" = "chartreuse4",
+                              "B2" = "chartreuse3",
+                              "B3" = "chartreuse1"))
+```
+Observamos que o mapa resultante apresenta ordem alfabética das categorias na legenda, apesar de ter sido indicada outra ordem no código. Isso acontece porque para entender que as categorias são ordenadas, o tipo de dado deve ser **factor** e deve ser **ordenado**. Vamos verificar a classe atual da coluna 'Classe'.
+
+```{r }
+class(amazonia$Classe)
+```
+A classe 'character' precisa ser convertida para 'ordened factor'. Vamos convertê-la.
+
+```{r}
+#para converter em 'factor' ordenado
+amazonia$Classe <- as.ordered(amazonia$Classe)
+
+#para estabelecer a ordem entre os níveis
+amazonia$Classe <- ordered(amazonia$Classe, levels = c("B3", "B2", "B1", "M3", "M2", "M1", "A2", "A1"))
+```
+
+Podemos adicionar o título do mapa, ajustar o tamanho da fonte do título, a cor do fundo, borda do mapa, título da legenda e informações adicionais como a fonte dos dados e os créditos da elaboração do mapa (Figura \@ref(fig:plot-creditos)).
+```{r plot-creditos, fig.align = 'center', fig.cap='Adicionando fonte dos dados e créditos'}
+ggplot() +
+  geom_sf(data = mundo, colour = "white", fill = "grey90")+
+  geom_sf(data = UFBR, colour = "grey50", fill = "grey85", alpha = 0.2)+
+  geom_sf(data = amazonia, aes(fill = Classe), colour = NA)+
+  scale_fill_manual(values= c("A1" = "red3",
+                              "A2" = "red1",
+                              "M1" = "darkorange3",
+                              "M2" = "darkorange",
+                              "M3" = "goldenrod1",
+                              "B1" = "chartreuse4",
+                              "B2" = "chartreuse3",
+                              "B3" = "chartreuse1"))+
+  ggtitle("Potencial de agressividade climática na Amazônia Legal")+
+  theme(panel.background = element_rect(fill = "aliceblue"),
+        plot.title = element_text(size = 11, hjust = 1, vjust = -10),
+        panel.border = element_rect(color = "black",linewidth = .1,fill = NA))+
+  labs(fill = "Potencial", caption = "Fonte: IBGE (2019) \n
+       Elaborado por: @Ligiaviz")
+```
+Observe que agora a legenda segue a ordem estabelecida e não mais a ordem alfabética.
+Podemos também, alterar a forma como o nome da categoria aparece na legenda. No lugar de "B3" podemos nomeá-la "Baixa 3".
+```{r }
+#para recodificar as categorias
+amazonia <- amazonia %>% 
+  mutate(Classe = recode(Classe,
+                          # como referência: categoria antiga  = categoria nova
+                          "B3" = "Baixa 3",
+                          "B2"	= "Baixa 2",
+                          "B1" = "Baixa 1",
+                          "M3" =	"Média 3",
+                          "M2" =	"Média 2",
+                          "M1" = "Média 1",
+                         "A2" = "Alta 2",
+                         "A1" = "Alta 1"
+))
+unique(amazonia$Classe)
+```
+
+Ainda precisamos de outra camada dos limites das Unidades da Federação para termos ideia da distribuição do potencial de agressividade climática na Amazônia. Aproveitamos também para configurar a legenda, acertando a posição dela no mapa e a cor do fundo, assim como já deixar sem o título do eixo **y**.
+
+```{r plot-uf-legenda, warning=FALSE, fig.align = 'center', fig.cap='Mapa com correção da legenda e limites das UFs'}
+ggplot() +
+  geom_sf(data = mundo, colour = "white", fill = "grey90")+
+  geom_sf(data = UFBR, colour = "grey50", fill = "grey85", alpha = 0.2)+
+  geom_sf(data = amazonia, aes(fill = Classe), colour = NA)+
+  scale_fill_manual(values= c("Alta 1" = "red3",
+                              "Alta 2" = "red1",
+                              "Média 1" = "darkorange3",
+                              "Média 2" = "darkorange",
+                              "Média 3" = "goldenrod1",
+                              "Baixa 1" = "chartreuse4",
+                              "Baixa 2" = "chartreuse3",
+                              "Baixa 3" = "chartreuse1"))+
+  ggtitle("Potencial de agressividade climática na Amazônia Legal")+
+  theme(panel.background = element_rect(fill = "aliceblue"),
+        plot.title = element_text(size = 11, hjust = 1, vjust = -10),
+        panel.border = element_rect(color = "black",size = .1,fill = NA))+
+  labs(fill = "Potencial", caption = "Fonte: IBGE (2019) \n
+       Elaborado por: @Ligiaviz")+
+  geom_sf(data = UFBR, colour = "grey50", fill = NA, alpha = 0)+
+  theme(legend.position = c(0.9, 0.2), 
+        legend.justification = c(0.9, 0.2),
+        legend.background = element_rect(colour = NA, fill = "aliceblue"),
+        axis.title.y = element_blank())
+```
+
+A delimitação da área do mapa e outros elementos como a linha do Equador também podem ser definidos agora. A última linha do código define a escala gráfica (Figura \@ref(fig:plot-final)).
+```{r plot-final, fig.align = 'center', fig.cap='Mapa completo: recorte da área de interesse, escala gráfica e linha do Equador'}
+ggplot() +
+  geom_sf(data = mundo, colour = "white", fill = "grey90")+
+  geom_sf(data = UFBR, colour = "grey50", fill = "grey85", alpha = 0.2)+
+  geom_sf(data = amazonia, aes(fill = Classe), colour = NA)+
+  scale_fill_manual(values= c("Alta 1" = "red3",
+                              "Alta 2" = "red1",
+                              "Média 1" = "darkorange3",
+                              "Média 2" = "darkorange",
+                              "Média 3" = "goldenrod1",
+                              "Baixa 1" = "chartreuse4",
+                              "Baixa 2" = "chartreuse3",
+                              "Baixa 3" = "chartreuse1"))+
+  ggtitle("Potencial de agressividade climática na Amazônia Legal")+
+  theme(panel.background = element_rect(fill = "aliceblue"),
+        plot.title = element_text(size = 11, hjust = 1, vjust = -10),
+        panel.border = element_rect(color = "black",size = .1,fill = NA))+
+  labs(fill = "Potencial", caption = "Fonte: IBGE (2019) \n
+       Elaborado por: @Ligiaviz")+
+  geom_sf(data = UFBR, colour = "grey50", fill = NA, alpha = 0)+
+  theme(legend.position = c(0.9, 0.2), 
+        legend.justification = c(0.9, 0.2),
+        legend.background = element_rect(colour = NA, fill = "aliceblue"),
+        axis.title.y = element_blank())+
+  coord_sf(xlim = c(-77, -24), ylim = c(-20, 7), expand = FALSE)+
+  geom_hline(yintercept = 0, linetype = "dashed")+
+  ggspatial::annotation_scale(location = "bl", width_hint = 0.3, line_width = 0.5, height = unit(0.1,"cm"))
+```
+Para exportar como arquivo de extensão **png**, usa-se o comando a seguir.
+
+```{r }
+#para salvar o arquivo com extensao .png
+ggsave("agressividade.png", width = 8, height = 8, dpi = 300)
+```

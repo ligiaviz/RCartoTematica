@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title> 10 Mapa coroplético interativo | Cartografia Temática em R para estudantes de Geografia</title>
+  <meta name="description" content=" 10 Mapa coroplético interativo | Cartografia Temática em R para estudantes de Geografia" />
+  <meta name="generator" content="bookdown 0.34 and GitBook 2.6.7" />
+
+  <meta property="og:title" content=" 10 Mapa coroplético interativo | Cartografia Temática em R para estudantes de Geografia" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content=" 10 Mapa coroplético interativo | Cartografia Temática em R para estudantes de Geografia" />
+  
+  
+  
+
+<meta name="author" content="Ligia Vizeu Barrozo" />
+
+
+<meta name="date" content="2023-06-18" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="quanti3.html"/>
+
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">R Carto Tem Geo</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Apresentação</a>
+<ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#referência-citada"><i class="fa fa-check"></i>Referência citada</a></li>
+</ul></li>
+<li class="chapter" data-level="1" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>1</b> Introdução</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="intro.html"><a href="intro.html#o-programa-r"><i class="fa fa-check"></i><b>1.1</b> O programa R</a></li>
+<li class="chapter" data-level="1.2" data-path="intro.html"><a href="intro.html#instalação-do-r-e-rstudio"><i class="fa fa-check"></i><b>1.2</b> Instalação do R e RStudio</a>
+<ul>
+<li class="chapter" data-level="1.2.1" data-path="intro.html"><a href="intro.html#instalação-do-r-para-windows"><i class="fa fa-check"></i><b>1.2.1</b> Instalação do R para Windows</a></li>
+<li class="chapter" data-level="1.2.2" data-path="intro.html"><a href="intro.html#instalação-do-r-para-mac"><i class="fa fa-check"></i><b>1.2.2</b> Instalação do R para Mac</a></li>
+<li class="chapter" data-level="1.2.3" data-path="intro.html"><a href="intro.html#instalação-do-rstudio"><i class="fa fa-check"></i><b>1.2.3</b> Instalação do RStudio</a></li>
+<li class="chapter" data-level="1.2.4" data-path="intro.html"><a href="intro.html#instalação-do-rtools"><i class="fa fa-check"></i><b>1.2.4</b> Instalação do RTools</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="básico-do-básico-do-r-e-rstudio.html"><a href="básico-do-básico-do-r-e-rstudio.html"><i class="fa fa-check"></i><b>2</b> Básico do básico do R e RStudio</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="básico-do-básico-do-r-e-rstudio.html"><a href="básico-do-básico-do-r-e-rstudio.html#os-paineis"><i class="fa fa-check"></i><b>2.1</b> Os paineis</a></li>
+<li class="chapter" data-level="2.2" data-path="básico-do-básico-do-r-e-rstudio.html"><a href="básico-do-básico-do-r-e-rstudio.html#tipos-de-objetos"><i class="fa fa-check"></i><b>2.2</b> Tipos de objetos</a></li>
+<li class="chapter" data-level="2.3" data-path="básico-do-básico-do-r-e-rstudio.html"><a href="básico-do-básico-do-r-e-rstudio.html#estrutura-dos-dados"><i class="fa fa-check"></i><b>2.3</b> Estrutura dos dados</a></li>
+<li class="chapter" data-level="2.4" data-path="básico-do-básico-do-r-e-rstudio.html"><a href="básico-do-básico-do-r-e-rstudio.html#vetores"><i class="fa fa-check"></i><b>2.4</b> Vetores</a></li>
+<li class="chapter" data-level="2.5" data-path="básico-do-básico-do-r-e-rstudio.html"><a href="básico-do-básico-do-r-e-rstudio.html#nomeando-os-vetores"><i class="fa fa-check"></i><b>2.5</b> Nomeando os vetores</a></li>
+<li class="chapter" data-level="2.6" data-path="básico-do-básico-do-r-e-rstudio.html"><a href="básico-do-básico-do-r-e-rstudio.html#seleção-em-vetores"><i class="fa fa-check"></i><b>2.6</b> Seleção em vetores</a></li>
+<li class="chapter" data-level="2.7" data-path="básico-do-básico-do-r-e-rstudio.html"><a href="básico-do-básico-do-r-e-rstudio.html#totais-e-médias-em-vetores"><i class="fa fa-check"></i><b>2.7</b> Totais e médias em vetores</a></li>
+<li class="chapter" data-level="2.8" data-path="básico-do-básico-do-r-e-rstudio.html"><a href="básico-do-básico-do-r-e-rstudio.html#matrizes"><i class="fa fa-check"></i><b>2.8</b> Matrizes</a></li>
+<li class="chapter" data-level="2.9" data-path="básico-do-básico-do-r-e-rstudio.html"><a href="básico-do-básico-do-r-e-rstudio.html#cálculos-em-matrizes"><i class="fa fa-check"></i><b>2.9</b> Cálculos em Matrizes</a></li>
+<li class="chapter" data-level="2.10" data-path="básico-do-básico-do-r-e-rstudio.html"><a href="básico-do-básico-do-r-e-rstudio.html#seleção-em-matrizes"><i class="fa fa-check"></i><b>2.10</b> Seleção em Matrizes</a></li>
+<li class="chapter" data-level="2.11" data-path="básico-do-básico-do-r-e-rstudio.html"><a href="básico-do-básico-do-r-e-rstudio.html#fatores"><i class="fa fa-check"></i><b>2.11</b> Fatores</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="dataframes.html"><a href="dataframes.html"><i class="fa fa-check"></i><b>3</b> Dataframes</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="dataframes.html"><a href="dataframes.html#criação-de-dataframe"><i class="fa fa-check"></i><b>3.1</b> Criação de dataframe</a></li>
+<li class="chapter" data-level="3.2" data-path="dataframes.html"><a href="dataframes.html#importação-de-um-dataframe"><i class="fa fa-check"></i><b>3.2</b> Importação de um dataframe</a></li>
+<li class="chapter" data-level="3.3" data-path="dataframes.html"><a href="dataframes.html#o-operador-pipe-no-tidyverse"><i class="fa fa-check"></i><b>3.3</b> O operador Pipe no tidyverse</a></li>
+<li class="chapter" data-level="3.4" data-path="dataframes.html"><a href="dataframes.html#selecionando-colunas"><i class="fa fa-check"></i><b>3.4</b> Selecionando colunas</a></li>
+<li class="chapter" data-level="3.5" data-path="dataframes.html"><a href="dataframes.html#combinando-dataframes"><i class="fa fa-check"></i><b>3.5</b> Combinando dataframes</a></li>
+<li class="chapter" data-level="3.6" data-path="dataframes.html"><a href="dataframes.html#filtrando-observações"><i class="fa fa-check"></i><b>3.6</b> Filtrando observações</a></li>
+<li class="chapter" data-level="3.7" data-path="dataframes.html"><a href="dataframes.html#organizando-uma-tabela-com-a-função-arrange"><i class="fa fa-check"></i><b>3.7</b> Organizando uma tabela com a função <code>arrange()</code></a></li>
+<li class="chapter" data-level="3.8" data-path="dataframes.html"><a href="dataframes.html#o-verbo-mutate"><i class="fa fa-check"></i><b>3.8</b> O verbo “mutate”</a></li>
+<li class="chapter" data-level="3.9" data-path="dataframes.html"><a href="dataframes.html#agrupando-dados-com-a-função-group_by"><i class="fa fa-check"></i><b>3.9</b> Agrupando dados com a função <code>group_by</code></a></li>
+<li class="chapter" data-level="3.10" data-path="dataframes.html"><a href="dataframes.html#rumo-aos-mapas"><i class="fa fa-check"></i><b>3.10</b> Rumo aos mapas</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="tipos.html"><a href="tipos.html"><i class="fa fa-check"></i><b>4</b> Tipos de dados, conceitos e representação cartográfica</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="tipos.html"><a href="tipos.html#definição-do-tipo-de-representação-cartográfica"><i class="fa fa-check"></i><b>4.1</b> Definição do tipo de representação cartográfica</a></li>
+<li class="chapter" data-level="4.2" data-path="tipos.html"><a href="tipos.html#variáveis-visuais"><i class="fa fa-check"></i><b>4.2</b> Variáveis visuais</a></li>
+<li class="chapter" data-level="4.3" data-path="tipos.html"><a href="tipos.html#o-conceito-diversidade"><i class="fa fa-check"></i><b>4.3</b> O conceito <em>diversidade</em></a></li>
+<li class="chapter" data-level="4.4" data-path="tipos.html"><a href="tipos.html#o-conceito-ordem"><i class="fa fa-check"></i><b>4.4</b> O conceito <em>ordem</em></a></li>
+<li class="chapter" data-level="4.5" data-path="tipos.html"><a href="tipos.html#o-conceito-de-proporcionalidade"><i class="fa fa-check"></i><b>4.5</b> O conceito de <em>proporcionalidade</em></a></li>
+<li class="chapter" data-level="4.6" data-path="tipos.html"><a href="tipos.html#referências-sugeridas"><i class="fa fa-check"></i><b>4.6</b> Referências sugeridas</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="quali1.html"><a href="quali1.html"><i class="fa fa-check"></i><b>5</b> Dados qualitativos: mapa corocromático nominal</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="quali1.html"><a href="quali1.html#instalando-e-carregando-pacotes-do-r"><i class="fa fa-check"></i><b>5.1</b> Instalando e carregando pacotes do R</a></li>
+<li class="chapter" data-level="5.2" data-path="quali1.html"><a href="quali1.html#o-pacote-geobr"><i class="fa fa-check"></i><b>5.2</b> O pacote geobr</a></li>
+<li class="chapter" data-level="5.3" data-path="quali1.html"><a href="quali1.html#projeção-cartográfica"><i class="fa fa-check"></i><b>5.3</b> Projeção cartográfica</a></li>
+<li class="chapter" data-level="5.4" data-path="quali1.html"><a href="quali1.html#iniciando-com-o-ggplot2"><i class="fa fa-check"></i><b>5.4</b> Iniciando com o ggplot2</a></li>
+<li class="chapter" data-level="5.5" data-path="quali1.html"><a href="quali1.html#biomas-do-brasil"><i class="fa fa-check"></i><b>5.5</b> Biomas do Brasil</a></li>
+<li class="chapter" data-level="" data-path="quali1.html"><a href="quali1.html#referências-citadas"><i class="fa fa-check"></i>Referências citadas</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="quali2.html"><a href="quali2.html"><i class="fa fa-check"></i><b>6</b> Dados qualitativos: mapa corocromático ordinal</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="quali2.html"><a href="quali2.html#banco-de-dados"><i class="fa fa-check"></i><b>6.1</b> Banco de dados</a></li>
+<li class="chapter" data-level="6.2" data-path="quali2.html"><a href="quali2.html#potencial-de-agressividade-climática-na-amazônia-legal-do-brasil"><i class="fa fa-check"></i><b>6.2</b> Potencial de agressividade climática na Amazônia Legal do Brasil</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="quanti1.html"><a href="quanti1.html"><i class="fa fa-check"></i><b>7</b> Dados quantitativos absolutos: mapa das figuras geométricas proporcionais</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="quanti1.html"><a href="quanti1.html#bases-de-dados"><i class="fa fa-check"></i><b>7.1</b> Bases de dados</a></li>
+<li class="chapter" data-level="7.2" data-path="quanti1.html"><a href="quanti1.html#centroides-dos-municípios"><i class="fa fa-check"></i><b>7.2</b> Centroides dos municípios</a></li>
+<li class="chapter" data-level="7.3" data-path="quanti1.html"><a href="quanti1.html#mapa-da-população-do-estado-de-são-paulo"><i class="fa fa-check"></i><b>7.3</b> Mapa da população do estado de São Paulo</a></li>
+<li class="chapter" data-level="7.4" data-path="quanti1.html"><a href="quanti1.html#referências-sugeridas-1"><i class="fa fa-check"></i><b>7.4</b> Referências sugeridas</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="quanti2.html"><a href="quanti2.html"><i class="fa fa-check"></i><b>8</b> Dados quantitativos absolutos: mapa dos pontos de contagem (ou densidade de pontos)</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="quanti2.html"><a href="quanti2.html#bases-de-dados-1"><i class="fa fa-check"></i><b>8.1</b> Bases de dados</a></li>
+<li class="chapter" data-level="8.2" data-path="quanti2.html"><a href="quanti2.html#definição-dos-pontos-aleatórios"><i class="fa fa-check"></i><b>8.2</b> Definição dos pontos aleatórios</a></li>
+<li class="chapter" data-level="8.3" data-path="quanti2.html"><a href="quanti2.html#mapa-de-raça-ou-cor-dos-residentes-do-município-de-são-paulo"><i class="fa fa-check"></i><b>8.3</b> Mapa de raça ou cor dos residentes do município de São Paulo</a></li>
+<li class="chapter" data-level="8.4" data-path="quanti2.html"><a href="quanti2.html#referências-sugeridas-2"><i class="fa fa-check"></i><b>8.4</b> Referências sugeridas</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="quanti3.html"><a href="quanti3.html"><i class="fa fa-check"></i><b>9</b> Dados quantitativos relativos: mapa coroplético</a>
+<ul>
+<li class="chapter" data-level="9.0.1" data-path="quanti3.html"><a href="quanti3.html#o-número-de-classes"><i class="fa fa-check"></i><b>9.0.1</b> O número de classes</a></li>
+<li class="chapter" data-level="9.0.2" data-path="quanti3.html"><a href="quanti3.html#os-intervalos-de-classes"><i class="fa fa-check"></i><b>9.0.2</b> Os intervalos de classes</a></li>
+<li class="chapter" data-level="9.0.3" data-path="quanti3.html"><a href="quanti3.html#escalacores"><i class="fa fa-check"></i><b>9.0.3</b> A escala de cores</a></li>
+<li class="chapter" data-level="9.1" data-path="quanti3.html"><a href="quanti3.html#layout-do-mapa-coroplético-de-idhm-da-rmsp"><i class="fa fa-check"></i><b>9.1</b> Layout do mapa coroplético de IDHM da RMSP</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="quanti4.html"><a href="quanti4.html"><i class="fa fa-check"></i><b>10</b> Mapa coroplético interativo</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="quanti4.html"><a href="quanti4.html#indo-além-proposta-de-exercício"><i class="fa fa-check"></i><b>10.1</b> Indo além: Proposta de exercício</a></li>
+<li class="chapter" data-level="10.2" data-path="quanti4.html"><a href="quanti4.html#referências-sugeridas-3"><i class="fa fa-check"></i><b>10.2</b> Referências sugeridas</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Cartografia Temática em R para estudantes de Geografia</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="quanti4" class="section level1 hasAnchor" number="10">
+<h1><span class="header-section-number"> 10</span> Mapa coroplético interativo<a href="quanti4.html#quanti4" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>A visualização interativa de mapas por meio da Internet desloca o leitor de uma posição passiva para a capacidade de decidir o que quer ver e em qual escala.</p>
+<p>O pacote <strong>tmap</strong> possui duas opções de visualização do mapa: no modo <strong>plot</strong>, a visualização é estática; no modo <strong>view</strong> a visualização é interativa. No mapa de IDHM na Região Metropolitana de São Paulo, usamos o modo <strong>plot</strong>.</p>
+<p>Vamos visualizar o mesmo mapa com o modo <strong>view</strong>.
+Algumas diferenças em relação ao modo <strong>plot</strong> precisam ser destacadas:</p>
+<ul>
+<li><p>o mapa é sempre projetado na Projeção de Mercator para Web, que é padrão para os mapas interativos na Web. Portanto, não há equivalência de áreas;</p></li>
+<li><p>Não é possível plotar diversos mapas pequenos de forma múltipla;</p></li>
+<li><p>A estética da legenda não pode ser ajustada em relação a tamanho (tamanho do símbolo e espessura da linha);</p></li>
+<li><p>Os rótulos com texto ainda não são suportados;</p></li>
+<li><p>As opções de layout ajustadas com <strong>tm_layout</strong> em relação ao formato do mapa não são usadas. Entretanto, as opções de estilo ainda se aplicam.</p></li>
+</ul>
+<div class="sourceCode" id="cb109"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb109-1"><a href="quanti4.html#cb109-1" tabindex="-1"></a><span class="fu">tmap_mode</span>(<span class="at">mode =</span> <span class="st">&quot;view&quot;</span>)</span></code></pre></div>
+<pre><code>## tmap mode set to interactive viewing</code></pre>
+<p>O mapa interativo pode ser visualizado com o código a seguir:</p>
+<div class="sourceCode" id="cb111"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb111-1"><a href="quanti4.html#cb111-1" tabindex="-1"></a>idhm.final.fisher <span class="ot">&lt;-</span> <span class="fu">tm_shape</span>(pop_wgs84, <span class="at">bbox =</span> idhm.final)<span class="sc">+</span></span>
+<span id="cb111-2"><a href="quanti4.html#cb111-2" tabindex="-1"></a>  <span class="fu">tm_fill</span>()<span class="sc">+</span></span>
+<span id="cb111-3"><a href="quanti4.html#cb111-3" tabindex="-1"></a>  <span class="fu">tm_shape</span>(idhm.final) <span class="sc">+</span> <span class="co">#indica o nome do arquivo shapefile que será mapeado</span></span>
+<span id="cb111-4"><a href="quanti4.html#cb111-4" tabindex="-1"></a>  <span class="fu">tm_fill</span>(<span class="at">col =</span> <span class="st">&quot;IDHM&quot;</span>,<span class="at">title =</span> <span class="st">&quot;IDHM&quot;</span>, <span class="at">style =</span> <span class="st">&quot;fisher&quot;</span>, <span class="at">palette =</span> <span class="st">&quot;Oranges&quot;</span>, <span class="at">legend.hist =</span> <span class="cn">TRUE</span>) <span class="sc">+</span></span>
+<span id="cb111-5"><a href="quanti4.html#cb111-5" tabindex="-1"></a>  <span class="fu">tm_layout</span>(<span class="at">title =</span> <span class="st">&quot;IDHM na RMSP&quot;</span>, <span class="at">title.size =</span> <span class="fl">0.8</span>, <span class="at">legend.title.size =</span> <span class="fl">0.5</span>, <span class="at">legend.text.size =</span> <span class="fl">0.5</span>, <span class="at">legend.outside =</span> <span class="cn">TRUE</span>, <span class="at">bg.color =</span> <span class="st">&quot;aliceblue&quot;</span>)<span class="sc">+</span></span>
+<span id="cb111-6"><a href="quanti4.html#cb111-6" tabindex="-1"></a>  <span class="fu">tm_shape</span>(pop_wgs84)<span class="sc">+</span></span>
+<span id="cb111-7"><a href="quanti4.html#cb111-7" tabindex="-1"></a>  <span class="fu">tm_borders</span>(<span class="at">col =</span> <span class="st">&quot;white&quot;</span>, <span class="at">lwd =</span> <span class="dv">1</span>)<span class="sc">+</span></span>
+<span id="cb111-8"><a href="quanti4.html#cb111-8" tabindex="-1"></a>  <span class="fu">tm_credits</span>(<span class="st">&quot;Fonte: http://www.atlasbrasil.org.br</span><span class="sc">\n</span><span class="st"> 2022 @Ligiaviz&quot;</span>, <span class="at">position =</span> <span class="fu">c</span>(<span class="st">&quot;RIGHT&quot;</span>, <span class="st">&quot;BOTTOM&quot;</span>))<span class="sc">+</span></span>
+<span id="cb111-9"><a href="quanti4.html#cb111-9" tabindex="-1"></a>  <span class="fu">tm_scale_bar</span>(<span class="at">width =</span> <span class="fl">0.2</span>, <span class="at">position =</span> <span class="fu">c</span>(<span class="st">&quot;0.71&quot;</span>, <span class="st">&quot;0.13&quot;</span>))</span>
+<span id="cb111-10"><a href="quanti4.html#cb111-10" tabindex="-1"></a><span class="co">#para visualizar o mapa</span></span>
+<span id="cb111-11"><a href="quanti4.html#cb111-11" tabindex="-1"></a>idhm.final.fisher</span></code></pre></div>
+<div id="indo-além-proposta-de-exercício" class="section level2 hasAnchor" number="10.1">
+<h2><span class="header-section-number">10.1</span> Indo além: Proposta de exercício<a href="quanti4.html#indo-além-proposta-de-exercício" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>No objeto “dadosUDH”, existe a variável “ESPVIDA”, que significa “Esperança de vida ao nascer”. Faça o mapa coroplético deste indicador seguindo os passos propostos neste capítulo.
+Para saber mais sobre o <strong>tmap</strong>, consulte a <a href="https://cran.r-project.org/web/packages/tmap/tmap.pdf">documentação</a> e <a href="https://geocompr.robinlovelace.net/">Lovelace et al.(em andamento)</a>.</p>
+</div>
+<div id="referências-sugeridas-3" class="section level2 hasAnchor" number="10.2">
+<h2><span class="header-section-number">10.2</span> Referências sugeridas<a href="quanti4.html#referências-sugeridas-3" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>ARMSTRONG, M. P., XIAO, N., BENNETT, D. A., 2003. Using genetic algorithms to create multicriteria class intervals for choropleth maps. <strong>Annals, Association of American Geographers</strong>, 93 (3), 595-623</p>
+<p>BARROZO, L.V., PÉREZ-MACHADO, R.P., SMALL, C. CABRAL-MIRANDA, W. , 2015. Changing spatial perception: dasymetric mapping to improve analysis of health outcomes in a megacity. <strong>Journal of Maps</strong>, DOI:
+10.1080/17445647.2015.1101403.</p>
+<p>CAUVIN, C., ESCOBAR, F., SERRADJ, A., 2008. <strong>Cartographie thématique 3</strong>: méthodes quantitatives et transformations attributaires. Paris: Lavoisier, 147p.</p>
+<p>JENKS, G. F., CASPALL, F. C., 1971. Error on choroplethic maps: definition, measurement, reduction. <strong>Annals, Association of American Geographers</strong>, 61 (2), 217–244.</p>
+<p>LOVELACE, R., NOWOSAD, J., &amp; MUENCHOW, J. (in progress). <strong>Geocomputation with R</strong>. Available online via <a href="https://geocompr.robinlovelace.net/" class="uri">https://geocompr.robinlovelace.net/</a></p>
+<p>MARTINELLI, M. <strong>Representações gráficas da geografia</strong>: os mapas temáticos. 1999. São Paulo: FFLCH/USP, Tese (Livre-Docência).</p>
+<p>PETROV, A. 2008. Setting the Record Straight: On the Russian Origins of Dasymetric Mapping. <strong>Cartographica: The International Journal for Geographic Information and Geovisualization</strong>, 43(2):133-136.</p>
+<p>POIDEVIN, D. 1999. <strong>La carte</strong>: moyen d’action. Guide pratique pour la conception &amp; la réalisation de cartes. Paris: Ellipses. 200p.</p>
+<p>TENNEKES, M. 2018. tmap: Thematic Maps in R, <strong>Journal of Statistical Software</strong>, 84(6), 1-39, doi: 10.18637/jss.v084.i06</p>
+<p><strong>Elegant and informative maps with tmap</strong>
+<a href="https://r-tmap.github.io/tmap-book/index.html" class="uri">https://r-tmap.github.io/tmap-book/index.html</a></p>
+<p><strong>Hands-On Spatial Data Science with R</strong>
+<a href="https://spatialanalysis.github.io/handsonspatialdata/rate-mapping.html" class="uri">https://spatialanalysis.github.io/handsonspatialdata/rate-mapping.html</a></p>
+<p><strong>Let’s Make a Map in R</strong> (mapas coropléticos com ggplot2)
+<a href="https://medium.com/@traffordDataLab/lets-make-a-map-in-r-7bd1d9366098" class="uri">https://medium.com/@traffordDataLab/lets-make-a-map-in-r-7bd1d9366098</a></p>
+<p><strong>R jenks.tests</strong>
+<a href="http://www.endmemo.com/r/jenks.tests.php" class="uri">http://www.endmemo.com/r/jenks.tests.php</a></p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="quanti3.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/ligiaviz/RCartoTematica/edit/main/10-coropletico.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": "https://github.com/ligiaviz/RCartoTematica/blob/main/10-coropletico.Rmd",
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

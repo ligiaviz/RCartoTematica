@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title> 8 Dados quantitativos absolutos: mapa das figuras geométricas proporcionais | Cartografia Temática em R para estudantes de Geografia</title>
+  <meta name="description" content=" 8 Dados quantitativos absolutos: mapa das figuras geométricas proporcionais | Cartografia Temática em R para estudantes de Geografia" />
+  <meta name="generator" content="bookdown 0.34 and GitBook 2.6.7" />
+
+  <meta property="og:title" content=" 8 Dados quantitativos absolutos: mapa das figuras geométricas proporcionais | Cartografia Temática em R para estudantes de Geografia" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content=" 8 Dados quantitativos absolutos: mapa das figuras geométricas proporcionais | Cartografia Temática em R para estudantes de Geografia" />
+  
+  
+  
+
+<meta name="author" content="Ligia Vizeu Barrozo" />
+
+
+<meta name="date" content="2023-06-18" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="quali2.html"/>
+<link rel="next" href="quanti2.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/htmlwidgets-1.6.2/htmlwidgets.js"></script>
+<link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-1.3.1/leaflet.js"></script>
+<link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
+<script src="libs/proj4-2.6.2/proj4.min.js"></script>
+<script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
+<link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-binding-2.1.2/leaflet.js"></script>
+<script src="libs/leaflet-providers-1.9.0/leaflet-providers_1.9.0.js"></script>
+<script src="libs/leaflet-providers-plugin-2.1.2/leaflet-providers-plugin.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">R Carto Tem Geo</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Apresentação</a>
+<ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#referência-citada"><i class="fa fa-check"></i>Referência citada</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="sobre-o-livro.html"><a href="sobre-o-livro.html"><i class="fa fa-check"></i>Sobre o livro</a></li>
+<li class="chapter" data-level="" data-path="agradecimentos.html"><a href="agradecimentos.html"><i class="fa fa-check"></i>Agradecimentos</a></li>
+<li class="chapter" data-level="1" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>1</b> Introdução</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="intro.html"><a href="intro.html#o-programa-r"><i class="fa fa-check"></i><b>1.1</b> O programa R</a></li>
+<li class="chapter" data-level="1.2" data-path="intro.html"><a href="intro.html#instalação-do-r-e-rstudio"><i class="fa fa-check"></i><b>1.2</b> Instalação do R e RStudio</a>
+<ul>
+<li class="chapter" data-level="1.2.1" data-path="intro.html"><a href="intro.html#instalação-do-r-para-windows"><i class="fa fa-check"></i><b>1.2.1</b> Instalação do R para Windows</a></li>
+<li class="chapter" data-level="1.2.2" data-path="intro.html"><a href="intro.html#instalação-do-r-para-mac"><i class="fa fa-check"></i><b>1.2.2</b> Instalação do R para Mac</a></li>
+<li class="chapter" data-level="1.2.3" data-path="intro.html"><a href="intro.html#instalação-do-rstudio"><i class="fa fa-check"></i><b>1.2.3</b> Instalação do RStudio</a></li>
+<li class="chapter" data-level="1.2.4" data-path="intro.html"><a href="intro.html#instalação-do-rtools"><i class="fa fa-check"></i><b>1.2.4</b> Instalação do RTools</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="básico-do-básico-do-r-e-rstudio.html"><a href="básico-do-básico-do-r-e-rstudio.html"><i class="fa fa-check"></i><b>2</b> Básico do básico do R e RStudio</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="básico-do-básico-do-r-e-rstudio.html"><a href="básico-do-básico-do-r-e-rstudio.html#os-paineis"><i class="fa fa-check"></i><b>2.1</b> Os paineis</a></li>
+<li class="chapter" data-level="2.2" data-path="básico-do-básico-do-r-e-rstudio.html"><a href="básico-do-básico-do-r-e-rstudio.html#tipos-de-objetos"><i class="fa fa-check"></i><b>2.2</b> Tipos de objetos</a></li>
+<li class="chapter" data-level="2.3" data-path="básico-do-básico-do-r-e-rstudio.html"><a href="básico-do-básico-do-r-e-rstudio.html#estrutura-dos-dados"><i class="fa fa-check"></i><b>2.3</b> Estrutura dos dados</a></li>
+<li class="chapter" data-level="2.4" data-path="básico-do-básico-do-r-e-rstudio.html"><a href="básico-do-básico-do-r-e-rstudio.html#vetores"><i class="fa fa-check"></i><b>2.4</b> Vetores</a></li>
+<li class="chapter" data-level="2.5" data-path="básico-do-básico-do-r-e-rstudio.html"><a href="básico-do-básico-do-r-e-rstudio.html#nomeando-os-vetores"><i class="fa fa-check"></i><b>2.5</b> Nomeando os vetores</a></li>
+<li class="chapter" data-level="2.6" data-path="básico-do-básico-do-r-e-rstudio.html"><a href="básico-do-básico-do-r-e-rstudio.html#seleção-em-vetores"><i class="fa fa-check"></i><b>2.6</b> Seleção em vetores</a></li>
+<li class="chapter" data-level="2.7" data-path="básico-do-básico-do-r-e-rstudio.html"><a href="básico-do-básico-do-r-e-rstudio.html#totais-e-médias-em-vetores"><i class="fa fa-check"></i><b>2.7</b> Totais e médias em vetores</a></li>
+<li class="chapter" data-level="2.8" data-path="básico-do-básico-do-r-e-rstudio.html"><a href="básico-do-básico-do-r-e-rstudio.html#matrizes"><i class="fa fa-check"></i><b>2.8</b> Matrizes</a></li>
+<li class="chapter" data-level="2.9" data-path="básico-do-básico-do-r-e-rstudio.html"><a href="básico-do-básico-do-r-e-rstudio.html#cálculos-em-matrizes"><i class="fa fa-check"></i><b>2.9</b> Cálculos em Matrizes</a></li>
+<li class="chapter" data-level="2.10" data-path="básico-do-básico-do-r-e-rstudio.html"><a href="básico-do-básico-do-r-e-rstudio.html#seleção-em-matrizes"><i class="fa fa-check"></i><b>2.10</b> Seleção em Matrizes</a></li>
+<li class="chapter" data-level="2.11" data-path="básico-do-básico-do-r-e-rstudio.html"><a href="básico-do-básico-do-r-e-rstudio.html#fatores"><i class="fa fa-check"></i><b>2.11</b> Fatores</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="dataframes.html"><a href="dataframes.html"><i class="fa fa-check"></i><b>3</b> Dataframes</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="dataframes.html"><a href="dataframes.html#criação-de-dataframe"><i class="fa fa-check"></i><b>3.1</b> Criação de dataframe</a></li>
+<li class="chapter" data-level="3.2" data-path="dataframes.html"><a href="dataframes.html#importação-de-um-dataframe"><i class="fa fa-check"></i><b>3.2</b> Importação de um dataframe</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="tidyverse.html"><a href="tidyverse.html"><i class="fa fa-check"></i><b>4</b> Básico do Tidyverse</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="tidyverse.html"><a href="tidyverse.html#o-operador-pipe-no-tidyverse"><i class="fa fa-check"></i><b>4.1</b> O operador Pipe no tidyverse</a></li>
+<li class="chapter" data-level="4.2" data-path="tidyverse.html"><a href="tidyverse.html#selecionando-colunas"><i class="fa fa-check"></i><b>4.2</b> Selecionando colunas</a></li>
+<li class="chapter" data-level="4.3" data-path="tidyverse.html"><a href="tidyverse.html#combinando-dataframes"><i class="fa fa-check"></i><b>4.3</b> Combinando dataframes</a></li>
+<li class="chapter" data-level="4.4" data-path="tidyverse.html"><a href="tidyverse.html#filtrando-observações"><i class="fa fa-check"></i><b>4.4</b> Filtrando observações</a></li>
+<li class="chapter" data-level="4.5" data-path="tidyverse.html"><a href="tidyverse.html#organizando-uma-tabela-com-a-função-arrange"><i class="fa fa-check"></i><b>4.5</b> Organizando uma tabela com a função <code>arrange()</code></a></li>
+<li class="chapter" data-level="4.6" data-path="tidyverse.html"><a href="tidyverse.html#o-verbo-mutate"><i class="fa fa-check"></i><b>4.6</b> O verbo “mutate”</a></li>
+<li class="chapter" data-level="4.7" data-path="tidyverse.html"><a href="tidyverse.html#agrupando-dados-com-a-função-group_by"><i class="fa fa-check"></i><b>4.7</b> Agrupando dados com a função <code>group_by</code></a></li>
+<li class="chapter" data-level="4.8" data-path="tidyverse.html"><a href="tidyverse.html#rumo-aos-mapas"><i class="fa fa-check"></i><b>4.8</b> Rumo aos mapas</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="tipos.html"><a href="tipos.html"><i class="fa fa-check"></i><b>5</b> Tipos de dados, conceitos e representação cartográfica</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="tipos.html"><a href="tipos.html#definição-do-tipo-de-representação-cartográfica"><i class="fa fa-check"></i><b>5.1</b> Definição do tipo de representação cartográfica</a></li>
+<li class="chapter" data-level="5.2" data-path="tipos.html"><a href="tipos.html#variáveis-visuais"><i class="fa fa-check"></i><b>5.2</b> Variáveis visuais</a></li>
+<li class="chapter" data-level="5.3" data-path="tipos.html"><a href="tipos.html#o-conceito-diversidade"><i class="fa fa-check"></i><b>5.3</b> O conceito <em>diversidade</em></a></li>
+<li class="chapter" data-level="5.4" data-path="tipos.html"><a href="tipos.html#o-conceito-ordem"><i class="fa fa-check"></i><b>5.4</b> O conceito <em>ordem</em></a></li>
+<li class="chapter" data-level="5.5" data-path="tipos.html"><a href="tipos.html#o-conceito-de-proporcionalidade"><i class="fa fa-check"></i><b>5.5</b> O conceito de <em>proporcionalidade</em></a></li>
+<li class="chapter" data-level="5.6" data-path="tipos.html"><a href="tipos.html#referências-sugeridas"><i class="fa fa-check"></i><b>5.6</b> Referências sugeridas</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="quali1.html"><a href="quali1.html"><i class="fa fa-check"></i><b>6</b> Dados qualitativos: mapa corocromático nominal</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="quali1.html"><a href="quali1.html#instalando-e-carregando-pacotes-do-r"><i class="fa fa-check"></i><b>6.1</b> Instalando e carregando pacotes do R</a></li>
+<li class="chapter" data-level="6.2" data-path="quali1.html"><a href="quali1.html#o-pacote-geobr"><i class="fa fa-check"></i><b>6.2</b> O pacote geobr</a></li>
+<li class="chapter" data-level="6.3" data-path="quali1.html"><a href="quali1.html#projeção-cartográfica"><i class="fa fa-check"></i><b>6.3</b> Projeção cartográfica</a></li>
+<li class="chapter" data-level="6.4" data-path="quali1.html"><a href="quali1.html#iniciando-com-o-ggplot2"><i class="fa fa-check"></i><b>6.4</b> Iniciando com o ggplot2</a></li>
+<li class="chapter" data-level="6.5" data-path="quali1.html"><a href="quali1.html#biomas-do-brasil"><i class="fa fa-check"></i><b>6.5</b> Biomas do Brasil</a></li>
+<li class="chapter" data-level="" data-path="quali1.html"><a href="quali1.html#referências-citadas"><i class="fa fa-check"></i>Referências citadas</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="quali2.html"><a href="quali2.html"><i class="fa fa-check"></i><b>7</b> Dados qualitativos: mapa corocromático ordinal</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="quali2.html"><a href="quali2.html#banco-de-dados"><i class="fa fa-check"></i><b>7.1</b> Banco de dados</a></li>
+<li class="chapter" data-level="7.2" data-path="quali2.html"><a href="quali2.html#potencial-de-agressividade-climática-na-amazônia-legal-do-brasil"><i class="fa fa-check"></i><b>7.2</b> Potencial de agressividade climática na Amazônia Legal do Brasil</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="quanti1.html"><a href="quanti1.html"><i class="fa fa-check"></i><b>8</b> Dados quantitativos absolutos: mapa das figuras geométricas proporcionais</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="quanti1.html"><a href="quanti1.html#bases-de-dados"><i class="fa fa-check"></i><b>8.1</b> Bases de dados</a></li>
+<li class="chapter" data-level="8.2" data-path="quanti1.html"><a href="quanti1.html#centroides-dos-municípios"><i class="fa fa-check"></i><b>8.2</b> Centroides dos municípios</a></li>
+<li class="chapter" data-level="8.3" data-path="quanti1.html"><a href="quanti1.html#mapa-da-população-do-estado-de-são-paulo"><i class="fa fa-check"></i><b>8.3</b> Mapa da população do estado de São Paulo</a></li>
+<li class="chapter" data-level="8.4" data-path="quanti1.html"><a href="quanti1.html#referências-sugeridas-1"><i class="fa fa-check"></i><b>8.4</b> Referências sugeridas</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="quanti2.html"><a href="quanti2.html"><i class="fa fa-check"></i><b>9</b> Dados quantitativos absolutos: mapa dos pontos de contagem (ou densidade de pontos)</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="quanti2.html"><a href="quanti2.html#bases-de-dados-1"><i class="fa fa-check"></i><b>9.1</b> Bases de dados</a></li>
+<li class="chapter" data-level="9.2" data-path="quanti2.html"><a href="quanti2.html#definição-dos-pontos-aleatórios"><i class="fa fa-check"></i><b>9.2</b> Definição dos pontos aleatórios</a></li>
+<li class="chapter" data-level="9.3" data-path="quanti2.html"><a href="quanti2.html#mapa-de-raça-ou-cor-dos-residentes-do-município-de-são-paulo"><i class="fa fa-check"></i><b>9.3</b> Mapa de raça ou cor dos residentes do município de São Paulo</a></li>
+<li class="chapter" data-level="9.4" data-path="quanti2.html"><a href="quanti2.html#referências-sugeridas-2"><i class="fa fa-check"></i><b>9.4</b> Referências sugeridas</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="quanti3.html"><a href="quanti3.html"><i class="fa fa-check"></i><b>10</b> Dados quantitativos relativos: mapa coroplético</a>
+<ul>
+<li class="chapter" data-level="10.0.1" data-path="quanti3.html"><a href="quanti3.html#o-número-de-classes"><i class="fa fa-check"></i><b>10.0.1</b> O número de classes</a></li>
+<li class="chapter" data-level="10.0.2" data-path="quanti3.html"><a href="quanti3.html#os-intervalos-de-classes"><i class="fa fa-check"></i><b>10.0.2</b> Os intervalos de classes</a></li>
+<li class="chapter" data-level="10.0.3" data-path="quanti3.html"><a href="quanti3.html#escalacores"><i class="fa fa-check"></i><b>10.0.3</b> A escala de cores</a></li>
+<li class="chapter" data-level="10.1" data-path="quanti3.html"><a href="quanti3.html#layout-do-mapa-coroplético-de-idhm-da-rmsp"><i class="fa fa-check"></i><b>10.1</b> Layout do mapa coroplético de IDHM da RMSP</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="quanti4.html"><a href="quanti4.html"><i class="fa fa-check"></i><b>11</b> Mapa coroplético interativo</a>
+<ul>
+<li class="chapter" data-level="11.1" data-path="quanti4.html"><a href="quanti4.html#indo-além-proposta-de-exercício"><i class="fa fa-check"></i><b>11.1</b> Indo além: Proposta de exercício</a></li>
+<li class="chapter" data-level="11.2" data-path="quanti4.html"><a href="quanti4.html#referências-sugeridas-3"><i class="fa fa-check"></i><b>11.2</b> Referências sugeridas</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Cartografia Temática em R para estudantes de Geografia</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="quanti1" class="section level1 hasAnchor" number="8">
+<h1><span class="header-section-number"> 8</span> Dados quantitativos absolutos: mapa das figuras geométricas proporcionais<a href="quanti1.html#quanti1" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>Quando queremos transcrever graficamente dados quantitativos ou numéricos que expressam uma medida ou contagem, dois tipos de representação cartográfica são indicadas: o mapa de figuras geométricas proporcionais e o mapa dos pontos de contagem (também conhecido por densidade de pontos).
+A escolha pela utilização de um ou outro depende do tipo de fenômeno a ser representado e da magnitude dos valores. As figuras geométricas proporcionais (em geral, o círculo é a figura mais utilizada) utilizam a variável visual “tamanho” e permitem perceber diferenças entre as proporções de forma imediata. Os pontos de contagem também utilizam a variável visual “tamanho” e possibilitam estabelecer relação entre a variável de interesse e a área do polígono, remetendo à ideia de densidade.</p>
+<p>Neste tópico trataremos da representação por meio de círculos proporcionais da população do estado de São Paulo em 2022, segundo município. Como os dados de população correspondem a cada município como um todo (área urbana e rural), o círculo deverá estar localizado nas coordenadas dos centróides dos municípios.</p>
+<div id="bases-de-dados" class="section level2 hasAnchor" number="8.1">
+<h2><span class="header-section-number">8.1</span> Bases de dados<a href="quanti1.html#bases-de-dados" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Iniciamos limpando a memória.</p>
+<div class="sourceCode" id="cb266"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb266-1"><a href="quanti1.html#cb266-1" tabindex="-1"></a><span class="co">#para limpar a memoria</span></span>
+<span id="cb266-2"><a href="quanti1.html#cb266-2" tabindex="-1"></a><span class="fu">rm</span>(<span class="at">list=</span><span class="fu">ls</span>())</span></code></pre></div>
+<p>Definimos com <code>setwd()</code>e verificamos o diretório de trabalho com <code>getwd()</code>.</p>
+<div class="sourceCode" id="cb267"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb267-1"><a href="quanti1.html#cb267-1" tabindex="-1"></a><span class="co">#para verificar o diretório</span></span>
+<span id="cb267-2"><a href="quanti1.html#cb267-2" tabindex="-1"></a><span class="fu">getwd</span>()</span></code></pre></div>
+<p>Para evitar textos com erros devido à acentuação, vamos ajustar para a língua portuguesa.</p>
+<div class="sourceCode" id="cb268"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb268-1"><a href="quanti1.html#cb268-1" tabindex="-1"></a><span class="co">#para ajustar a língua para português usando a função</span></span>
+<span id="cb268-2"><a href="quanti1.html#cb268-2" tabindex="-1"></a><span class="fu">Sys.setlocale</span>(<span class="at">category =</span> <span class="st">&quot;LC_ALL&quot;</span>, <span class="at">locale =</span> <span class="st">&quot;pt_BR.UTF-8&quot;</span>)</span></code></pre></div>
+<pre><code>## [1] &quot;LC_COLLATE=pt_BR.UTF-8;LC_CTYPE=pt_BR.UTF-8;LC_MONETARY=pt_BR.UTF-8;LC_NUMERIC=C;LC_TIME=pt_BR.UTF-8&quot;</code></pre>
+<p>Outro ajuste importante será a desativação da notação científica dos números na legenda.</p>
+<div class="sourceCode" id="cb270"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb270-1"><a href="quanti1.html#cb270-1" tabindex="-1"></a><span class="co">#para desativar a notação científica</span></span>
+<span id="cb270-2"><a href="quanti1.html#cb270-2" tabindex="-1"></a><span class="fu">options</span>(<span class="at">scipen =</span> <span class="dv">999</span>)</span></code></pre></div>
+<p>Carregamos os pacotes que serão utilizados.</p>
+<div class="sourceCode" id="cb271"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb271-1"><a href="quanti1.html#cb271-1" tabindex="-1"></a><span class="co">#para carregar os pacotes que serão usados</span></span>
+<span id="cb271-2"><a href="quanti1.html#cb271-2" tabindex="-1"></a><span class="fu">library</span>(sf)</span>
+<span id="cb271-3"><a href="quanti1.html#cb271-3" tabindex="-1"></a><span class="fu">library</span>(geobr)</span>
+<span id="cb271-4"><a href="quanti1.html#cb271-4" tabindex="-1"></a><span class="fu">library</span>(ggplot2,<span class="at">warn.conflicts=</span><span class="cn">FALSE</span>)</span>
+<span id="cb271-5"><a href="quanti1.html#cb271-5" tabindex="-1"></a><span class="fu">library</span>(scales)</span></code></pre></div>
+<p>Usaremos a base de dados de população do Portal da Fundação SEADE. Para baixar o arquivo compactado, usamos a linha de código a seguir.</p>
+<div class="sourceCode" id="cb272"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb272-1"><a href="quanti1.html#cb272-1" tabindex="-1"></a><span class="co">#para identificar o url, faca o download do arquivo shapefile e clique em Ctrl+J</span></span>
+<span id="cb272-2"><a href="quanti1.html#cb272-2" tabindex="-1"></a><span class="fu">download.file</span>(<span class="at">url =</span> <span class="st">&quot;https://repositorio.seade.gov.br/dataset/9bb4f8ef-f1a4-4734-92a2-814cfc8d0974/resource/09ba3695-a6a1-44ab-9916-fd1a8aa1c980/download/populacao.zip&quot;</span>, <span class="at">destfile =</span> <span class="st">&quot;Populacao.zip&quot;</span>)</span></code></pre></div>
+<p>Para descompactar o arquivo, usamos a função <strong>unzip</strong>.</p>
+<div class="sourceCode" id="cb273"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb273-1"><a href="quanti1.html#cb273-1" tabindex="-1"></a><span class="co">#para abrir o arquivo zip</span></span>
+<span id="cb273-2"><a href="quanti1.html#cb273-2" tabindex="-1"></a><span class="fu">unzip</span>(<span class="at">zipfile =</span> <span class="st">&quot;Populacao.zip&quot;</span>)</span></code></pre></div>
+<p>Na sequência, criamos o objeto <strong>pop</strong> usando a função para leitura de arquivo do tipo shapefile.</p>
+<div class="sourceCode" id="cb274"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb274-1"><a href="quanti1.html#cb274-1" tabindex="-1"></a><span class="co">#para abrir o arquivo shapefile do estado de São Paulo </span></span>
+<span id="cb274-2"><a href="quanti1.html#cb274-2" tabindex="-1"></a>pop <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">&quot;./Populacao.shp&quot;</span>)</span></code></pre></div>
+<pre><code>## Reading layer `Populacao&#39; from data source 
+##   `C:\Users\l_viz\Documents\RCartoTematica\Populacao.shp&#39; 
+##   using driver `ESRI Shapefile&#39;
+## Simple feature collection with 645 features and 12 fields
+## Geometry type: MULTIPOLYGON
+## Dimension:     XY
+## Bounding box:  xmin: -53.10487 ymin: -25.30835 xmax: -44.1634 ymax: -19.78045
+## Geodetic CRS:  SIRGAS 2000</code></pre>
+<p>Podemos ver as colunas de <strong>pop</strong> com a função <strong>names(pop)</strong>.</p>
+<div class="sourceCode" id="cb276"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb276-1"><a href="quanti1.html#cb276-1" tabindex="-1"></a><span class="co">#para ver as colunas de &#39;pop&#39;</span></span>
+<span id="cb276-2"><a href="quanti1.html#cb276-2" tabindex="-1"></a><span class="fu">names</span>(pop)</span></code></pre></div>
+<pre><code>##  [1] &quot;Cod_ibge&quot; &quot;Nome&quot;     &quot;Rotulo&quot;   &quot;Area_Km2&quot; &quot;Den_Demo&quot;
+##  [6] &quot;Pop&quot;      &quot;RA&quot;       &quot;RG&quot;       &quot;RM&quot;       &quot;AU&quot;      
+## [11] &quot;RGI&quot;      &quot;RGINT&quot;    &quot;geometry&quot;</code></pre>
+<p>O objeto <strong>pop</strong> está na projeção cartográfica SIRGAS 2000. Vamos passá-lo para WGS84 pseudo Mercator (CRS = 3857).</p>
+<div class="sourceCode" id="cb278"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb278-1"><a href="quanti1.html#cb278-1" tabindex="-1"></a><span class="co">#para transformar para a projeção em WGS84 pseudo Mercator (crs=3857)</span></span>
+<span id="cb278-2"><a href="quanti1.html#cb278-2" tabindex="-1"></a>pop_wgs84 <span class="ot">&lt;-</span> <span class="fu">st_transform</span>(pop, <span class="at">crs=</span> <span class="dv">3857</span>)</span></code></pre></div>
+<p>Vamos precisar dos polígonos das Unidades da Federação, que podem ser obtidos no site do IBGE.</p>
+<div class="sourceCode" id="cb279"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb279-1"><a href="quanti1.html#cb279-1" tabindex="-1"></a><span class="co">#para identificar o url, faca o download do arquivo shapefile e clique em Ctrl+J</span></span>
+<span id="cb279-2"><a href="quanti1.html#cb279-2" tabindex="-1"></a><span class="fu">download.file</span>(<span class="at">url =</span> <span class="st">&quot;https://geoftp.ibge.gov.br/organizacao_do_territorio/malhas_territoriais/malhas_municipais/municipio_2020/Brasil/BR/BR_UF_2020.zip&quot;</span>, <span class="at">destfile =</span> <span class="st">&quot;BR_UF_2020.zip&quot;</span>)</span></code></pre></div>
+<p>Usamos a função <strong>unzip</strong> para extrair o arquivo.</p>
+<div class="sourceCode" id="cb280"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb280-1"><a href="quanti1.html#cb280-1" tabindex="-1"></a><span class="co">#para abrir o arquivo zip</span></span>
+<span id="cb280-2"><a href="quanti1.html#cb280-2" tabindex="-1"></a><span class="fu">unzip</span>(<span class="at">zipfile =</span> <span class="st">&quot;BR_UF_2020.zip&quot;</span>)</span></code></pre></div>
+<p>Para ler o arquivo no <strong>R</strong>, usamos <strong>st_read</strong>.</p>
+<div class="sourceCode" id="cb281"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb281-1"><a href="quanti1.html#cb281-1" tabindex="-1"></a><span class="co">#para abrir o arquivo shapefile dos estados</span></span>
+<span id="cb281-2"><a href="quanti1.html#cb281-2" tabindex="-1"></a>UFBR <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">&quot;./BR_UF_2020.shp&quot;</span>)</span></code></pre></div>
+<pre><code>## Reading layer `BR_UF_2020&#39; from data source 
+##   `C:\Users\l_viz\Documents\RCartoTematica\BR_UF_2020.shp&#39; 
+##   using driver `ESRI Shapefile&#39;
+## Simple feature collection with 27 features and 4 fields
+## Geometry type: MULTIPOLYGON
+## Dimension:     XY
+## Bounding box:  xmin: -73.99045 ymin: -33.75118 xmax: -28.84764 ymax: 5.271841
+## Geodetic CRS:  SIRGAS 2000</code></pre>
+<p>Para que fiquem na mesma projeção, transformamos UFBR para WGS84 pseudo Mercator.</p>
+<div class="sourceCode" id="cb283"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb283-1"><a href="quanti1.html#cb283-1" tabindex="-1"></a><span class="co">#para transformar a projeção de &#39;UFBR&#39; para WGS84</span></span>
+<span id="cb283-2"><a href="quanti1.html#cb283-2" tabindex="-1"></a>UFBRwgs84<span class="ot">&lt;-</span> <span class="fu">st_transform</span>(UFBR, <span class="at">crs=</span> <span class="dv">3857</span>)</span></code></pre></div>
+<p>Podemos verificar o tipo de geometria do objeto <strong>pop_wgs84</strong> usando a função <strong>st_geometry_type</strong>.</p>
+<div class="sourceCode" id="cb284"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb284-1"><a href="quanti1.html#cb284-1" tabindex="-1"></a><span class="co">#para ver o tipo de geometria de &#39;pop_wgs84&#39;</span></span>
+<span id="cb284-2"><a href="quanti1.html#cb284-2" tabindex="-1"></a><span class="fu">st_geometry_type</span>(pop_wgs84, <span class="at">by_geometry=</span><span class="cn">FALSE</span>)</span></code></pre></div>
+<pre><code>## [1] MULTIPOLYGON
+## 18 Levels: GEOMETRY POINT LINESTRING POLYGON ... TRIANGLE</code></pre>
+</div>
+<div id="centroides-dos-municípios" class="section level2 hasAnchor" number="8.2">
+<h2><span class="header-section-number">8.2</span> Centroides dos municípios<a href="quanti1.html#centroides-dos-municípios" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Para utilizarmos os círculos proporcionais, precisaremos gerar as coordenadas dos centroides dos polígonos dos municípios, criando um objeto com geometria de ponto. Isto pode ser feito com a função <strong>st_centroid</strong>.</p>
+<div class="sourceCode" id="cb286"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb286-1"><a href="quanti1.html#cb286-1" tabindex="-1"></a><span class="co">#para criar o objeto &#39;pop_centrd&#39; que contém os pontos dos centroides</span></span>
+<span id="cb286-2"><a href="quanti1.html#cb286-2" tabindex="-1"></a>pop_centrd <span class="ot">=</span> <span class="fu">st_centroid</span>(pop_wgs84)</span></code></pre></div>
+<p>Conferimos o tipo de geometria de <strong>pop_centrd</strong>.</p>
+<div class="sourceCode" id="cb287"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb287-1"><a href="quanti1.html#cb287-1" tabindex="-1"></a><span class="co">#para ver o tipo de geometria de &#39;pop_centrd&#39;</span></span>
+<span id="cb287-2"><a href="quanti1.html#cb287-2" tabindex="-1"></a><span class="fu">st_geometry_type</span>(pop_centrd, <span class="at">by_geometry =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<pre><code>## [1] POINT
+## 18 Levels: GEOMETRY POINT LINESTRING POLYGON ... TRIANGLE</code></pre>
+<p>Temos agora três camadas que serão usadas para a elaboração do mapa, que deverão ser adicionadas na seguinte ordem:</p>
+<ol style="list-style-type: decimal">
+<li><p>Unidades da Federação: UFBRwgs84;</p></li>
+<li><p>Arquivo dos polígonos dos municípios do estado de São Paulo com os dados das populações de todos os municípios: pop_wgs84</p></li>
+<li><p>Arquivo de pontos das coordenadas dos centroides dos municípios: pop_centrd.</p></li>
+</ol>
+</div>
+<div id="mapa-da-população-do-estado-de-são-paulo" class="section level2 hasAnchor" number="8.3">
+<h2><span class="header-section-number">8.3</span> Mapa da população do estado de São Paulo<a href="quanti1.html#mapa-da-população-do-estado-de-são-paulo" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Vamos usar o pacote <strong>ggplot2</strong> para fazer o mapa (Figura <a href="quanti1.html#fig:plot-brasil-ufs">8.1</a>). Começamos adicionando a camada das UFs, preenchendo com cinza claro (fill = “gray95”) e contorno com cinza médio (colour = “grey50”). Alpha varia de 0 a 1, sendo 1 o valor para indicar nenhuma transparência.</p>
+<div class="sourceCode" id="cb289"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb289-1"><a href="quanti1.html#cb289-1" tabindex="-1"></a><span class="co">#para plotar o mapa das UFs do Brasil</span></span>
+<span id="cb289-2"><a href="quanti1.html#cb289-2" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb289-3"><a href="quanti1.html#cb289-3" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> UFBRwgs84, <span class="at">colour =</span> <span class="st">&quot;grey50&quot;</span>, <span class="at">fill =</span> <span class="st">&quot;gray95&quot;</span>, <span class="at">alpha =</span> <span class="fl">0.8</span>)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:plot-brasil-ufs"></span>
+<img src="bookdownproj_files/figure-html/plot-brasil-ufs-1.png" alt="Mapa do Brasil com os limites das Unidades das Federações" width="672" />
+<p class="caption">
+Figure 8.1: Mapa do Brasil com os limites das Unidades das Federações
+</p>
+</div>
+<p>Adicionamos a segunda camada, escolhendo a cor de preenchimento dos polígonos dos municípios (fill = “beige”), do contorno (color = “black”) e espessura da linha de contorno (size = 0.25) (Figura <a href="quanti1.html#fig:plot-brasil-ufsp">8.2</a>).</p>
+<div class="sourceCode" id="cb290"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb290-1"><a href="quanti1.html#cb290-1" tabindex="-1"></a><span class="co">#para plotar o mapa das UFs e dos municípios da UF São Paulo</span></span>
+<span id="cb290-2"><a href="quanti1.html#cb290-2" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb290-3"><a href="quanti1.html#cb290-3" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> UFBRwgs84, <span class="at">colour =</span> <span class="st">&quot;grey50&quot;</span>, <span class="at">fill =</span> <span class="st">&quot;gray95&quot;</span>, <span class="at">alpha =</span> <span class="fl">0.8</span>)<span class="sc">+</span></span>
+<span id="cb290-4"><a href="quanti1.html#cb290-4" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> pop_wgs84, <span class="at">fill =</span> <span class="st">&quot;beige&quot;</span>, <span class="at">color =</span> <span class="st">&quot;black&quot;</span>, <span class="at">size =</span> <span class="fl">0.25</span>)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:plot-brasil-ufsp"></span>
+<img src="bookdownproj_files/figure-html/plot-brasil-ufsp-1.png" alt="Mapa do Brasil com os limites das Unidades das Federações e municípios da UF São Paulo" width="672" />
+<p class="caption">
+Figure 8.2: Mapa do Brasil com os limites das Unidades das Federações e municípios da UF São Paulo
+</p>
+</div>
+<p>A terceira camada, os pontos sobre os quais serão desenhados os círculos proporcionais, deverá indicar qual variável será mapeada como círculo (size = Pop). Lembre-se que o nome da coluna não vem entre aspas. A cor (color = “tomato”), a transparência (alpha = 0.8) e se a legenda deverá aparecer são definidos na mesma camada (Figura <a href="quanti1.html#fig:plot-pop-ufsp">8.3</a>).</p>
+<div class="sourceCode" id="cb291"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb291-1"><a href="quanti1.html#cb291-1" tabindex="-1"></a><span class="co">#para plotar o mapa das UFs, dos municípios da UF São Paulo e centroides com dados da população</span></span>
+<span id="cb291-2"><a href="quanti1.html#cb291-2" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb291-3"><a href="quanti1.html#cb291-3" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> UFBRwgs84, <span class="at">colour =</span> <span class="st">&quot;grey50&quot;</span>, <span class="at">fill =</span> <span class="st">&quot;gray95&quot;</span>, <span class="at">alpha =</span> <span class="fl">0.8</span>)<span class="sc">+</span></span>
+<span id="cb291-4"><a href="quanti1.html#cb291-4" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> pop_wgs84, <span class="at">fill =</span> <span class="st">&quot;beige&quot;</span>, <span class="at">color =</span> <span class="st">&quot;black&quot;</span>, <span class="at">size =</span> <span class="fl">0.25</span>) <span class="sc">+</span></span>
+<span id="cb291-5"><a href="quanti1.html#cb291-5" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> pop_centrd, <span class="fu">aes</span>(<span class="at">size =</span> Pop), <span class="at">color =</span> <span class="st">&quot;tomato&quot;</span>, <span class="at">alpha=</span><span class="fl">0.8</span>, <span class="at">show.legend =</span> <span class="st">&quot;point&quot;</span>)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:plot-pop-ufsp"></span>
+<img src="bookdownproj_files/figure-html/plot-pop-ufsp-1.png" alt="Mapa do Brasil com os limites das Unidades das Federações e população dos municípios da UF São Paulo" width="672" />
+<p class="caption">
+Figure 8.3: Mapa do Brasil com os limites das Unidades das Federações e população dos municípios da UF São Paulo
+</p>
+</div>
+<p>Após a definição das camadas, outras configurações podem ser feitas. Vamos definir as características relacionadas aos círculos. Para isso, usamos a função <strong>scale_size</strong>. Definimos o título que acompanha a legenda (name = “Habitantes”), a faixa dos tamanhos dos círculos (o menor como 0 e o maior como 10) (range = c(0, 10)) e os cortes dos tamanhos dos círculos (breaks = c(10000, 100000, 1000000, 10000000)) (Figura <a href="quanti1.html#fig:plot-pop-config">8.4</a>).</p>
+<div class="sourceCode" id="cb292"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb292-1"><a href="quanti1.html#cb292-1" tabindex="-1"></a><span class="co">#para plotar o mapa das UFs, dos municípios da UF São Paulo, centroides com dados da população e ajustar a legenda</span></span>
+<span id="cb292-2"><a href="quanti1.html#cb292-2" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb292-3"><a href="quanti1.html#cb292-3" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> UFBRwgs84, <span class="at">colour =</span> <span class="st">&quot;grey50&quot;</span>, <span class="at">fill =</span> <span class="st">&quot;gray95&quot;</span>, <span class="at">alpha =</span> <span class="fl">0.8</span>)<span class="sc">+</span></span>
+<span id="cb292-4"><a href="quanti1.html#cb292-4" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> pop_wgs84, <span class="at">fill =</span> <span class="st">&quot;beige&quot;</span>, <span class="at">color =</span> <span class="st">&quot;black&quot;</span>, <span class="at">size =</span> <span class="fl">0.25</span>) <span class="sc">+</span></span>
+<span id="cb292-5"><a href="quanti1.html#cb292-5" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> pop_centrd, <span class="fu">aes</span>(<span class="at">size =</span> Pop), <span class="at">color =</span> <span class="st">&quot;tomato&quot;</span>, <span class="at">alpha=</span><span class="fl">0.8</span>, <span class="at">show.legend =</span> <span class="st">&quot;point&quot;</span>)<span class="sc">+</span></span>
+<span id="cb292-6"><a href="quanti1.html#cb292-6" tabindex="-1"></a>  <span class="fu">scale_size</span>(<span class="at">name=</span><span class="st">&quot;Habitantes&quot;</span>, <span class="at">range =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">10</span>), <span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">10000</span>, <span class="dv">100000</span>, <span class="dv">1000000</span>, <span class="dv">10000000</span>))</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:plot-pop-config"></span>
+<img src="bookdownproj_files/figure-html/plot-pop-config-1.png" alt="Configurações da legenda" width="672" />
+<p class="caption">
+Figure 8.4: Configurações da legenda
+</p>
+</div>
+<p>Acrescentamos o título do mapa (ggtitle(“População do estado de São Paulo em 2022”)) (Figura <a href="quanti1.html#fig:plot-pop-title">8.5</a>).</p>
+<div class="sourceCode" id="cb293"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb293-1"><a href="quanti1.html#cb293-1" tabindex="-1"></a><span class="co">#para plotar o mapa das UFs, dos municípios da UF São Paulo, centroides com dados da população, ajustar a legenda e adicionar o título</span></span>
+<span id="cb293-2"><a href="quanti1.html#cb293-2" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb293-3"><a href="quanti1.html#cb293-3" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> UFBRwgs84, <span class="at">colour =</span> <span class="st">&quot;grey50&quot;</span>, <span class="at">fill =</span> <span class="st">&quot;gray95&quot;</span>, <span class="at">alpha =</span> <span class="fl">0.8</span>)<span class="sc">+</span></span>
+<span id="cb293-4"><a href="quanti1.html#cb293-4" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> pop_wgs84, <span class="at">fill =</span> <span class="st">&quot;beige&quot;</span>, <span class="at">color =</span> <span class="st">&quot;black&quot;</span>, <span class="at">size =</span> <span class="fl">0.25</span>) <span class="sc">+</span></span>
+<span id="cb293-5"><a href="quanti1.html#cb293-5" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> pop_centrd, <span class="fu">aes</span>(<span class="at">size =</span> Pop), <span class="at">color =</span> <span class="st">&quot;tomato&quot;</span>, <span class="at">alpha=</span><span class="fl">0.8</span>, <span class="at">show.legend =</span> <span class="st">&quot;point&quot;</span>)<span class="sc">+</span></span>
+<span id="cb293-6"><a href="quanti1.html#cb293-6" tabindex="-1"></a>  <span class="fu">scale_size</span>(<span class="at">name=</span><span class="st">&quot;Habitantes&quot;</span>, <span class="at">range =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">10</span>), <span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">10000</span>, <span class="dv">100000</span>, <span class="dv">1000000</span>, <span class="dv">10000000</span>))<span class="sc">+</span></span>
+<span id="cb293-7"><a href="quanti1.html#cb293-7" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">&quot;População do estado de São Paulo em 2022&quot;</span>)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:plot-pop-title"></span>
+<img src="bookdownproj_files/figure-html/plot-pop-title-1.png" alt="Título do mapa" width="672" />
+<p class="caption">
+Figure 8.5: Título do mapa
+</p>
+</div>
+<p>Em relação aos elementos da moldura do mapa, usamos a função <strong>theme</strong>. Vamos definir a cor de fundo em azul claro para remeter ao Oceano (panel.background = element_rect(fill = “aliceblue”)). Quanto ao título do mapa (plot.title), vamos ajustar o tamanho da fonte e a posição na área do mapa (element_text(size = 11, hjust = 0.9, vjust = -10)). Em relação à linha da moldura (panel.border), vamos indicar a cor preta, espessura da linha (0.1) e que não deverá haver preenchimento (NA) ( element_rect(color = “black”, linewidth = .1, fill = NA)) (Figura <a href="quanti1.html#fig:plot-pop-title">8.5</a>).</p>
+<div class="sourceCode" id="cb294"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb294-1"><a href="quanti1.html#cb294-1" tabindex="-1"></a><span class="co">#para plotar o mapa das UFs, dos municípios da UF São Paulo, centroides com dados da população, ajustar a legenda, adicionar o título e definir o tema</span></span>
+<span id="cb294-2"><a href="quanti1.html#cb294-2" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb294-3"><a href="quanti1.html#cb294-3" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> UFBRwgs84, <span class="at">colour =</span> <span class="st">&quot;grey50&quot;</span>, <span class="at">fill =</span> <span class="st">&quot;gray95&quot;</span>, <span class="at">alpha =</span> <span class="fl">0.8</span>)<span class="sc">+</span></span>
+<span id="cb294-4"><a href="quanti1.html#cb294-4" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> pop_wgs84, <span class="at">fill =</span> <span class="st">&quot;beige&quot;</span>, <span class="at">color =</span> <span class="st">&quot;black&quot;</span>, <span class="at">size =</span> <span class="fl">0.25</span>) <span class="sc">+</span></span>
+<span id="cb294-5"><a href="quanti1.html#cb294-5" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> pop_centrd, <span class="fu">aes</span>(<span class="at">size =</span> Pop), <span class="at">color =</span> <span class="st">&quot;tomato&quot;</span>, <span class="at">alpha=</span><span class="fl">0.8</span>, <span class="at">show.legend =</span> <span class="st">&quot;point&quot;</span>)<span class="sc">+</span></span>
+<span id="cb294-6"><a href="quanti1.html#cb294-6" tabindex="-1"></a>  <span class="fu">scale_size</span>(<span class="at">name=</span><span class="st">&quot;Habitantes&quot;</span>, <span class="at">range =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">10</span>), <span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">10000</span>, <span class="dv">100000</span>, <span class="dv">1000000</span>, <span class="dv">10000000</span>))<span class="sc">+</span></span>
+<span id="cb294-7"><a href="quanti1.html#cb294-7" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">&quot;População do estado de São Paulo em 2022&quot;</span>)<span class="sc">+</span></span>
+<span id="cb294-8"><a href="quanti1.html#cb294-8" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">panel.background =</span> <span class="fu">element_rect</span>(<span class="at">fill =</span> <span class="st">&quot;aliceblue&quot;</span>),</span>
+<span id="cb294-9"><a href="quanti1.html#cb294-9" tabindex="-1"></a>        <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">11</span>, <span class="at">hjust =</span> <span class="fl">0.9</span>, <span class="at">vjust =</span> <span class="sc">-</span><span class="dv">10</span>),</span>
+<span id="cb294-10"><a href="quanti1.html#cb294-10" tabindex="-1"></a>        <span class="at">panel.border =</span> <span class="fu">element_rect</span>(<span class="at">color =</span> <span class="st">&quot;black&quot;</span>,<span class="at">linewidth =</span> .<span class="dv">1</span>,<span class="at">fill =</span> <span class="cn">NA</span>))</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:plot-pop-theme"></span>
+<img src="bookdownproj_files/figure-html/plot-pop-theme-1.png" alt="Configurações do tema do mapa" width="672" />
+<p class="caption">
+Figure 8.6: Configurações do tema do mapa
+</p>
+</div>
+<p>Precisamos definir a área do mapa. Vamos restringir os limites para incluir uma área levemente maior do que o estado de São Paulo, usando a função <strong>coord_sf</strong>. Para saber os limites do estado de São Paulo, vamos olhar o objeto pop_wgs84.</p>
+<div class="sourceCode" id="cb295"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb295-1"><a href="quanti1.html#cb295-1" tabindex="-1"></a><span class="co">#para ver os limites geográficos de &#39;pop_wgs84&#39;</span></span>
+<span id="cb295-2"><a href="quanti1.html#cb295-2" tabindex="-1"></a>pop_wgs84</span></code></pre></div>
+<p>Os limites de pop_wgs84 são:</p>
+<p>Bounding box: xmin: -5911607 ymin: -2913666 xmax: -4916247 ymax: -2247040</p>
+<p>Vamos ampliar um pouco esta área para:</p>
+<p>xlim = c(-5950000, -4890000), ylim = c(-2950000, -2160000)</p>
+<div class="sourceCode" id="cb296"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb296-1"><a href="quanti1.html#cb296-1" tabindex="-1"></a><span class="co">#para plotar o mapa das UFs, dos municípios da UF São Paulo, centroides com dados da população, ajustar a legenda, adicionar o título, definir o tema e os limites</span></span>
+<span id="cb296-2"><a href="quanti1.html#cb296-2" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb296-3"><a href="quanti1.html#cb296-3" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> UFBRwgs84, <span class="at">colour =</span> <span class="st">&quot;grey50&quot;</span>, <span class="at">fill =</span> <span class="st">&quot;gray95&quot;</span>, <span class="at">alpha =</span> <span class="fl">0.8</span>)<span class="sc">+</span></span>
+<span id="cb296-4"><a href="quanti1.html#cb296-4" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> pop_wgs84, <span class="at">fill =</span> <span class="st">&quot;beige&quot;</span>, <span class="at">color =</span> <span class="st">&quot;black&quot;</span>, <span class="at">size =</span> <span class="fl">0.25</span>) <span class="sc">+</span></span>
+<span id="cb296-5"><a href="quanti1.html#cb296-5" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> pop_centrd, <span class="fu">aes</span>(<span class="at">size =</span> Pop), <span class="at">color =</span> <span class="st">&quot;tomato&quot;</span>, <span class="at">alpha=</span><span class="fl">0.8</span>, <span class="at">show.legend =</span> <span class="st">&quot;point&quot;</span>)<span class="sc">+</span></span>
+<span id="cb296-6"><a href="quanti1.html#cb296-6" tabindex="-1"></a>  <span class="fu">scale_size</span>(<span class="at">name=</span><span class="st">&quot;Habitantes&quot;</span>, <span class="at">range =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">10</span>), <span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">10000</span>, <span class="dv">100000</span>, <span class="dv">1000000</span>, <span class="dv">10000000</span>))<span class="sc">+</span></span>
+<span id="cb296-7"><a href="quanti1.html#cb296-7" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">&quot;População do estado de São Paulo em 2022&quot;</span>)<span class="sc">+</span></span>
+<span id="cb296-8"><a href="quanti1.html#cb296-8" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">panel.background =</span> <span class="fu">element_rect</span>(<span class="at">fill =</span> <span class="st">&quot;aliceblue&quot;</span>),</span>
+<span id="cb296-9"><a href="quanti1.html#cb296-9" tabindex="-1"></a>        <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">11</span>, <span class="at">hjust =</span> <span class="fl">0.9</span>, <span class="at">vjust =</span> <span class="sc">-</span><span class="dv">10</span>),</span>
+<span id="cb296-10"><a href="quanti1.html#cb296-10" tabindex="-1"></a>        <span class="at">panel.border =</span> <span class="fu">element_rect</span>(<span class="at">color =</span> <span class="st">&quot;black&quot;</span>, <span class="at">linewidth =</span> .<span class="dv">1</span>,<span class="at">fill =</span> <span class="cn">NA</span>))<span class="sc">+</span></span>
+<span id="cb296-11"><a href="quanti1.html#cb296-11" tabindex="-1"></a>  <span class="fu">coord_sf</span>(<span class="at">xlim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">5950000</span>, <span class="sc">-</span><span class="dv">4890000</span>), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">2950000</span>, <span class="sc">-</span><span class="dv">2160000</span>), <span class="at">expand =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:plot-pop-limites"></span>
+<img src="bookdownproj_files/figure-html/plot-pop-limites-1.png" alt="Limites do mapa" width="672" />
+<p class="caption">
+Figure 8.7: Limites do mapa
+</p>
+</div>
+<p>Vamos posicionar a legenda na área interna da moldura e adicionar outras informações como a fonte dos dados e os créditos de elaboração do mapa.</p>
+<div class="sourceCode" id="cb297"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb297-1"><a href="quanti1.html#cb297-1" tabindex="-1"></a><span class="co">#para plotar o mapa das UFs, dos municípios da UF São Paulo, centroides com dados da população, ajustar a legenda, adicionar o título, definir o tema, alterar posição da legenda e adicionar notas de rodapé </span></span>
+<span id="cb297-2"><a href="quanti1.html#cb297-2" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb297-3"><a href="quanti1.html#cb297-3" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> UFBRwgs84, <span class="at">colour =</span> <span class="st">&quot;grey50&quot;</span>, <span class="at">fill =</span> <span class="st">&quot;gray95&quot;</span>, <span class="at">alpha =</span> <span class="fl">0.8</span>)<span class="sc">+</span></span>
+<span id="cb297-4"><a href="quanti1.html#cb297-4" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> pop_wgs84, <span class="at">fill =</span> <span class="st">&quot;beige&quot;</span>, <span class="at">color =</span> <span class="st">&quot;black&quot;</span>, <span class="at">size =</span> <span class="fl">0.25</span>) <span class="sc">+</span></span>
+<span id="cb297-5"><a href="quanti1.html#cb297-5" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> pop_centrd, <span class="fu">aes</span>(<span class="at">size =</span> Pop), <span class="at">color =</span> <span class="st">&quot;tomato&quot;</span>, <span class="at">alpha=</span><span class="fl">0.8</span>, <span class="at">show.legend =</span> <span class="st">&quot;point&quot;</span>)<span class="sc">+</span></span>
+<span id="cb297-6"><a href="quanti1.html#cb297-6" tabindex="-1"></a>  <span class="fu">scale_size</span>(<span class="at">name=</span><span class="st">&quot;Habitantes&quot;</span>, <span class="at">range =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">10</span>), <span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">10000</span>, <span class="dv">100000</span>, <span class="dv">1000000</span>, <span class="dv">10000000</span>))<span class="sc">+</span></span>
+<span id="cb297-7"><a href="quanti1.html#cb297-7" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">&quot;População do estado de São Paulo em 2022&quot;</span>)<span class="sc">+</span></span>
+<span id="cb297-8"><a href="quanti1.html#cb297-8" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">panel.background =</span> <span class="fu">element_rect</span>(<span class="at">fill =</span> <span class="st">&quot;aliceblue&quot;</span>),</span>
+<span id="cb297-9"><a href="quanti1.html#cb297-9" tabindex="-1"></a>        <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">11</span>, <span class="at">hjust =</span> <span class="fl">0.9</span>, <span class="at">vjust =</span> <span class="sc">-</span><span class="dv">10</span>),</span>
+<span id="cb297-10"><a href="quanti1.html#cb297-10" tabindex="-1"></a>        <span class="at">panel.border =</span> <span class="fu">element_rect</span>(<span class="at">color =</span> <span class="st">&quot;black&quot;</span>,<span class="at">linewidth =</span> .<span class="dv">1</span>,<span class="at">fill =</span> <span class="cn">NA</span>))<span class="sc">+</span></span>
+<span id="cb297-11"><a href="quanti1.html#cb297-11" tabindex="-1"></a>  <span class="fu">coord_sf</span>(<span class="at">xlim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">5950000</span>, <span class="sc">-</span><span class="dv">4890000</span>), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">2950000</span>, <span class="sc">-</span><span class="dv">2160000</span>), <span class="at">expand =</span> <span class="cn">FALSE</span>)<span class="sc">+</span></span>
+<span id="cb297-12"><a href="quanti1.html#cb297-12" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="fu">c</span>(<span class="fl">0.2</span>, <span class="fl">0.2</span>))<span class="sc">+</span></span>
+<span id="cb297-13"><a href="quanti1.html#cb297-13" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">caption =</span> <span class="st">&quot;Fonte: SEADE (2022) </span><span class="sc">\n</span></span>
+<span id="cb297-14"><a href="quanti1.html#cb297-14" tabindex="-1"></a><span class="st">       Elaborado por: @Ligiaviz&quot;</span>)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:plot-pop-detalhes"></span>
+<img src="bookdownproj_files/figure-html/plot-pop-detalhes-1.png" alt="Outros detalhes do mapa" width="672" />
+<p class="caption">
+Figure 8.8: Outros detalhes do mapa
+</p>
+</div>
+<p>A escala gráfica será adicionada com a função <strong>annotation_scale</strong> do pacote <strong>ggspatial</strong>. Usamos <strong>::</strong> para indicar o pacote e a função. A localização da barra de escala deve ser indicada pela posição em cima ou embaixo combinada com a posição esquerda ou direita. Embaixo é indicado por “bottom” ou simplesmente “b”; em cima por “top” ou “t”; do lado direito (“rigth” ou “r”) ou do lado esquerdo (“left” ou “l”). Podemos ajustar a espessura do traço, a largura e altura da barra e quanto vale a unidade em centímetros.</p>
+<div class="sourceCode" id="cb298"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb298-1"><a href="quanti1.html#cb298-1" tabindex="-1"></a><span class="co"># a última linha adiciona a barra de escala</span></span>
+<span id="cb298-2"><a href="quanti1.html#cb298-2" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb298-3"><a href="quanti1.html#cb298-3" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> UFBRwgs84, <span class="at">colour =</span> <span class="st">&quot;grey50&quot;</span>, <span class="at">fill =</span> <span class="st">&quot;gray95&quot;</span>, <span class="at">alpha =</span> <span class="fl">0.8</span>)<span class="sc">+</span></span>
+<span id="cb298-4"><a href="quanti1.html#cb298-4" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> pop_wgs84, <span class="at">fill =</span> <span class="st">&quot;beige&quot;</span>, <span class="at">color =</span> <span class="st">&quot;black&quot;</span>, <span class="at">size =</span> <span class="fl">0.25</span>) <span class="sc">+</span></span>
+<span id="cb298-5"><a href="quanti1.html#cb298-5" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> pop_centrd, <span class="fu">aes</span>(<span class="at">size =</span> Pop), <span class="at">color =</span> <span class="st">&quot;tomato&quot;</span>, <span class="at">alpha=</span><span class="fl">0.8</span>, <span class="at">show.legend =</span> <span class="st">&quot;point&quot;</span>)<span class="sc">+</span></span>
+<span id="cb298-6"><a href="quanti1.html#cb298-6" tabindex="-1"></a>  <span class="fu">scale_size</span>(<span class="at">name=</span><span class="st">&quot;Habitantes&quot;</span>, <span class="at">range =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">10</span>), <span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">10000</span>, <span class="dv">100000</span>, <span class="dv">1000000</span>, <span class="dv">10000000</span>))<span class="sc">+</span></span>
+<span id="cb298-7"><a href="quanti1.html#cb298-7" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">&quot;População do estado de São Paulo em 2022&quot;</span>)<span class="sc">+</span></span>
+<span id="cb298-8"><a href="quanti1.html#cb298-8" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">panel.background =</span> <span class="fu">element_rect</span>(<span class="at">fill =</span> <span class="st">&quot;aliceblue&quot;</span>),</span>
+<span id="cb298-9"><a href="quanti1.html#cb298-9" tabindex="-1"></a>        <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">11</span>, <span class="at">hjust =</span> <span class="fl">0.9</span>, <span class="at">vjust =</span> <span class="sc">-</span><span class="dv">10</span>),</span>
+<span id="cb298-10"><a href="quanti1.html#cb298-10" tabindex="-1"></a>        <span class="at">panel.border =</span> <span class="fu">element_rect</span>(<span class="at">color =</span> <span class="st">&quot;black&quot;</span>,<span class="at">linewidth =</span> .<span class="dv">1</span>,<span class="at">fill =</span> <span class="cn">NA</span>))<span class="sc">+</span></span>
+<span id="cb298-11"><a href="quanti1.html#cb298-11" tabindex="-1"></a>  <span class="fu">coord_sf</span>(<span class="at">xlim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">5950000</span>, <span class="sc">-</span><span class="dv">4890000</span>), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">2950000</span>, <span class="sc">-</span><span class="dv">2160000</span>), <span class="at">expand =</span> <span class="cn">FALSE</span>)<span class="sc">+</span></span>
+<span id="cb298-12"><a href="quanti1.html#cb298-12" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="fu">c</span>(<span class="fl">0.2</span>, <span class="fl">0.2</span>))<span class="sc">+</span></span>
+<span id="cb298-13"><a href="quanti1.html#cb298-13" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">caption =</span> <span class="st">&quot;Fonte: SEADE (2022) </span><span class="sc">\n</span></span>
+<span id="cb298-14"><a href="quanti1.html#cb298-14" tabindex="-1"></a><span class="st">       Elaborado por: @Ligiaviz&quot;</span>)<span class="sc">+</span></span>
+<span id="cb298-15"><a href="quanti1.html#cb298-15" tabindex="-1"></a>  ggspatial<span class="sc">::</span><span class="fu">annotation_scale</span>(<span class="at">location =</span> <span class="st">&quot;br&quot;</span>, <span class="at">width_hint =</span> <span class="fl">0.4</span>, <span class="at">line_width =</span> <span class="fl">0.5</span>, <span class="at">height =</span> <span class="fu">unit</span>(<span class="fl">0.1</span>,<span class="st">&quot;cm&quot;</span>))</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:plot-pop-escala"></span>
+<img src="bookdownproj_files/figure-html/plot-pop-escala-1.png" alt="Com a escala gráfica" width="672" />
+<p class="caption">
+Figure 8.9: Com a escala gráfica
+</p>
+</div>
+<p>Por fim, vamos acrescentar a seta do norte geográfico. Usaremos <strong>ggspatial::annotation_north_arrow</strong>. Indicaremos a posição no mapa (location = “tr”), o tipo de norte (which_north = “true”), o tamanho e a unidade (pad_x = unit(0.4, “in”), pad_y = unit(0.4, “in”)), o estilo da seta, as cores de preenchimento e da linha e o estilo do texto para a letra N.</p>
+<div class="sourceCode" id="cb299"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb299-1"><a href="quanti1.html#cb299-1" tabindex="-1"></a><span class="co">#o último bloco adiciona e configura a seta do Norte Geográfico</span></span>
+<span id="cb299-2"><a href="quanti1.html#cb299-2" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb299-3"><a href="quanti1.html#cb299-3" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> UFBRwgs84, <span class="at">colour =</span> <span class="st">&quot;grey50&quot;</span>, <span class="at">fill =</span> <span class="st">&quot;gray95&quot;</span>, <span class="at">alpha =</span> <span class="fl">0.8</span>)<span class="sc">+</span></span>
+<span id="cb299-4"><a href="quanti1.html#cb299-4" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> pop_wgs84, <span class="at">fill =</span> <span class="st">&quot;beige&quot;</span>, <span class="at">color =</span> <span class="st">&quot;black&quot;</span>, <span class="at">size =</span> <span class="fl">0.25</span>) <span class="sc">+</span></span>
+<span id="cb299-5"><a href="quanti1.html#cb299-5" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> pop_centrd, <span class="fu">aes</span>(<span class="at">size =</span> Pop), <span class="at">color =</span> <span class="st">&quot;tomato&quot;</span>, <span class="at">alpha=</span><span class="fl">0.8</span>, <span class="at">show.legend =</span> <span class="st">&quot;point&quot;</span>)<span class="sc">+</span></span>
+<span id="cb299-6"><a href="quanti1.html#cb299-6" tabindex="-1"></a>  <span class="fu">scale_size</span>(<span class="at">name=</span><span class="st">&quot;Habitantes&quot;</span>, <span class="at">range =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">10</span>), <span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">10000</span>, <span class="dv">100000</span>, <span class="dv">1000000</span>, <span class="dv">10000000</span>))<span class="sc">+</span></span>
+<span id="cb299-7"><a href="quanti1.html#cb299-7" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">&quot;População do estado de São Paulo em 2022&quot;</span>)<span class="sc">+</span></span>
+<span id="cb299-8"><a href="quanti1.html#cb299-8" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">panel.background =</span> <span class="fu">element_rect</span>(<span class="at">fill =</span> <span class="st">&quot;aliceblue&quot;</span>),</span>
+<span id="cb299-9"><a href="quanti1.html#cb299-9" tabindex="-1"></a>        <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">11</span>, <span class="at">hjust =</span> <span class="fl">0.9</span>, <span class="at">vjust =</span> <span class="sc">-</span><span class="dv">10</span>),</span>
+<span id="cb299-10"><a href="quanti1.html#cb299-10" tabindex="-1"></a>        <span class="at">panel.border =</span> <span class="fu">element_rect</span>(<span class="at">color =</span> <span class="st">&quot;black&quot;</span>,<span class="at">linewidth =</span> .<span class="dv">1</span>,<span class="at">fill =</span> <span class="cn">NA</span>))<span class="sc">+</span></span>
+<span id="cb299-11"><a href="quanti1.html#cb299-11" tabindex="-1"></a>  <span class="fu">coord_sf</span>(<span class="at">xlim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">5950000</span>, <span class="sc">-</span><span class="dv">4890000</span>), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">2950000</span>, <span class="sc">-</span><span class="dv">2160000</span>), <span class="at">expand =</span> <span class="cn">FALSE</span>)<span class="sc">+</span></span>
+<span id="cb299-12"><a href="quanti1.html#cb299-12" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="fu">c</span>(<span class="fl">0.2</span>, <span class="fl">0.2</span>))<span class="sc">+</span></span>
+<span id="cb299-13"><a href="quanti1.html#cb299-13" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">caption =</span> <span class="st">&quot;Fonte: SEADE (2022) </span><span class="sc">\n</span></span>
+<span id="cb299-14"><a href="quanti1.html#cb299-14" tabindex="-1"></a><span class="st">       Elaborado por: @Ligiaviz&quot;</span>)<span class="sc">+</span></span>
+<span id="cb299-15"><a href="quanti1.html#cb299-15" tabindex="-1"></a>  ggspatial<span class="sc">::</span><span class="fu">annotation_scale</span>(<span class="at">location =</span> <span class="st">&quot;br&quot;</span>, <span class="at">width_hint =</span> <span class="fl">0.4</span>, <span class="at">line_width =</span> <span class="fl">0.5</span>, <span class="at">height =</span> <span class="fu">unit</span>(<span class="fl">0.1</span>,<span class="st">&quot;cm&quot;</span>), <span class="at">bar_cols =</span> <span class="fu">c</span>(<span class="st">&quot;white&quot;</span>, <span class="st">&quot;white&quot;</span>))<span class="sc">+</span></span>
+<span id="cb299-16"><a href="quanti1.html#cb299-16" tabindex="-1"></a>  ggspatial<span class="sc">::</span><span class="fu">annotation_north_arrow</span>(</span>
+<span id="cb299-17"><a href="quanti1.html#cb299-17" tabindex="-1"></a>    <span class="at">location =</span> <span class="st">&quot;tr&quot;</span>, <span class="at">which_north =</span> <span class="st">&quot;true&quot;</span>,</span>
+<span id="cb299-18"><a href="quanti1.html#cb299-18" tabindex="-1"></a>    <span class="at">pad_x =</span> <span class="fu">unit</span>(<span class="fl">0.4</span>, <span class="st">&quot;in&quot;</span>), <span class="at">pad_y =</span> <span class="fu">unit</span>(<span class="fl">0.4</span>, <span class="st">&quot;in&quot;</span>),</span>
+<span id="cb299-19"><a href="quanti1.html#cb299-19" tabindex="-1"></a>    <span class="at">style =</span> ggspatial<span class="sc">::</span><span class="fu">north_arrow_nautical</span>(</span>
+<span id="cb299-20"><a href="quanti1.html#cb299-20" tabindex="-1"></a>      <span class="at">fill =</span> <span class="fu">c</span>(<span class="st">&quot;grey40&quot;</span>, <span class="st">&quot;white&quot;</span>),</span>
+<span id="cb299-21"><a href="quanti1.html#cb299-21" tabindex="-1"></a>      <span class="at">line_col =</span> <span class="st">&quot;grey20&quot;</span>,</span>
+<span id="cb299-22"><a href="quanti1.html#cb299-22" tabindex="-1"></a>      <span class="at">text_family =</span> <span class="st">&quot;ArcherPro Book&quot;</span></span>
+<span id="cb299-23"><a href="quanti1.html#cb299-23" tabindex="-1"></a>    )) </span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:plot-pop-seta"></span>
+<img src="bookdownproj_files/figure-html/plot-pop-seta-1.png" alt="Com a seta do Norte" width="672" />
+<p class="caption">
+Figure 8.10: Com a seta do Norte
+</p>
+</div>
+<p>Para exportar o mapa pronto com extensão <strong>png</strong>, usaremos <strong>ggsave</strong>.</p>
+<div class="sourceCode" id="cb300"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb300-1"><a href="quanti1.html#cb300-1" tabindex="-1"></a><span class="co">#para salvar o arquivo com extensao .png</span></span>
+<span id="cb300-2"><a href="quanti1.html#cb300-2" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="st">&quot;populacaoSP.png&quot;</span>, <span class="at">width =</span> <span class="dv">8</span>, <span class="at">height =</span> <span class="dv">8</span>, <span class="at">dpi =</span> <span class="dv">300</span>)</span></code></pre></div>
+</div>
+<div id="referências-sugeridas-1" class="section level2 hasAnchor" number="8.4">
+<h2><span class="header-section-number">8.4</span> Referências sugeridas<a href="quanti1.html#referências-sugeridas-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p><strong>Using ggplot to plot pie charts on a geographical map</strong> - <a href="http://www.spectdata.com/index.php/2018/10/25/how-to-use-ggplot-to-plot-pie-charts-on-a-map/" class="uri">http://www.spectdata.com/index.php/2018/10/25/how-to-use-ggplot-to-plot-pie-charts-on-a-map/</a></p>
+<p><strong>NEW VERSION OF CARTOGRAPHY</strong> (outro pacote do R dedicado à Cartografia Temática)
+<a href="https://rgeomatic.hypotheses.org/category/cartography" class="uri">https://rgeomatic.hypotheses.org/category/cartography</a></p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="quali2.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="quanti2.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/ligiaviz/RCartoTematica/edit/main/08-fig-geom.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": "https://github.com/ligiaviz/RCartoTematica/blob/main/08-fig-geom.Rmd",
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

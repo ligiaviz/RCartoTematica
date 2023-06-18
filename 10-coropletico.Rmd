@@ -1,0 +1,504 @@
+# Dados quantitativos relativos: mapa coroplético {#quanti3}
+
+Vimos na Figura \@ref(fig:tipos-dados) que podemos classificar os dados em qualitativos e quantitativos. Sendo um dado quantitativo, devemos classificá-se como absoluto ou relativo. As representações por figuras geométricas proporcionais e por densidade de pontos, vistas nos itens anteriores, tratavam de valores absolutos ou contagens. Quando os dados se referem a índices, taxas, porcentagens, densidades, ou seja, qualquer resultado de uma divisão, são classificados como **relativos**. O conceito envolvido neste tipo de dado não é o de **proporcionalidade** (como nos dados absolutos), mas o de **ordem**. A transcrição gráfica da ordem se faz pelas variáveis visuais *valor*, *cor ordenada* ou *granulação ordenada*. Esta representação é a **coroplética**, a mais frequentemente utilizada em Cartografia Temática.
+Utilizaremos como exemplos três indicadores na escala intraurbana da Região Metropolitana de São Paulo (RMSP), calculados para as Unidades de Desenvolvimento Humano (UDHs). Com base em dados provenientes  de  diversas fontes, tais como,  Ministério  da Saúde  (DATASUS/SIM,  SINASC,  SIH/SUS),  Ministério  da  Educação  (Censos  Escolares),  MapBiomas,  Ministério  da  Cidadania  (CadÚnico,  Bolsa  Família  e  BPC),  Ministério  da  Economia  (RAIS), Tribunal Superior Eleitoral,  Ministério do Desenvolvimento Regional (SNIS) e IBGE (Contas Nacionais), o PNUD, a Fundação João Pinheiro e o Instituto de Pesquisa Econômica Aplicada (IPEA) desenvolveram o [Atlas do Desenvolvimento Humano no Brasil](http://www.atlasbrasil.org.br/), publicado em 2013. Foram criadas malhas de UDHs para as Regiões Metropolitanas (RMs) a partir do agrupamento de unidades com a maior homogeneidade interna possível. 
+
+Para a elaboração destes mapas precisaremos dos valores dos indicadores para cada UDH da RMSP. A base cartográfica será a malha de UDHs da RMSP disponível no site do Atlas Brasil.
+
+Para darmos início, vamos limpar a memória, verificar e definir o diretório de trabalho.
+
+```{r }
+#para limpar a memoria
+rm(list= ls())
+#para verificar o diretório de trabalho
+getwd()
+```
+
+```{r }
+#para ajustar a lingua para portugues usando a funcao
+Sys.setlocale(category = "LC_ALL", locale = "pt_BR.UTF-8")
+#para desativar a notação científica
+options(scipen = 999)
+```
+
+Vamos carregar os pacotes que serão utilizados.
+```{r warning=FALSE}
+library(R.utils)
+library(tidyverse)
+library(sf)
+library(ggplot2,warn.conflicts=FALSE)
+library(ggspatial)
+library(archive)
+library(readxl)
+library(gridExtra)
+library(classInt)
+library(tmap)
+library(RColorBrewer)
+```
+
+##Bancos de dados
+
+O arquivo shapefile das UDHs está disponível de forma compactada junto com os indicadores por RM no sítio do Atlas Brasil. Como em capítulos anteriores, faremos o download do arquivo zip após a identificação da url dos dados. Para baixar os dados, usaremos a função `download.file` do pacote **R.utils**.
+
+```{r }
+#se quiser identificar a url de um determinado conjunto de dados, faça o download do arquivo desejado manualmente e clique em Ctrl+J. O navegador mostrará o caminho completo, que poderá ser copiado. Para o download do arquivo com as UDHs da RMSP, use o comando a seguir. Use o nome do arquivo como arquivo de destino (destfile) 
+download.file(url = "https://dv69vw.dm.files.1drv.com/y4mGCIOeG89QN-sOTMEQ4X1lyzmraQiwh4LzSTYvcxb9rrvkkmW_Am300R8_-WB_hZ-qtfPffeEoJ0rRVFpUV95lvP-nOvxI1Q-5iQzqHAwPeWMy8uDZ1pBM918KVAmFUFWpfWRIcINlOg1T9ooCQcVE_Qg42gmf-zjrX6IfvtU2e3Ca6ADD8ZDXNpSSrnjroE8490cc8CK9AHk_OY3rQ8-Ow", destfile = "dados_sp.zip", mode="wb")
+```
+O arquivo "RM 63500 São Paulo - Base UDH 2000_2010.xlsx" contém os indicadores que usaremos para a elaboração dos mapas. 
+Vamos ler o arquivo xlsx e criar um objeto em R com o nome de "dadosUDH".
+```{r }
+#para ler o arquivo xlsx
+dadosUDH <- read_excel("RM 63500 São Paulo - Base UDH 2000_2010.xlsx")
+#para ver as 6 primeiras linhas de dadosUDH
+head(dadosUDH)
+```
+O arquivo xlsx que foi aberto tem 237 colunas, das quais 227 são indicadores criados para o Atlas Brasil.
+
+```{r }
+# Para ler o arquivo shapefile
+UDH <- st_read("RM_SaoPaulo_UDH_region.shp")
+```
+
+Para verificar o tipo de objeto, usamos `class` do pacote **R.utils**. Para olharmos as 6 primeiras linhas do objeto, usamos a função `head` do mesmo pacote.
+```{r }
+#para verificar o tipo de objeto
+class(UDH)
+#para vermos as 6 primeiras linhas
+head(UDH)
+```
+Vamos visualizar as UDHs usando `ggplot` do pacote **ggplot2**, definindo a geometria a partir de `geom_sf` com o contorno na cor preta e o preenchimento em laranja.
+
+```{r }
+ggplot()+
+  geom_sf(data = UDH, colour = "black", fill = "orange") #para plotar UDH
+```
+
+
+```{r }
+#para ver as colunas de UDH
+names(UDH)
+```
+
+Como nosso objetivo é fazer alguns mapas da RMSP, no arquivo **dadosUDH** vamos selecionar algumas colunas das variáveis que nos interessam: UDH_Atlas, NOME_MUN, P_SUPER, T_LUZ e IDHM. Temos sempre que manter a coluna de identificador que permitirá a união entre o shapefile e o banco de dados.  
+
+```{r }
+dados_RMSP <- dadosUDH %>%
+  select(UDH_Atlas, NOME_MUN, P_SUPER, T_LUZ, IDHM)
+head(dados_RMSP)
+```
+
+Como vimos, a coluna "UDH_Atlas" aparece como numérica "dbl"(double) e precisa ser convertida para caractere. Usamos a função a seguir.
+```{r }
+#para converter "dbl" para "chr"
+dados_RMSP <- dados_RMSP %>%
+  mutate(UDH_Atlas = as.character(UDH_Atlas))
+head(dados_RMSP)
+```
+Outro elemento importante é a grafia do nome da coluna que identifica cada UDH. Em **dados_RMSP**, a grafia da coluna é **UDH_Atlas**, enquanto no objeto **UDH**, a grafia é **UDH_ATLAS**. Embora o conteúdo seja o mesmo, a mistura entre caixa alta e caixa baixa nas letras, não permite a união entre a tabela e a geometria. Vamos, então, corrigir a grafia no objeto **dados_RMSP**.
+
+```{r }
+#para alterar o nome da coluna UDH_Atlas
+names(dados_RMSP) <- c('UDH_ATLAS', 'NOME_MUN', 'P_SUPER', 'T_LUZ', 'IDHM')
+#para verificar que a alteração foi feita
+names(dados_RMSP)
+```
+Com a tabela compatível com o shapefile, podemos uni-los. Vamos chamar o novo objeto de "udh_dados_rmsp" e usar a função `left_join`, indicando o campo de união (UDH_Atlas). Uniremos o data.frame "dados_RMSP" ao objeto "sf" (simple feature) "UDH". Então, tranformamos o novo objeto em classe "sf" com a função `st_as_sf`.
+
+```{r }
+#para unir o arquivo shapefile com o dataframe
+udh_dados_rmsp <- UDH %>%
+  left_join(dados_RMSP, by = "UDH_ATLAS") %>% 
+  st_as_sf()
+#para conferir os nomes das colunas
+names(udh_dados_rmsp)
+```
+
+```{r }
+#conferindo o tipo de objeto obtido
+head(udh_dados_rmsp)
+```
+##Mapas coropléticos
+
+Existem decisões importantes quando vamos fazer um mapa coroplético:
+
+- o número de classes;
+
+- como fazer a discretização (dividir os intervalos das classes);
+
+- qual paleta de cores utilizar.
+
+Todos esses aspectos influirão na percepção visual do padrão espacial resultante. 
+Vamos olhar o resumo das variáveis em nosso banco de dados.
+
+```{r }
+#para resumir os dados quantitativos
+summary(udh_dados_rmsp)
+```
+Existem três variáveis que nos interessam para elaborar mapas coropléticos. O arquivo "A - DICIONÁRIO dos indicadores do Atlas.xlsx" apresenta a explicação de todas as variáveis do banco de dados. 
+A variável **P_SUPER** é o percentual das pessoas ocupadas com nível de escolaridade superior completo (Razão entre o número de pessoas de 18 anos ou mais de idade ocupadas e que já concluíram a graduação do ensino superior e o número total de pessoas ocupadas nessa faixa etária, multiplicada por 100). É importantíssimo que saibamos exatamente a definição das variáveis utilizadas para que possamos interpretar adequadamente os resultados obtidos. 
+A variável **T_LUZ** é o percentual da população que vive em domicílios com energia elétrica (Razão entre a população que vive em domicílios particulares permanentes com iluminação elétrica e a população total residente em domicílios particulares permanentes, multiplicada por 100. Considera-se iluminação proveniente ou não de uma rede geral, com ou sem medidor).
+A variável **IDHM** é o Índice de Desenvolvimento Humano Municipal (Média geométrica dos índices das dimensões Renda, Educação e Longevidade, com pesos iguais). A dimensão Educação é obtida através da média geométrica do subíndice de frequência escolar, com peso de 2/3, e do subíndice de escolaridade, com peso de 1/3. A dimensão Longevidade é obtida a partir do indicador Esperança de vida ao nascer, através da fórmula: [(valor observado do indicador) - (valor mínimo)] / [(valor máximo) - (valor mínimo)], onde os valores mínimo e máximo são 25 e 85 anos, respectivamente. A dimensão Renda é obtida a partir do indicador Renda per capita, através da fórmula: [ln (valor observado do indicador) - ln (valor mínimo)] / [ln (valor máximo) - ln (valor mínimo)], onde os valores mínimo e máximo são R$ 8,00 e R$ 4.033,00 (a preços de agosto de 2010). 
+
+Conhecendo as variáveis que vamos mapear, vamos para as definições necessárias para elaborar os mapas. Vamos começar pela definição do número de classes. Este aspecto afeta diretamente a capacidade de identificar as classes em um mapa. Um mapa pode ser do tipo "sem classes" ou do tipo "com classes". Os mapas sem classes atribuem uma tonalidade a cada valor do conjunto de dados. É muito interessante para termos ideia do padrão geral do mapa. No entanto, o leitor dificilmente conseguirá identificar o valor de cada tonalidade porque a legenda será apresentada em coluna única. Assim, os mapas divididos em classes são mais utilizados. Ao definir o número de classes, se utilizarmos poucas classes (menos de 4), podemos perder as situações intermediárias do fenômeno representado, resultando em grande simplificação. Se usarmos mais de 9 classes, por outro lado, o leitor terá dificuldade de identificar as tonalidades em uma escala monocromática. O intervalo entre 4 e 7 classes tem sido apontado como o mais indicado. Podemos utilizar a fórmula de Sturges para orientação sobre o número de classes (*k*). Na fórmula a seguir, *n* significa o número de unidades geográficas (no nosso caso, o número de UDHs).
+
+
+$$
+k = 1 + 3,3*log (n)
+$$
+Como vimos com a função `summary`, o shapefile de udh_dados_rmsp tem 5716 UDHs. Aplicando a fórmula de Sturges, teríamos 13,4 classes. De acordo com a fórmula, com 70 unidades geográficas já atingiríamos o limite de 7 classes. Assim, como regra geral, acima de 70 unidades, podemos usar 7 classes, para uma paleta monocromática. Se a paleta tiver duas cores opostas (e.g., azul e vermelho), poderíamos ter 7 classes em tons de azul e sete em tons de vermelho. Em paletas com cores ordenadas, um número levemente mais alto de classes seria aceitável. Neste caso, a experiência de quem faz o mapa ajudaria na decisão. 
+
+A segunda decisão necessária diz respeito a como dividir os intervalos das classes. Para isso, precisaremos recorrer a conceitos muito básicos de estatística descritiva. Na prática, precisamos avaliar a distribuição dos dados da variável de interesse. A melhor forma de fazer isso é examinarmos o histograma da variável. Um histograma mostra a frequência dos intervalos dos dados e permite avaliar se a distribuição se assemelha a uma distribuição normal ou Gaussiana. A distribuição normal é uma curva simétrica em torno do seu ponto médio, apresentando um formato de sino. Quando os dados apresentam simetria, a forma de discretização afetará pouco o padrão espacial do mapa. No entanto, quando há grande assimetria nos dados é necessário um cuidado maior para que a representação cartográfica comunique o padrão espacial do fenômeno de forma mais adequada. 
+Vamos, então, examinar os histogramas das variáveis IDHM, P_SUPER e T_LUZ. 
+Com o pacote **ggplot2** vamos criar um objeto **histo_idhm**. Inicialmente, usamos a função `ggplot`, indicando o nome do objeto *sf* e da variável de interesse (IDHM). Adicionamos a função `geom_histogram`, definindo o número de classes para o histograma, que não precisa ser o número de classes do mapa (neste caso usamos bins=12). Definimos o eixo y como "density" porque é requerido para desenharmos a curva normal. Escolhemos a cor de contorno das colunas como "blue" e a cor de preenchimento como "lightblue". Como vimos com a função `summary`, existem 131 UDHs com valores faltantes (NAs). Precisamos desconsiderar estas unidades usando `na.rm = T`. A função `geom_vline` desenha uma linha vertical sobre o histograma. Vamos usá-la para posicionar o valor da média do conjunto de dados (*mean*). Definimos a espessura da linha (size=1), sua cor (*orange*, laranja) e o tipo de traçado (*dashed*, pontilhado). Para o desenho da curva normal sobre o histograma, precisamos da função `stat_function`. Definimos o tipo de função (fun = dnorm), a cor da linha (colour= "red"), sua espessura (size = 1) e os argumentos, indicando a média, sem os valores faltantes (mean e na.rm = T) e o desvio padrão (*standard deviation* = sd), indicando (sd e na.rm = T). O mesmo código será usado para as variáveis P_SUPER e T_LUZ, apenas mudando os nomes das variáveis.
+
+```{r }
+histo_idhm <- ggplot(udh_dados_rmsp, aes(x=IDHM))+ # Draw histogram with density
+  geom_histogram(bins=12, aes(y = after_stat(density)), 
+                              colour = "blue", 
+                              fill="lightblue", 
+                              na.rm = T)+
+  geom_vline(xintercept = mean(udh_dados_rmsp$IDHM, na.rm = T), 
+             linewidth = 1, 
+             colour = "orange", 
+             linetype = "dashed")+
+  stat_function(fun = dnorm, 
+                colour = "red", 
+                size = 1,
+                args = list(mean = mean(udh_dados_rmsp$IDHM, na.rm = T),
+                            sd = sd(udh_dados_rmsp$IDHM, na.rm = T))
+  )
+```
+
+```{r }
+histo_luz <- ggplot(udh_dados_rmsp, aes(x=T_LUZ)) + # Draw histogram with density
+  geom_histogram(bins=30, aes(y = after_stat(density)), 
+                              colour = "blue",
+                              fill="lightblue", 
+                              na.rm = T)+
+  geom_vline(xintercept = mean(udh_dados_rmsp$T_LUZ, na.rm = T), 
+             linewidth = 1, 
+             colour = "orange", 
+             linetype = "dashed")+
+  stat_function(fun = dnorm, colour = "red", 
+                size = 1,
+                args = list(mean = mean(udh_dados_rmsp$T_LUZ, na.rm = T),
+                            sd = sd(udh_dados_rmsp$T_LUZ, na.rm = T))
+  )
+```
+
+```{r }
+histo_sup <- ggplot(udh_dados_rmsp, aes(x=P_SUPER)) +     # Draw histogram with density
+  geom_histogram(bins=30, aes(y = after_stat(density)), 
+                              colour = "blue",
+                              fill="lightblue", 
+                              na.rm = T)+
+  geom_vline(xintercept = mean(udh_dados_rmsp$P_SUPER, na.rm = T),
+             linewidth = 1, 
+             colour = "orange", 
+             linetype = "dashed")+
+  stat_function(fun = dnorm, colour = "red", 
+                size = 1,
+                args = list(mean = mean(udh_dados_rmsp$P_SUPER, na.rm = T),
+                            sd = sd(udh_dados_rmsp$P_SUPER, na.rm = T))
+                )
+```
+
+Para plotar os três histogramas, vamos usar o pacote **gridExtra** e a função `grid.arrange`. Para esta função, listamos os três objetos, indicamos que sejam organizados em 3 colunas (ncol=3) e definimos a altura dos gráficos para 5 cm.
+
+```{r fig.width = 10, fig.height = 3}
+#para plotar os 3 histogramas em uma única coluna
+grid.arrange(histo_idhm, 
+             histo_luz, 
+             histo_sup, 
+             ncol=3, 
+             heights = unit(c(5, 1), c('cm', 'null'))
+)
+```
+
+Os histogramas permitem verificar que IDHM tem uma distribuição muito próxima à distribuição normal, com simetria nítida. P_SUPER e T_LUZ apresentam fortes assimetrias. A maior parte dos valores de T_LUZ se encontram entre 99 e 100%. P_SUPER tem a maior parte das UDHs com valores abaixo da linha tracejada laranja que representa a média do conjunto de dados.
+
+### O número de classes
+
+Conhecendo as variáveis que vamos mapear, precisamos definir o número de classes. Este aspecto afeta diretamente a capacidade de identificar as classes em um mapa. Um mapa pode ser do tipo "sem classes" ou do tipo "com classes". Os mapas sem classes atribuem uma tonalidade a cada valor do conjunto de dados. É muito interessante para termos ideia do padrão geral do mapa. No entanto, o leitor dificilmente conseguirá identificar o valor de cada tonalidade porque a legenda será apresentada em coluna única. Assim, os mapas divididos em classes são mais utilizados. 
+
+Ao definir o número de classes, se utilizarmos poucas classes (menos de 4), podemos perder as situações intermediárias do fenômeno representado, resultando em grande simplificação. Se usarmos mais de 9 classes, por outro lado, o leitor terá dificuldade de identificar as tonalidades em uma escala monocromática. O intervalo entre 4 e 7 classes tem sido apontado como o mais indicado. Podemos utilizar a fórmula de Sturges para orientação sobre o número de classes (*k*) (CAUVIN et al., 2008). Na fórmula a seguir, *n* significa o número de unidades geográficas (no nosso caso, o número de UDHs).
+
+
+$$
+k = 1 + 3,3*log (n)
+$$
+Como vimos com a função `summary`, o shapefile de udh_dados_rmsp tem 5716 UDHs. Aplicando a fórmula de Sturges, teríamos 13,4 classes. De acordo com a fórmula, com 70 unidades geográficas já atingiríamos o limite de 7 classes. Assim, como regra geral, acima de 70 unidades, podemos usar 7 classes, para uma paleta monocromática. Se a paleta tiver duas cores opostas (e.g., azul e vermelho), poderíamos ter 7 classes em tons de azul e sete em tons de vermelho. Em paletas com cores ordenadas, de 4 a 7 classes é o recomendável. Neste caso, a experiência de quem faz o mapa ajudaria na decisão.
+
+Vamos elaborar os mapas sem classes das três variáveis. Para corrigir a geometria do shapefile, vamos usar o comando a seguir, tornando-a válida.
+
+```{r }
+#para tornar válida a geometria de udh_dados_rmsp
+udh_dados_rmsp <- sf::st_make_valid(udh_dados_rmsp)
+```
+
+Para os mapas coropléticos, vamos usar o pacote **tmap**, cuja documentação completa pode ser encontrada [aqui](https://cran.r-project.org/web/packages/tmap/tmap.pdf). Este pacote oferece uma abordagem flexível e fácil para criar mapas temáticos. Usa a gramática dos gráficos em camadas com sintaxe parecida com **ggplot2**.
+
+Vamos usar a função **tm_shape** para indicar o nome do arquivo shapefile que contém os dados. Com o sinal + adicionamos **tm_fill** para indicar o nome da variável, o título que aparecerá na legenda e a forma de dividir os intervalos das classes. Nesta primeira visualização vamos fazer os três mapas do tipo "sem classes", com legenda contínua. Em seguida, usamos **tmap_arrange** para plotarmos os três mapas em uma única linha, definindo a altura dos mapas.
+
+```{r fig.width = 10, fig.height = 4}
+#para definir o modo estático
+tmap_mode(mode = "plot")
+
+map_idhm <- tm_shape(udh_dados_rmsp) + #indica o nome do arquivo shapefile que será mapeado
+  tm_fill(col = "IDHM",title = "IDHM",style = "cont") + #indica a variável e escala contínua
+  tm_scale_bar()                                        #adiciona a barra de escala
+
+map_psuper <- tm_shape(udh_dados_rmsp) + #indica o nome do arquivo shapefile que será mapeado
+  tm_fill(col = "P_SUPER",title = "% nível superior",style = "cont") + #indica a variável e escala contínua
+  tm_scale_bar()          #adiciona a barra de escala
+
+map_tluz <- tm_shape(udh_dados_rmsp) + #indica o nome do arquivo shapefile que será mapeado
+  tm_fill(col = "T_LUZ",title = "% energia",style = "cont") + #indica a variável e escala contínua
+  tm_scale_bar()       #adiciona a barra de escala
+
+#para organizar os 3 mapas em uma linha
+tmap_arrange(map_idhm,map_psuper,map_tluz,nrow=1, heights = unit(c(8, 1), c('cm', 'null'))) 
+```
+Os mapas sem classes serão úteis para avaliar os mapas com classes que faremos.
+
+### Os intervalos de classes
+
+Existem diversas medidas estatísticas que podem ser usadas para definir os intervalos das classes de um mapa. Em **tmap**, o usuário pode definir os intervalos especificando o algoritmo desejado. Se não for especificado o algoritmo, será definido automaticamente `style = "pretty"` (estilo que arredonda os limites dos intervalos em números inteiros e os distribui de forma uniforme). Para escalas discretas, as opções de divisão de classes são:
+
+`style = "cat"`: para dados categóricos, atribui uma cor para cada categoria;
+
+`style = "fixed"`: atribui intervalos fixos definidos pelo usuário;
+
+`style = "sd"`: define intervalos a partir do valor do desvio-padrão. A escala de cores mais indicada é a escala divergente (cores opostas nas extremidades). O valor da média fica no meio da escala e as classes abaixo ou acima da média são definidas com base no desvio-padrão dos dados. Pode apresentar um número de classes diferente de *n*, já que depende do valor do desvio-padrão;
+
+`style = "equal"`: define intervalos iguais dividindo a diferença entre o maior e o menor valor pelo número de classes escolhido;
+
+`style = "quantile"`: Divide a variável em quantis de forma que em cada intervalo haja o mesmo número de observações;
+
+As outras opções utilizam algoritmos específicos que podem ser consultadas com o símbolo `?` antes de seu nome (e.g., `?dpih`) e incluem "kmeans", "hclust", "bclust", "fisher", "jenks", "dpih", "headtails" e "log10_pretty". 
+Os gradientes contínuos (para mapas sem classes) são: "cont", "order" e "log10".
+Vamos comparar os mapas usando as seguintes escalas: "equal", "quantile", "jenks" e "sd", por serem as mais utilizadas. 
+
+```{r fig.width = 7, fig.height = 6.5}
+idhm_cont <- tm_shape(udh_dados_rmsp) + #indica o nome do arquivo shapefile que será mapeado
+  tm_fill(col = "IDHM",title = "IDHM",style = "cont") + #indica a variável e escala contínua
+  tm_layout(title = "Cont", title.size = 0.6, legend.title.size = 0.5, legend.text.size = 0.5, legend.outside = TRUE)+ #define o layout
+  tm_scale_bar()                              #adiciona a barra de escala
+
+idhm_eq <- tm_shape(udh_dados_rmsp) + #indica o nome do arquivo shapefile que será mapeado
+  tm_fill(col = "IDHM",title = "IDHM",n = 7, style = "equal", legend.hist = TRUE) +
+  tm_layout(title = "Equal", title.size = 0.6, legend.title.size = 0.5, legend.text.size = 0.5, legend.outside = TRUE)+
+  tm_scale_bar()
+
+idhm_qt <- tm_shape(udh_dados_rmsp) + 
+  tm_fill(col = "IDHM",title = "IDHM",n = 7, style = "quantile", legend.hist = TRUE) +
+  tm_layout(title = "Quantile", title.size = 0.6, legend.title.size = 0.5, legend.text.size = 0.5, legend.outside = TRUE)+
+  tm_scale_bar()
+
+idhm_jk <- tm_shape(udh_dados_rmsp) + 
+  tm_fill(col = "IDHM",title = "IDHM",n = 7, style = "jenks", legend.hist = TRUE) +
+  tm_layout(title = "Jenks", title.size = 0.6, legend.title.size = 0.5, legend.text.size = 0.5, legend.outside = TRUE)+
+  tm_scale_bar()
+
+idhm_sd <- tm_shape(udh_dados_rmsp) + 
+  tm_fill(col = "IDHM",title = "IDHM",n = 7, style = "sd", palette = "RdYlGn", legend.hist = TRUE) +
+  tm_layout(title = "Standard \ndeviation", title.size = 0.6, legend.title.size = 0.5, legend.text.size = 0.5, legend.outside = TRUE)+
+  tm_scale_bar()
+
+tmap_arrange(idhm_cont, idhm_eq,idhm_qt,idhm_jk,idhm_sd, nrow=3, ncol = 2, heights = unit(c(5, 5), c('cm', 'cm'))) #organiza a apresentação dos mapas
+```
+
+Os diferentes intervalos adotados para os mapas do IDHM nos mostram que quando o histograma da variável apresenta distribuição próxima da normal, a divisão por jenks ou a divisão por desvio-padrão fornecem padrões bem semelhantes ao do mapa sem classes.
+
+Siga o código anterior e olhe os mapas para P_SUPER e T_LUZ.
+
+Os mapas de P_SUPER mostram que as divisões segundo classes iguais ("equal") e segundo desvio-padrão ("standard deviation") são as que mais se aproximam do mapa com a escala contínua. A divisão por quintis ("quantile"), por outro lado, leva a uma compreensão muito diferente do fenômeno mapeado, enfatizando a classe mais escura. O intervalo desta classe inclui valores que vão de 27,52 a 77,07%, levando a um padrão geográfico que comunica que o percentual de pessoas ocupadas com nível superior é alto em quase toda RM, o que não é verdade. Este resultado se deve exclusivamente ao tipo de divisão entre as classes. É por isso que a distribuição dos dados precisa ser analisada e um mapa sem classes pode auxiliar na escolha do corte mais apropriado para o conjunto de dados.
+
+E como é o acesso à energia elétrica na maior Região Metropolitana do Brasil? Vimos nos histogramas que estes dados também são muito assimétricos. Elabore os mapas para T_LUZ para avaliar a divisão mais adequada.
+
+As divisões pelo algoritmo de Jenks e segundo desvio-padrão são as que mais se aproximam do mapa sem classes. Os mapas mostram que o valor mais baixo é 95,1%. O mapa com intervalos do algoritmo de Jenks é o que separa melhor os valores mais altos (99,9 a 100%), permitindo a identificação de diferenças sutis.
+
+O pacote **classInt** apresenta a função `jenks.test` que avalia a acurácia dos intervalos criados segundo os diferentes algoritmos. Antes de criarmos objetos do tipo *classIntervals*, vamos filtrar os NAs das variáveis de interesse.
+
+```{r }
+#para selecionar apenas dados que não são NAs
+idhm.final <- udh_dados_rmsp %>%
+  filter(!(is.na(IDHM)))
+#para ver as dimensões do objeto filtrado
+dim(idhm.final)
+#para ver a classe do objeto
+class(idhm.final)
+str(idhm.final)
+```
+Vamos calcular objetos do tipo classInt para avaliar a acurácia dos intervalos para cada tipo de discretização. Existem 2 índices: índice de Jenks e o Tabular Accuracy Index (TAI). Antes, vamos criar paletas de cores: **pal1** e **opar**.
+
+```{r }
+pal1 <- c("wheat1", "red3")
+opar <- par(mfrow=c(2,3))
+```
+Vamos criar objetos do tipo classIntervals para IDHM para cada estilo disponível.
+```{r }
+idhm_fixed <- classIntervals(idhm.final$IDHM, n=7, style="fixed",
+ fixedBreaks=c(0.4, 0.5, 0.55, 0.6, 0.7, 0.8, 0.9, 0.965))
+idhm_sd <- classIntervals(idhm.final$IDHM, n=7, style="sd")
+idhm_equal <- classIntervals(idhm.final$IDHM, n=7, style="equal")
+idhm_quant <- classIntervals(idhm.final$IDHM, n=7, style="quantile")
+idhm_kmeans <- classIntervals(idhm.final$IDHM, n=7, style="kmeans")
+idhm_pretty <- classIntervals(idhm.final$IDHM, n=7, style="pretty")
+idhm_hclust <- classIntervals(idhm.final$IDHM, n=7, style="hclust")
+idhm_bclust <- classIntervals(idhm.final$IDHM, n=7, style="bclust")
+idhm_fisher <- classIntervals(idhm.final$IDHM, n=7, style="fisher")
+idhm_jenks <- classIntervals(idhm.final$IDHM, n=7, style="jenks")
+idhm_dpih <- classIntervals(idhm.final$IDHM, n=7, style="dpih")
+idhm_headtails <- classIntervals(idhm.final$IDHM, n=7, style="headtails")
+idhm_maximum <- classIntervals(idhm.final$IDHM, n=7, style="maximum")
+```
+Vamos, então, comparar os índices dos diferentes estilos de discretização. Quanto mais próximos de 1 para *Goodness of Fit* e para *Tabular accuracy*, maior a acurácia do estilo.
+
+```{r } 
+print(jenks.tests(idhm_fixed))
+print(jenks.tests(idhm_sd))
+print(jenks.tests(idhm_equal))
+print(jenks.tests(idhm_quant))
+print(jenks.tests(idhm_kmeans))
+print(jenks.tests(idhm_pretty))
+print(jenks.tests(idhm_hclust))
+print(jenks.tests(idhm_bclust))
+print(jenks.tests(idhm_fisher))
+print(jenks.tests(idhm_jenks))
+print(jenks.tests(idhm_dpih))
+print(jenks.tests(idhm_headtails))
+print(jenks.tests(idhm_maximum))
+```
+Os resultados mostram que o estilo *dpih* apresenta a melhor acurácia (GOF de 0.998 e TAI de 0.954), com 29 classes. Se quisermos ficar com apenas 7 classes, os estilos com valores mais altos foram *jenks* e *fisher*.
+
+Crie classIntervals com os diferentes estilos para P_SUPER e T_LUZ. Em seguida, rode o `jenks.test` para cada variável.
+
+Novamente, o estilo *dpih* apresenta os melhores valores para P_SUPER, porém, neste caso, propondo 149 classes. Se quisermos ficar com 7 classes, o estilo *kmeans* apresenta os melhores resultados (GOF de 0.9760 e TAI de 0,852).
+
+Os resultados para T_LUZ mostram que os estilos *jenks* e *fisher* apresentam GOF mais elevado (0,9649) e TAI de 0,824. O algoritmo de Jenks tinha se mostrado bem semelhante ao mapa sem classes, como visto anteriormente.
+
+### A escala de cores {#escalacores}
+
+Tendo decidido o número de classes e a forma de discretização para cada mapa que desejamos elaborar, resta decidir a paleta de cores.
+O pacote **tmap** oferece diversas paletas para até 20 classes. As paletas são agrupadas em: **categóricas** (para dados qualitativos), **sequenciais** (para dados quantitativos) e **divergentes** (para dados quantitativos com escala com duas cores opostas). Além destes tipos de paletas desenvolvidas por Cynthia Brewer (pacote **RColorBrewer**), ainda há o pacote **viridis** com cinco paletas sequenciais. Observe que as paletas deste pacote começam com a tonalidade mais escura e terminam com a mais clara. Para atender a um público com anomalia na visão das cores, está disponível um simulador para Deuteranopia, Protanopia e Tritanopia. O site https://colorbrewer2.org/ apresenta as paletas do pacote. 
+
+## Layout do mapa coroplético de IDHM da RMSP
+
+Vamos elaborar o mapa do IDHM da RMSP usando a melhor discretização indicada  pelos intervalos definidos usando (`style = "fisher"`). A paleta de cores deve ser do tipo sequencial. Vamos escolher a paleta de laranjas (get_brewer_pal("Oranges").
+
+Usaremos o banco de dados de população do Portal da Fundação SEADE que contém os polígonos de todos os municípios do estado. Para baixar o arquivo compactado, usamos a linha de código a seguir. O arquivo shapefile encontra-se em: https://repositorio.seade.gov.br/dataset/9bb4f8ef-f1a4-4734-92a2-814cfc8d0974/resource/09ba3695-a6a1-44ab-9916-fd1a8aa1c980/download/populacao.zip. Se você já fez o mapa das figuras geométricas da população do estado de São Paulo, já tem este arquivo em seu diretório.
+
+Vamos criar o objeto **pop** usando a função para leitura de arquivo do tipo shapefile. 
+```{r }
+#para abrir o arquivo shapefile do estado de São Paulo 
+pop <- st_read("./Populacao.shp")
+```
+Podemos ver as colunas de **pop** com a função **names(pop)**.
+```{r }
+names(pop)
+```
+
+O objeto **pop** está na projeção cartográfica SIRGAS 2000. Vamos passá-lo para WGS84 pseudo Mercator (CRS = 3857) para ficar compatível com idhm.final.
+
+```{r }
+#para transformar para a projeção WGS84 pseudo Mercator (crs=3857)
+pop_wgs84 <- st_transform(pop, crs= 3857)
+```
+
+Vamos criar um objeto "idhm.final.fisher" que será o mapa do IDHM na RMSP. Primeiro vamos adicionar a camada dos polígonos dos municípios do estado de São Paulo (pop_wgs84), indicando que a extensão deverá corresponder à camada "idhm.final". Para que ela fique com os polígonos em cinza, usaremos tm_fill(). A segunda camada a ser adicionada é a que contém os dados de IDHM (idhm.final). A camada será preenchida com o valor do IDHM (tm_fill(col = "IDHM")). A discretização será feita usando o estilo "fisher", paleta de cores laranja e adicionaremos o histograma da legenda. O layout conterá o título do mapa e o fundo do mapa será azul bem claro (aliceblue). A terceira camada será novamente a camada dos polígonos dos municípios, desta vez, sem preenchimento. As bordas dos municípios será em branco (white), com largura igual a 1. Adicionaremos a fonte dos dados e os créditos de elaboração do mapa. A barra de escala será adicionada com um tamanho relativo de 20% do tamanho do mapa (width = 0.2). A posição da barra de escala é definida considerando-se que o canto inferior esquerdo corresponde à posição (0,0) e o canto superior direito é (1,1). Assim, o começo da escala estará na posição 0.71 no sentido horizontal e a 0.13, no vertical. Por último, pedimos para visualizar o mapa  "idhm.final.fisher" e o salvamos com a extensão png. Para isso usamos a função `tmap_save`. O arquivo será salvo com resolução de 300 dpi.
+
+```{r fig.width = 10, fig.height = 5}
+idhm.final.fisher <- tm_shape(pop_wgs84, bbox = idhm.final)+
+  tm_fill()+
+  tm_shape(idhm.final) + #indica o nome do arquivo shapefile que será mapeado
+  tm_fill(col = "IDHM",title = "IDHM", style = "fisher", palette = "Oranges", legend.hist = TRUE) +
+  tm_layout(title = "IDHM na RMSP", title.size = 0.8, legend.title.size = 0.5, legend.text.size = 0.5, legend.outside = TRUE, bg.color = "aliceblue")+
+  tm_shape(pop_wgs84)+
+  tm_borders(col = "white", lwd = 1)+
+  tm_credits("Fonte: http://www.atlasbrasil.org.br\n 2022 Ligiaviz", position = c("RIGHT", "BOTTOM"))+
+  tm_scale_bar(width = 0.2, position = c("0.71", "0.13"))
+#para visualizar o mapa
+idhm.final.fisher
+#para salvar o mapa como arquivo png
+tmap_save(idhm.final.fisher, "idhm.png")
+
+```
+Embora os mapas coropléticos sejam os mais amplamente utilizados, eles presumem que haja homogeneidade interna das unidades geográficas, quando isso raramente acontece. Desta forma, o refinamento da representação coroplética pode ser obtido por meio de mapas dasimétricos (PETROV, 2008; BARROZO et al., 2015).
+
+# Mapa coroplético interativo {#quanti4}
+
+A visualização interativa de mapas por meio da Internet desloca o leitor de uma posição passiva para a capacidade de decidir o que quer ver e em qual escala. 
+
+O pacote **tmap** possui duas opções de visualização do mapa: no modo **plot**, a visualização é estática; no modo **view** a visualização é interativa. No mapa de IDHM na Região Metropolitana de São Paulo, usamos o modo **plot**.
+
+Vamos visualizar o mesmo mapa com o modo **view**.
+Algumas diferenças em relação ao modo **plot** precisam ser destacadas:
+
+- o mapa é sempre projetado na Projeção de Mercator para Web, que é padrão para os mapas interativos na Web. Portanto, não há equivalência de áreas;
+
+- Não é possível plotar diversos mapas pequenos de forma múltipla;
+
+- A estética da legenda não pode ser ajustada em relação a tamanho (tamanho do símbolo e espessura da linha);
+
+- Os rótulos com texto ainda não são suportados;
+
+- As opções de layout ajustadas com **tm_layout** em relação ao formato do mapa não são usadas. Entretanto, as opções de estilo ainda se aplicam. 
+
+```{r }
+tmap_mode(mode = "view")
+```
+O mapa interativo pode ser visualizado com o código a seguir:
+
+```{r eval = FALSE, fig.width = 5, fig.height = 5}
+idhm.final.fisher <- tm_shape(pop_wgs84, bbox = idhm.final)+
+  tm_fill()+
+  tm_shape(idhm.final) + #indica o nome do arquivo shapefile que será mapeado
+  tm_fill(col = "IDHM",title = "IDHM", style = "fisher", palette = "Oranges", legend.hist = TRUE) +
+  tm_layout(title = "IDHM na RMSP", title.size = 0.8, legend.title.size = 0.5, legend.text.size = 0.5, legend.outside = TRUE, bg.color = "aliceblue")+
+  tm_shape(pop_wgs84)+
+  tm_borders(col = "white", lwd = 1)+
+  tm_credits("Fonte: http://www.atlasbrasil.org.br\n 2022 @Ligiaviz", position = c("RIGHT", "BOTTOM"))+
+  tm_scale_bar(width = 0.2, position = c("0.71", "0.13"))
+#para visualizar o mapa
+idhm.final.fisher
+```
+
+## Indo além: Proposta de exercício
+
+No objeto "dadosUDH", existe a variável "ESPVIDA", que significa "Esperança de vida ao nascer". Faça o mapa coroplético deste indicador seguindo os passos propostos neste capítulo.
+Para saber mais sobre o **tmap**, consulte a [documentação](https://cran.r-project.org/web/packages/tmap/tmap.pdf) e [Lovelace et al.(em andamento)](https://geocompr.robinlovelace.net/).
+
+
+## Referências sugeridas
+
+ARMSTRONG, M. P., XIAO, N., BENNETT, D. A., 2003. Using genetic algorithms to create multicriteria class intervals for choropleth maps. **Annals, Association of American Geographers**, 93 (3), 595-623
+
+BARROZO, L.V., PÉREZ-MACHADO, R.P., SMALL, C. CABRAL-MIRANDA, W. , 2015. Changing spatial perception: dasymetric mapping to improve analysis of health outcomes in a megacity. **Journal of Maps**, DOI:
+10.1080/17445647.2015.1101403.
+
+CAUVIN, C., ESCOBAR, F., SERRADJ, A., 2008. **Cartographie thématique 3**: méthodes quantitatives et transformations attributaires. Paris: Lavoisier, 147p.
+
+JENKS, G. F., CASPALL, F. C., 1971. Error on choroplethic maps: definition, measurement, reduction. **Annals, Association of American Geographers**, 61 (2), 217--244.
+
+LOVELACE, R., NOWOSAD, J., & MUENCHOW, J. (in progress). **Geocomputation with R**. Available online via https://geocompr.robinlovelace.net/
+
+MARTINELLI, M. **Representações gráficas da geografia**: os mapas temáticos. 1999. São Paulo: FFLCH/USP, Tese (Livre-Docência).
+
+PETROV, A. 2008. Setting the Record Straight: On the Russian Origins of Dasymetric Mapping. **Cartographica: The International Journal for Geographic Information and Geovisualization**, 43(2):133-136. 
+
+POIDEVIN, D. 1999. **La carte**: moyen d'action. Guide pratique pour la conception & la réalisation de cartes. Paris: Ellipses. 200p.
+
+TENNEKES, M. 2018. tmap: Thematic Maps in R, **Journal of Statistical Software**, 84(6), 1-39, doi: 10.18637/jss.v084.i06
+
+**Elegant and informative maps with tmap**
+https://r-tmap.github.io/tmap-book/index.html
+
+**Hands-On Spatial Data Science with R**
+https://spatialanalysis.github.io/handsonspatialdata/rate-mapping.html
+
+**Let’s Make a Map in R** (mapas coropléticos com ggplot2)
+https://medium.com/@traffordDataLab/lets-make-a-map-in-r-7bd1d9366098 
+
+**R jenks.tests**
+http://www.endmemo.com/r/jenks.tests.php

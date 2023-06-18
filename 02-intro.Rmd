@@ -1,0 +1,52 @@
+# Introdução {#intro}
+
+## O programa R
+
+Na página do projeto **R** https://www.r-project.org/about.html você encontrará todos os detalhes sobre este programa incrível. O **R** pode ser definido como uma linguagem e ambiente para computação estatística e gráficos. O **R** teve origem na linguagem S desenvolvida nas décadas de 1970 e 1980 e inicialmente desenvolvido por Robert Gentleman e Ross Ihaka — também conhecido como “R & R” - do Departamento de Estatística da Universidade de Auckland, Austrália. A versão atual é resultado de esforço colaborativo com contribuição de pesquisadores de todo o mundo. Desde a metade de 1997 existe um grupo central, o **R Core Team**, com acesso à gravação da fonte **R**.
+
+O **R** disponibiliza grande variedade de técnicas gráficas, de análise estatística (modelagem linear e não linear, clássicos testes estatísticos, análise de séries temporais, classificação, agrupamento etc.) e de análise espacial. 
+
+Você deve estar se perguntando por quê um geógrafo precisa aprender **R** para fazer mapas se domina Sistemas de Informações Geográficas (SIGs) como QGIS e ArcGIS, entre outros. Uma das respostas seria a possibilidade de reprodutibilidade por meio de códigos facilmente aplicáveis por outros pesquisadores. Outra resposta seria a crescente necessidade de trabalhar com a paulatina disponibilidade de grandes quantidades de dados. Imagine se você quisesse reproduzir o mesmo mapa de precipitação para dados de cada um dos 30 dias de um mês. Seria muito mais fácil com algumas linhas de comando. Ainda, a possibilidade de fazer a ponte com programas SIGs como GRASS, QGIS, SAGA e gvSIG a partir do terminal do sistema por meio de *command-line interface (CLI)* (interface por linha de comando, em português). De acordo com o criador do QGIS, Gary Sherman, muitos usuários do QGIS perdem as vantagens da linha de comando por não saberem **R**.
+
+Além disso, deve-se destacar que o **R** é fantástico para análise espacial e permite a elaboração de mapas interativos para visualização na Web usando os pacotes **Leaflet** e **Shiny**.
+
+Se você ficou convencido(a), arregace as mangas e vamos começar.
+
+## Instalação do R e RStudio
+
+A interface do **R** é basicamente uma interface de comando de linha.
+
+O **RStudio** é um IDE (*Integrated Development Environment* - Ambiente de Desenvolvimento Integrado, em português). Em outras palavras, é um programa que roda o programa **R** e fornece uma interface com ferramentas auxiliares para escrever os códigos em **R** de forma mais amigável. Você pode trabalhar diretamente no **R** se preferir, mas o **RStudio** pode facilitar em muito a sua experiência com o **R**.
+
+Se você for usar **R** no sistema Windows, instale também o **RTools**, um conjunto de programas que são necessários para construir pacotes **R** a partir da fonte. 
+
+### Instalação do R para Windows
+
+1. Vá até https://cran.r-project.org/, clique em *‘Download R for Windows’*, então, clique em *‘base’*, e depois no link de *Download*.
+
+2. Depois que o *download* estiver completo, rode o instalador. Use as opções padrão, com uma exceção. Não escolha a pasta *arquivos de programas*. Prefira criar uma pasta **R** como subpasta do seu drive C.
+
+### Instalação do R para Mac
+
+1. Vá até https://cran.r-project.org/, clique em *‘Download R for (Mac) OS X’*, então em *‘base’*, e depois no link de *Download*.
+
+2. Depois que o *download* estiver completo, rode o instalador e aceite as opções padrão. Você deverá ver uma tela indicando que a instalação obteve sucesso.
+
+### Instalação do RStudio
+
+Você deve instalar o **RStudio** apenas depois de já ter instalado o programa **R**.  
+
+1. Você pode fazer *download* do **RStudio** a partir do seguinte link:
+https://www.rstudio.com/products/rstudio/download/#download. Selecione a opção para o seu sistema operacional.
+
+2. Depois de fazer *download*, rode o instalador e use todas as opções padrão. 
+
+### Instalação do RTools
+
+Se você estiver usando o sistema operacional Windows, instale também o **RTools**.
+
+1. Vá para https://cran.r-project.org/, clique em *‘Download R for Windows’*, então em *‘Rtools’*, e selecione a versão mais atual do **RTools** para *download*.
+
+2. Depois que o *download* tiver sido feito, rode o instalador. Selecione todas as opções padrão.
+
+

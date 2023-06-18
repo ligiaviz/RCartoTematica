@@ -1,0 +1,120 @@
+# Tipos de dados, conceitos e representação cartográfica{#tipos}
+
+A **Cartografia Temática** é um campo da **Cartografia** com um referencial teórico consolidado para a orientação das representações gráficas, em especial, para os mapas da Geografia. A literatura na área é densa e vasta. Não tenho como objetivo o aprofundamento teórico de cada tipo de representação cartográfica, pois além de repetitivo faria este livro ser muito extenso, desfocando da aplicação do **R** na elaboração de mapas temáticos. Desta forma, apresentarei a ideia principal em torno de cada tipo de representação e a bibliografia sugerida para aprofundamento.
+
+## Definição do tipo de representação cartográfica
+
+Como escolher o tipo de representação cartográfica mais adequado? A resposta a esta pergunta, diferente do que muitos pensam, é direcionada pelo tipo de dados que queremos mapear.
+
+Cada tipo de dado conduz a um conceito a ser transcrito. Segundo J. Bertin em seu livro **Semiologie graphique**, de 1973, existem três conceitos associados aos tipos de dados: **diversidade**, **ordem** e **proporcionalidade**. Assim, o primeiro passo é identificar a qual grupo os dados a serem mapeados pertencem: aos dados **qualitativos** ou aos dados **quantitativos**. Se os dados forem qualitativos, deve-se identificar se referem-se a categorias (dados nominais) ou se sugerem ordem (dados ordinais).
+
+No caso dos dados quantitativos, estes devem ser identificados como absolutos (resultantes de contagens) ou relativos (resultantes de divisões por área, por população, etc.). A Figura \@ref(fig:tipos-dados) apresenta o fluxograma para a identificação do conceito e da variável visual a ser utilizada.
+
+```{r echo=FALSE, fig.align = 'center', tipos-dados, fig.cap='Fluxograma para identificação do conceito e variável visual a ser definida segundo a Semiologia Gráfica de J. Bertin (1973)'}
+knitr::include_graphics(rep("tipos_dados.jpg"))
+```
+\newpage
+
+Tomando como partida o conceito a ser transcrito graficamente, Martinelli (2003a) agrupou os métodos para elaboração dos mapas temáticos, em métodos para:
+
++ representações qualitativas,
+
++ representações ordenadas,
+
++ representações quantitativas,
+
++ representações dinâmicas.
+
+Martinelli (2003a) ainda diferenciou o tipo de raciocínio a ser considerado, se analítico ou sintético. Para entender melhor o racional envolvido nestes dois tipos de mapas, sugiro a leitura do artigo de Queiroz Filho e Martinelli (2007).
+
+## Variáveis visuais
+
+Bertin (1973) propôs que seis variáveis visuais seriam suficientes para transcrever os três conceitos de diversidade, ordem e proporcionalidade.
+
+A Figura \@ref(fig:var-visuais) apresenta as seis variáveis visuais sugeridas por Bertin (1973, 1977).
+
+```{r echo=FALSE, fig.align = 'center', var-visuais, fig.cap='As variáveis visuais segundo Bertin (1973, 1977) e Martinelli (1999)'}
+knitr::include_graphics(rep("variaveis_visuais.jpg"))
+```
+
+## O conceito *diversidade*
+
+O conceito **diversidade** é sugerido apenas por dados qualitativos nominais (Fig. \@ref(fig:tipos-dados)). A ideia é transcrever por meio das variáveis visuais que os elementos são diferentes, sem ordem entre eles. Bertin (1973) sugeriu que as variáveis mais eficientes para tal transcrição seriam a **cor**, a **forma** e a **orientação**. Deve-se contextualizar esta escolha, uma vez que a produção de mapas na década de 1970 era feita na forma impressa, para a qual havia um custo enorme ao se utilizar cores no processo gráfico de impressão. No momento presente, a variável mais eficiente é a cor, pois "tem indiscutível impacto e atua sobre a emotividade humana" (Martinelli, 2003a). O uso da cor em computadores e em publicações digitais é muito viável.
+
+Por ser a variável visual de maior impacto, conhecer alguns aspectos da cor nos capacita a empregá-la de forma adequada.
+
+O que chamamos de cor corresponde a uma faixa bem estreita do espectro eletromagnético. A energia eletromagnética pode ser definida como uma forma de energia que se move na velocidade da luz, na forma de ondas ou de partículas, e que não precisa de um meio material para se propagar. Nossos olhos são sensíveis a apenas  determinados comprimentos de radiação eletromagnética. Assim, a cor pode ser considerada como uma resposta sensorial à radiação eletromagnética. O olho humano capta o intervalo entre 380 e 760 nm (nanômetro = bilionésima parte do metro, 10^–9^ m). Um objeto pode absorver todos os comprimentos de onda e, portanto, será entendido como preto aos nossos olhos. Ao contrário, pode ser capaz de refletir todos os comprimentos de onda da luz branca e será percebido como branco. A cor de um objeto é na verdade os comprimentos de onda da luz refletida, enquanto todos os outros comprimentos de onda são absorvidos. As cores seguem a ordem definida pelos comprimentos de onda (Fig. \@ref(fig:espectro1)).
+
+```{r fig.width = 100, fig.align = 'center', fig.height = 16, echo=FALSE, espectro1, fig.cap='A faixa visível do espectro eletromagnético'}
+knitr::include_graphics(rep("espectro1.jpg"))
+```
+
+Considerando a faixa da Figura (\@ref(fig:espectro1)), se unirmos suas extremidades (violeta e vermelho) teremos o círculo das cores (Fig. \@ref(fig:circulocores2)).
+
+
+```{r fig.width = 100, fig.align = 'center', fig.height = 16, echo=FALSE, circulocores2, fig.cap='Círculo das cores: a) as setas indicam as cores opostas, b) a seta indica as cores em ordem'}
+knitr::include_graphics(rep("circulocores2.jpg"))
+```
+
+Desta forma, o conceito de diversidade por meio da variável cor será transcrito se usarmos cores que se encontram distantes no círculo das cores (Fig. \@ref(fig:circulocores2)a).
+
+As variáveis visuais podem ser usadas para transcrever fenômenos cujas feições são pontuais, lineares, em área ou tridimensionais. As implantações da cor e seus aspectos (matiz, brilho e saturação) são apresentados na Figura \@ref(fig:implantacao3).
+
+```{r fig.width = 100, fig.height = 16, fig.align = 'center', echo=FALSE, implantacao3, fig.cap='Matiz, brilho e saturação e suas implantações segundo tipo de feição, modificado de Slocum et al. (2005)'}
+knitr::include_graphics(rep("implantacao3.jpg"))
+```
+
+
+Mais sobre cores e paletas de cores em **R** será visto no item \@ref(escalacores).
+
+## O conceito *ordem*
+
+O conceito **ordem** pode ser sugerido tanto por dados qualitativos quanto por dados quantitativos (Fig. \@ref(fig:tipos-dados)). As variáveis visuais **valor**, **cor ordenada** e **granulação** transcrevem este conceito. Enquanto a **cor ordenada** corresponde ao matiz e segue o espectro visível (\@ref(fig:espectro1)), a variável **valor** corresponde ao brilho, ou seja, uma única matiz que varia do mais claro ao mais escuro (monocromático). Na impossibilidade da utilização de cor ou valor, a variável **granulação** pode ser utilizada. 
+
+## O conceito de *proporcionalidade*
+
+A comparação entre quantidades só pode ser efetuada de forma inequívoca pela utilização da variável visual **tamanho**. Embora não seja incomum encontrarmos a variável valor para representar o conceito de proporcionalidade, a transcrição com esta variável não é a ideal. A diferença de tonalidade entre uma classe e outra é incapaz de seguir uma escala proporcional em relação às quantidades. No entanto, este efeito é facilmente obtido por meio do **tamanho**. 
+
+
+## Referências sugeridas
+
+BÉGUIN, M.; PUMAIN, D. **La représentation des données géographique**: statistique et cartographie.  Paris: Armand Colin, 2007. 192 ISBN 978-2-2002-6581-6.
+
+BERTIN, J. **Sémiologie graphique**: les diagrammes, les réseaux, les cartes. Paris: Mouton, Gauthier-Villars, 1973.
+
+BERTIN, J. **La graphique et le traitement graphique de l'information**. Paris: Flammarion, 1977.
+
+BERTIN, J. **A neográfica e o tratamento gráfico da informação**.  Curitiba:  1986. 273.
+
+BONIN, S. **Initiation a la Graphique**. 1983. 1975.
+
+CAUVIN, C.; ESCOBAR, F.; SERRADJ, A. **Cartographie thématique 1**: une nouvelle démarche.  Paris: Lavoisier, 2007a. 284 ISBN 978-2-7462-1535-1.
+
+______. **Cartographie thématique 2**: des transformations incontournables.  Paris: Lavoisier, 2007b. 272 ISBN 978-2-7462-1535-1.
+
+______. **Cartographie thématique 3**: méthodes quantitatives et transformations attributaires.  Paris: Lavoisier, 2008a. 276 ISBN 978-2-7462-1535-1.
+
+______. **Cartographie thématique 4**: des transformations renouvelées.  Paris: Lavoisier, 2008b. 196 ISBN 978-2-7462-1535-1.
+
+CAUVIN, C.; REYMOND, H.; SERRADJ, A. **Discrétisation et représentation cartographique**.   Maison de la Geographie, Montpellier, 1987. 116 ISBN 2-86912-010-3.
+
+LIBAULT, A. **Geocartografia**.  São Paulo:  1975.
+
+MARTINELLI, M. **Gráficos e mapas**: construa-os você mesmo.  São Paulo:  1998.
+
+______. **Mapas da geografia e cartografia temática**.  São Paulo:  2003a.
+
+______. **Cartografia temática**: caderno de mapas.  São Paulo:  2003b.
+
+MONMONIER, M. How to lie with maps.  Chicago: The University of Chicago Press, 1996. 207 ISBN 0-226-53421-9.
+
+POIDEVIN, D. **La carte**: moyen d'action.  Paris: Ellipses, 1999. 200.
+
+QUEIROZ FILHO, A. P.; MARTINELLI, M. . Cartografia de análise e de síntese na Geografia. **Boletim Paulista de Geografia**, v. 87, p. 7-43, 2007.
+
+RAMOS, C. S. Visualização cartográfica e cartografia multimídia: conceitos e tecnologias.  Rio Claro:  2005.
+
+SALITCHEV, K. A. **Cartografía**.  Ciudad de la Habana: Pueblo y Educatión, 1979. 214.
+
+SLOCUM, T. A., McMASTER, R. B., KESSLER, F. C., HOWARD, H. H. **Thematic Cartography and Geographic Visualization**.  New Jersey:  2005.
+

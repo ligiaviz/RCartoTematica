@@ -1,0 +1,278 @@
+# Dados quantitativos absolutos: mapa das figuras geométricas proporcionais {#quanti1}
+
+Quando queremos transcrever graficamente dados quantitativos ou numéricos que expressam uma medida ou contagem, dois tipos de representação cartográfica são indicadas: o mapa de figuras geométricas proporcionais e o mapa dos pontos de contagem (também conhecido por densidade de pontos).
+A escolha pela utilização de um ou outro depende do tipo de fenômeno a ser representado e da magnitude dos valores. As figuras geométricas proporcionais (em geral, o círculo é a figura mais utilizada) utilizam a variável visual "tamanho" e permitem perceber diferenças entre as proporções de forma imediata. Os pontos de contagem também utilizam a variável visual "tamanho" e possibilitam estabelecer relação entre a variável de interesse e a área do polígono, remetendo à ideia de densidade. 
+
+Neste tópico trataremos da representação por meio de círculos proporcionais da população do estado de São Paulo em 2022, segundo município. Como os dados de população correspondem a cada município como um todo (área urbana e rural), o círculo deverá estar localizado nas coordenadas dos centróides dos municípios. 
+
+## Bases de dados
+
+Iniciamos limpando a memória.
+```{r }
+#para limpar a memoria
+rm(list=ls())
+```
+
+Definimos com `setwd()`e verificamos o diretório de trabalho com `getwd()`.
+```{r results='hide'}
+#para verificar o diretório
+getwd()
+```
+
+Para evitar textos com erros devido à acentuação, vamos ajustar para a língua portuguesa.
+```{r }
+#para ajustar a língua para português usando a função
+Sys.setlocale(category = "LC_ALL", locale = "pt_BR.UTF-8")
+```
+Outro ajuste importante será a desativação da notação científica dos números na legenda.
+```{r }
+#para desativar a notação científica
+options(scipen = 999)
+```
+
+Carregamos os pacotes que serão utilizados.
+
+```{r results='hide', warning=FALSE}
+#para carregar os pacotes que serão usados
+library(sf)
+library(geobr)
+library(ggplot2,warn.conflicts=FALSE)
+library(scales)
+```
+
+Usaremos a base de dados de população do Portal da Fundação SEADE. Para baixar o arquivo compactado, usamos a linha de código a seguir.
+
+```{r }
+#para identificar o url, faca o download do arquivo shapefile e clique em Ctrl+J
+download.file(url = "https://repositorio.seade.gov.br/dataset/9bb4f8ef-f1a4-4734-92a2-814cfc8d0974/resource/09ba3695-a6a1-44ab-9916-fd1a8aa1c980/download/populacao.zip", destfile = "Populacao.zip")
+```
+
+Para descompactar o arquivo, usamos a função **unzip**.
+```{r }
+#para abrir o arquivo zip
+unzip(zipfile = "Populacao.zip")
+```
+
+Na sequência, criamos o objeto **pop** usando a função para leitura de arquivo do tipo shapefile. 
+```{r }
+#para abrir o arquivo shapefile do estado de São Paulo 
+pop <- st_read("./Populacao.shp")
+```
+Podemos ver as colunas de **pop** com a função **names(pop)**.
+```{r }
+#para ver as colunas de 'pop'
+names(pop)
+```
+
+O objeto **pop** está na projeção cartográfica SIRGAS 2000. Vamos passá-lo para WGS84 pseudo Mercator (CRS = 3857).
+
+```{r }
+#para transformar para a projeção em WGS84 pseudo Mercator (crs=3857)
+pop_wgs84 <- st_transform(pop, crs= 3857)
+```
+
+Vamos precisar dos polígonos das Unidades da Federação, que podem ser obtidos no site do IBGE. 
+```{r }
+#para identificar o url, faca o download do arquivo shapefile e clique em Ctrl+J
+download.file(url = "https://geoftp.ibge.gov.br/organizacao_do_territorio/malhas_territoriais/malhas_municipais/municipio_2020/Brasil/BR/BR_UF_2020.zip", destfile = "BR_UF_2020.zip")
+```
+
+Usamos a função **unzip** para extrair o arquivo.
+```{r }
+#para abrir o arquivo zip
+unzip(zipfile = "BR_UF_2020.zip")
+```
+
+Para ler o arquivo no **R**, usamos **st_read**.
+```{r }
+#para abrir o arquivo shapefile dos estados
+UFBR <- st_read("./BR_UF_2020.shp")
+```
+
+Para que fiquem na mesma projeção, transformamos UFBR para WGS84 pseudo Mercator.
+```{r }
+#para transformar a projeção de 'UFBR' para WGS84
+UFBRwgs84<- st_transform(UFBR, crs= 3857)
+```
+Podemos verificar o tipo de geometria do objeto **pop_wgs84** usando a função **st_geometry_type**.
+```{r }
+#para ver o tipo de geometria de 'pop_wgs84'
+st_geometry_type(pop_wgs84, by_geometry=FALSE)
+```
+
+## Centroides dos municípios
+
+Para utilizarmos os círculos proporcionais, precisaremos gerar as coordenadas dos centroides dos polígonos dos municípios, criando um objeto com geometria de ponto. Isto pode ser feito com a função **st_centroid**.
+```{r warning=FALSE}
+#para criar o objeto 'pop_centrd' que contém os pontos dos centroides
+pop_centrd = st_centroid(pop_wgs84)
+```
+Conferimos o tipo de geometria de **pop_centrd**.
+```{r }
+#para ver o tipo de geometria de 'pop_centrd'
+st_geometry_type(pop_centrd, by_geometry = FALSE)
+```
+Temos agora três camadas que serão usadas para a elaboração do mapa, que deverão ser adicionadas na seguinte ordem:
+
+1. Unidades da Federação: UFBRwgs84;
+
+2. Arquivo dos polígonos dos municípios do estado de São Paulo com os dados das populações de todos os municípios: pop_wgs84
+
+3. Arquivo de pontos das coordenadas dos centroides dos municípios: pop_centrd.
+
+## Mapa da população do estado de São Paulo
+
+Vamos usar o pacote **ggplot2** para fazer o mapa  (Figura \@ref(fig:plot-brasil-ufs)). Começamos adicionando a camada das UFs, preenchendo com cinza claro (fill = "gray95") e contorno com cinza médio (colour = "grey50"). Alpha varia de 0 a 1, sendo 1 o valor para indicar nenhuma transparência. 
+```{r plot-brasil-ufs, fig.align = 'center', fig.cap='Mapa do Brasil com os limites das Unidades das Federações'}
+#para plotar o mapa das UFs do Brasil
+ggplot() +
+  geom_sf(data = UFBRwgs84, colour = "grey50", fill = "gray95", alpha = 0.8)
+```
+Adicionamos a segunda camada, escolhendo a cor de preenchimento dos polígonos dos municípios (fill = "beige"), do contorno (color = "black") e espessura da linha de contorno (size = 0.25) (Figura \@ref(fig:plot-brasil-ufsp)).
+```{r plot-brasil-ufsp, fig.align = 'center', fig.cap='Mapa do Brasil com os limites das Unidades das Federações e municípios da UF São Paulo'}
+#para plotar o mapa das UFs e dos municípios da UF São Paulo
+ggplot() +
+  geom_sf(data = UFBRwgs84, colour = "grey50", fill = "gray95", alpha = 0.8)+
+  geom_sf(data = pop_wgs84, fill = "beige", color = "black", size = 0.25)
+```
+A terceira camada, os pontos sobre os quais serão desenhados os círculos proporcionais, deverá indicar qual variável será mapeada como círculo (size = Pop). Lembre-se que o nome da coluna não vem entre aspas. A cor (color = "tomato"), a transparência (alpha = 0.8) e se a legenda deverá aparecer são definidos na mesma camada (Figura \@ref(fig:plot-pop-ufsp)).
+
+```{r plot-pop-ufsp, fig.align = 'center', fig.cap='Mapa do Brasil com os limites das Unidades das Federações e população dos municípios da UF São Paulo'}
+#para plotar o mapa das UFs, dos municípios da UF São Paulo e centroides com dados da população
+ggplot() +
+  geom_sf(data = UFBRwgs84, colour = "grey50", fill = "gray95", alpha = 0.8)+
+  geom_sf(data = pop_wgs84, fill = "beige", color = "black", size = 0.25) +
+  geom_sf(data = pop_centrd, aes(size = Pop), color = "tomato", alpha=0.8, show.legend = "point")
+```
+Após a definição das camadas, outras configurações podem ser feitas. Vamos definir as características relacionadas aos círculos. Para isso, usamos a função **scale_size**. Definimos o título que acompanha a legenda (name = "Habitantes"), a faixa dos tamanhos dos círculos (o menor como 0 e o maior como 10) (range = c(0, 10)) e os cortes dos tamanhos dos círculos (breaks = c(10000, 100000, 1000000, 10000000)) (Figura \@ref(fig:plot-pop-config)).
+```{r plot-pop-config, fig.align = 'center', fig.cap='Configurações da legenda'}
+#para plotar o mapa das UFs, dos municípios da UF São Paulo, centroides com dados da população e ajustar a legenda
+ggplot() +
+  geom_sf(data = UFBRwgs84, colour = "grey50", fill = "gray95", alpha = 0.8)+
+  geom_sf(data = pop_wgs84, fill = "beige", color = "black", size = 0.25) +
+  geom_sf(data = pop_centrd, aes(size = Pop), color = "tomato", alpha=0.8, show.legend = "point")+
+  scale_size(name="Habitantes", range = c(0, 10), breaks = c(10000, 100000, 1000000, 10000000))
+```
+Acrescentamos o título do mapa (ggtitle("População do estado de São Paulo em 2022")) (Figura \@ref(fig:plot-pop-title)).
+```{r plot-pop-title, fig.align = 'center', fig.cap='Título do mapa'}
+#para plotar o mapa das UFs, dos municípios da UF São Paulo, centroides com dados da população, ajustar a legenda e adicionar o título
+ggplot() +
+  geom_sf(data = UFBRwgs84, colour = "grey50", fill = "gray95", alpha = 0.8)+
+  geom_sf(data = pop_wgs84, fill = "beige", color = "black", size = 0.25) +
+  geom_sf(data = pop_centrd, aes(size = Pop), color = "tomato", alpha=0.8, show.legend = "point")+
+  scale_size(name="Habitantes", range = c(0, 10), breaks = c(10000, 100000, 1000000, 10000000))+
+  ggtitle("População do estado de São Paulo em 2022")
+```
+
+Em relação aos elementos da moldura do mapa, usamos a função **theme**. Vamos definir a cor de fundo em azul claro para remeter ao Oceano (panel.background = element_rect(fill = "aliceblue")). Quanto ao título do mapa (plot.title), vamos ajustar o tamanho da fonte e a posição na área do mapa (element_text(size = 11, hjust = 0.9, vjust = -10)). Em relação à linha da moldura (panel.border), vamos indicar a cor preta, espessura da linha (0.1) e que não deverá haver preenchimento (NA) ( element_rect(color = "black", linewidth = .1, fill = NA)) (Figura \@ref(fig:plot-pop-title)).
+```{r plot-pop-theme, fig.align = 'center', fig.cap='Configurações do tema do mapa'}
+#para plotar o mapa das UFs, dos municípios da UF São Paulo, centroides com dados da população, ajustar a legenda, adicionar o título e definir o tema
+ggplot() +
+  geom_sf(data = UFBRwgs84, colour = "grey50", fill = "gray95", alpha = 0.8)+
+  geom_sf(data = pop_wgs84, fill = "beige", color = "black", size = 0.25) +
+  geom_sf(data = pop_centrd, aes(size = Pop), color = "tomato", alpha=0.8, show.legend = "point")+
+  scale_size(name="Habitantes", range = c(0, 10), breaks = c(10000, 100000, 1000000, 10000000))+
+  ggtitle("População do estado de São Paulo em 2022")+
+  theme(panel.background = element_rect(fill = "aliceblue"),
+        plot.title = element_text(size = 11, hjust = 0.9, vjust = -10),
+        panel.border = element_rect(color = "black",linewidth = .1,fill = NA))
+```
+Precisamos definir a área do mapa. Vamos restringir os limites para incluir uma área levemente maior do que o estado de São Paulo, usando a função **coord_sf**. Para saber os limites do estado de São Paulo, vamos olhar o objeto pop_wgs84.
+```{r results='hide'}
+#para ver os limites geográficos de 'pop_wgs84'
+pop_wgs84
+```
+Os limites de pop_wgs84 são:
+
+Bounding box:  xmin: -5911607 ymin: -2913666 xmax: -4916247 ymax: -2247040
+
+Vamos ampliar um pouco esta área para:
+
+xlim = c(-5950000, -4890000), ylim = c(-2950000, -2160000)
+```{r plot-pop-limites, fig.align = 'center', fig.cap='Limites do mapa'}
+#para plotar o mapa das UFs, dos municípios da UF São Paulo, centroides com dados da população, ajustar a legenda, adicionar o título, definir o tema e os limites
+ggplot() +
+  geom_sf(data = UFBRwgs84, colour = "grey50", fill = "gray95", alpha = 0.8)+
+  geom_sf(data = pop_wgs84, fill = "beige", color = "black", size = 0.25) +
+  geom_sf(data = pop_centrd, aes(size = Pop), color = "tomato", alpha=0.8, show.legend = "point")+
+  scale_size(name="Habitantes", range = c(0, 10), breaks = c(10000, 100000, 1000000, 10000000))+
+  ggtitle("População do estado de São Paulo em 2022")+
+  theme(panel.background = element_rect(fill = "aliceblue"),
+        plot.title = element_text(size = 11, hjust = 0.9, vjust = -10),
+        panel.border = element_rect(color = "black", linewidth = .1,fill = NA))+
+  coord_sf(xlim = c(-5950000, -4890000), ylim = c(-2950000, -2160000), expand = FALSE)
+```
+Vamos posicionar a legenda na área interna da moldura e adicionar outras informações como a fonte dos dados e os créditos de elaboração do mapa.
+```{r plot-pop-detalhes, fig.align = 'center', fig.cap='Outros detalhes do mapa'}
+#para plotar o mapa das UFs, dos municípios da UF São Paulo, centroides com dados da população, ajustar a legenda, adicionar o título, definir o tema, alterar posição da legenda e adicionar notas de rodapé 
+ggplot() +
+  geom_sf(data = UFBRwgs84, colour = "grey50", fill = "gray95", alpha = 0.8)+
+  geom_sf(data = pop_wgs84, fill = "beige", color = "black", size = 0.25) +
+  geom_sf(data = pop_centrd, aes(size = Pop), color = "tomato", alpha=0.8, show.legend = "point")+
+  scale_size(name="Habitantes", range = c(0, 10), breaks = c(10000, 100000, 1000000, 10000000))+
+  ggtitle("População do estado de São Paulo em 2022")+
+  theme(panel.background = element_rect(fill = "aliceblue"),
+        plot.title = element_text(size = 11, hjust = 0.9, vjust = -10),
+        panel.border = element_rect(color = "black",linewidth = .1,fill = NA))+
+  coord_sf(xlim = c(-5950000, -4890000), ylim = c(-2950000, -2160000), expand = FALSE)+
+  theme(legend.position = c(0.2, 0.2))+
+  labs(caption = "Fonte: SEADE (2022) \n
+       Elaborado por: @Ligiaviz")
+```
+A escala gráfica será adicionada com a função **annotation_scale** do pacote **ggspatial**. Usamos **::** para indicar o pacote e a função. A localização da barra de escala deve ser indicada pela posição em cima ou embaixo combinada com a posição esquerda ou direita. Embaixo é indicado por "bottom" ou simplesmente "b"; em cima por "top" ou "t"; do lado direito ("rigth" ou "r") ou do lado esquerdo ("left" ou "l"). Podemos ajustar a espessura do traço, a largura e altura da barra e quanto vale a unidade em centímetros.
+```{r plot-pop-escala, fig.align = 'center', fig.cap='Com a escala gráfica'}
+# a última linha adiciona a barra de escala
+ggplot() +
+  geom_sf(data = UFBRwgs84, colour = "grey50", fill = "gray95", alpha = 0.8)+
+  geom_sf(data = pop_wgs84, fill = "beige", color = "black", size = 0.25) +
+  geom_sf(data = pop_centrd, aes(size = Pop), color = "tomato", alpha=0.8, show.legend = "point")+
+  scale_size(name="Habitantes", range = c(0, 10), breaks = c(10000, 100000, 1000000, 10000000))+
+  ggtitle("População do estado de São Paulo em 2022")+
+  theme(panel.background = element_rect(fill = "aliceblue"),
+        plot.title = element_text(size = 11, hjust = 0.9, vjust = -10),
+        panel.border = element_rect(color = "black",linewidth = .1,fill = NA))+
+  coord_sf(xlim = c(-5950000, -4890000), ylim = c(-2950000, -2160000), expand = FALSE)+
+  theme(legend.position = c(0.2, 0.2))+
+  labs(caption = "Fonte: SEADE (2022) \n
+       Elaborado por: @Ligiaviz")+
+  ggspatial::annotation_scale(location = "br", width_hint = 0.4, line_width = 0.5, height = unit(0.1,"cm"))
+```
+Por fim, vamos acrescentar a seta do norte geográfico. Usaremos **ggspatial::annotation_north_arrow**. Indicaremos a posição no mapa (location = "tr"), o tipo de norte (which_north = "true"), o tamanho e a unidade (pad_x = unit(0.4, "in"), pad_y = unit(0.4, "in")), o estilo da seta, as cores de preenchimento e da linha e o estilo do texto para a letra N.
+
+```{r plot-pop-seta, warning=FALSE, fig.align = 'center', fig.cap='Com a seta do Norte'}
+#o último bloco adiciona e configura a seta do Norte Geográfico
+ggplot() +
+  geom_sf(data = UFBRwgs84, colour = "grey50", fill = "gray95", alpha = 0.8)+
+  geom_sf(data = pop_wgs84, fill = "beige", color = "black", size = 0.25) +
+  geom_sf(data = pop_centrd, aes(size = Pop), color = "tomato", alpha=0.8, show.legend = "point")+
+  scale_size(name="Habitantes", range = c(0, 10), breaks = c(10000, 100000, 1000000, 10000000))+
+  ggtitle("População do estado de São Paulo em 2022")+
+  theme(panel.background = element_rect(fill = "aliceblue"),
+        plot.title = element_text(size = 11, hjust = 0.9, vjust = -10),
+        panel.border = element_rect(color = "black",linewidth = .1,fill = NA))+
+  coord_sf(xlim = c(-5950000, -4890000), ylim = c(-2950000, -2160000), expand = FALSE)+
+  theme(legend.position = c(0.2, 0.2))+
+  labs(caption = "Fonte: SEADE (2022) \n
+       Elaborado por: @Ligiaviz")+
+  ggspatial::annotation_scale(location = "br", width_hint = 0.4, line_width = 0.5, height = unit(0.1,"cm"), bar_cols = c("white", "white"))+
+  ggspatial::annotation_north_arrow(
+    location = "tr", which_north = "true",
+    pad_x = unit(0.4, "in"), pad_y = unit(0.4, "in"),
+    style = ggspatial::north_arrow_nautical(
+      fill = c("grey40", "white"),
+      line_col = "grey20",
+      text_family = "ArcherPro Book"
+    )) 
+```
+Para exportar o mapa pronto com extensão **png**, usaremos **ggsave**.
+```{r }
+#para salvar o arquivo com extensao .png
+ggsave("populacaoSP.png", width = 8, height = 8, dpi = 300)
+```
+
+## Referências sugeridas
+
+**Using ggplot to plot pie charts on a geographical map** - http://www.spectdata.com/index.php/2018/10/25/how-to-use-ggplot-to-plot-pie-charts-on-a-map/
+
+**NEW VERSION OF CARTOGRAPHY** (outro pacote do R dedicado à Cartografia Temática)
+https://rgeomatic.hypotheses.org/category/cartography

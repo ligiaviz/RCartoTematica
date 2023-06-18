@@ -1,0 +1,298 @@
+# Dataframes {#dataframes}
+
+Um **dataframe** contém um conjunto de dados organizados em linhas e colunas, assim como uma matriz. No entanto, existe uma diferença importante entre uma matriz e um dataframe. O dataframe aceita que as colunas tenham diferentes tipos de dados, enquanto uma matriz só permite um tipo para todas as colunas.
+
+Para darmos início, vamos limpar a memória e verificar o diretório.
+
+```{r eval=FALSE}
+#para limpar a memoria
+rm(list= ls())
+#para verificar o diretório de trabalho
+getwd()
+```
+
+É sempre bom deixarmos alinhado com a língua que usaremos para evitar problemas com acentuação nos títulos. Também vamos desativar a notação científica para que os códigos do IBGE apareçam por completo.
+
+```{r }
+#para ajustar a língua para português usando a função
+Sys.setlocale(category = "LC_ALL", locale = "pt_BR.UTF-8")
+#para desativar a notação científica
+options(scipen = 999)
+```
+
+## Criação de dataframe
+
+Vimos que um dataframe pode conter diferentes tipos de variáveis. Para vermos com mais detalhes como um dataframe funciona, vamos criar um a partir de vetores.
+
+Podemos criar vetores e depois uni-los usando a função **data.frame()**. Também poderemos importar bancos de dados prontos, o que é ainda mais usual.
+
+Vamos começar com a construção de um dataframe a partir dos vetores.
+
+Vamos criar um dataframe com dados das capitais das Unidades da Federação do Brasil. Para isso vamos precisar criar os vetores de cada conjunto de dados separadamente.
+
+Vamos começar com os nomes das capitais, 'nomes'. Lembre-se que os nomes devem entrar entre aspas: "Aracaju", "Belém", "Belo Horizonte", "Boa Vista", "Brasília", "Campo Grande", "Cuiabá", "Curitiba", "Florianópolis", "Fortaleza", "Goiânia", "João Pessoa", "Macapá", "Maceió", "Manaus", "Natal", "Palmas", "Porto Alegre", "Porto Velho", "Recife", "Rio Branco", "Rio de Janeiro", "Salvador", "São Luís", "São Paulo", "Teresina", "Vitória"
+
+```{r }
+nomes <- c("Aracaju", "Belém", "Belo Horizonte", "Boa Vista", "Brasília", "Campo Grande", "Cuiabá", "Curitiba", "Florianópolis", "Fortaleza", "Goiânia", "João Pessoa", "Macapá", "Maceió", "Manaus", "Natal", "Palmas", "Porto Alegre", "Porto Velho", "Recife", "Rio Branco", "Rio de Janeiro", "Salvador", "São Luís", "São Paulo", "Teresina", "Vitória")
+```
+
+Vamos criar o objeto 'regiao': "Nordeste", "Norte", "Sudeste", "Norte", "Centro-Oeste", "Centro-Oeste", "Centro-Oeste", "Sul", "Sul", "Nordeste", "Centro-Oeste", "Nordeste", "Norte", "Nordeste", "Norte", "Nordeste", "Norte", "Sul", "Norte", "Nordeste", "Norte", "Sudeste", "Nordeste", "Nordeste", "Sudeste", "Nordeste", "Sudeste"
+
+O vetor da população de cada capital receberá o nome de 'pop' e deverá conter: 664908, 1499641, 2521564, 419652, 3055149, 906092, 618124, 1948626, 508826, 2686612, 1536097, 817511, 512902, 1025360, 2219580, 890480, 306296, 1488252, 539354, 1653461, 413418 , 6747815, 2886698, 1108975, 11253503, 868075, 365855
+
+Vamos criar um vetor para indicar se a capital fica no litoral ou não. O vetor receberá o nome de 'costa' e deverá conter: TRUE, TRUE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, TRUE, TRUE, FALSE, TRUE, TRUE, TRUE, FALSE, TRUE, FALSE, FALSE, FALSE, TRUE, FALSE, TRUE, TRUE, TRUE, FALSE, FALSE, TRUE
+
+A partir dos vetores fica fácil criar um data frame usando a função **data.frame()**. Chame o dataframe de 'capitais' contendo os vetores nomes, regiao, pop e costa
+
+Agora examine as variáveis de 'capitais' usando a função **str()**.
+
+## Importação de um dataframe
+
+Os dataframes são muito usados nas análises de dados. Os arquivos com dados espaciais, que serão usados para elaborarmos os mapas, contêm uma tabela de dados relacional. Ela é chamada relacional porque está associada a cada feição (ponto, linha ou polígono) do arquivo de geometria. Assim, em um arquivo do tipo **shapefile** o polígono do município de São Paulo tem a sua forma representada em um arquivo do tipo .shp. A tabela de dados do tipo .dbf contém uma linha para cada feição do arquivo da geometria e características (atributos) vinculados a cada feição. Um terceiro arquivo, do tipo .shx, faz a conexão entre o arquivo .shp e o .dbf. 
+
+Não é objetivo deste livro esgotar as possibilidades dos pacotes para análise de dados. O conteúdo que será apresentado será o mínimo para que seja possível a preparação dos arquivos que serão usados para a elaboração de mapas. Em geral, precisaremos saber fazer o download de tabelas e arquivos espaciais; fazer cálculos entre colunas da tabela; filtrar colunas e linhas e unir tabelas de dados a dados espaciais (shapefiles, geopackages, etc).
+
+Para que o leitor consiga autonomia, vamos trabalhar com dados reais, disponíveis na Internet. Para baixar os dados diretos da Internet, vamos precisar do pacote **R.utils**. Precisamos instalá-lo agora.
+
+```{r eval=FALSE}
+#para instalar o pacote R.utils
+install.packages("R.utils")
+```
+
+Também será necessário carregá-lo.
+
+```{r warning=FALSE}
+#para carregar o pacote instalado
+library(R.utils)
+```
+
+O arquivo com extensão csv está disponível no site da Fundação SEADE. Desta forma, faremos o download do arquivo CSV após a identificação da url (*Uniform Resource Locator*, ou Localizador Uniforme de Recursos - significa endereço web, ou seja, o texto que você digita na barra do navegador para acessar uma determinada página ou serviço). Para isso, usaremos a função `download.file` do pacote **R.utils**. A documentação completa dos pacotes e funções estão disponíveis em [R documentation](https://www.rdocumentation.org/).
+
+```{r }
+#se quiser identificar a url de um determinado conjunto de dados, faça o download do arquivo desejado manualmente e clique em Ctrl+J. O navegador mostrará o caminho completo, que poderá ser copiado. Para o download do arquivo com os municípios do estado de São Paulo, use o comando a seguir. Use o nome do arquivo como arquivo de destino (destfile) 
+download.file(url = "https://repositorio.seade.gov.br/dataset/71bffea4-0650-4f2e-9d82-b0179137cd3e/resource/ef737887-69d9-4afa-a513-00aa78ec2419/download/evolucao_casamentos.csv", destfile = "evolucao_casamentos.csv")
+```
+
+Também precisaremos do arquivo com os nomes dos municípios.
+
+```{r }
+#para fazer download do arquivo 'codigos_municipios_regioes.csv'
+
+download.file(url = "https://repositorio.seade.gov.br/dataset/1617c335-f5ab-426c-b175-280d4e41ec1c/resource/1871ac05-7b7f-4c13-9b4a-23c7d41fd988/download/codigos_municipios_regioes.csv", destfile = "codigos_municipios_regioes.csv")
+```
+
+```{r }
+#para criar um dataframe com o nome 'evol_casam' a partir do arquivo csv. Como o arquivo contém a primeira linha de cabeçalho, é preciso indicar que 'header = TRUE'. Como os campos estão separados por ponto e vírgula, deve-se indicar 'sep = ";" 
+evol_casam <- read.csv("C:/Users/l_viz/Documents/RCartoTematica/evolucao_casamentos.csv", header = TRUE, sep = ";")
+```
+Vamos abrir o segundo arquivo csv que contém os códigos do IBGE e os nomes dos municípios do Estado de São Paulo.
+
+```{r }
+#Este arquivo está codificado em 'latin1'.
+#para criar um dataframe com o nome 'codigos', precisamos indicar o encoding como 'latin1' para que a acentuação seja lida corretamente
+codigos <- read.csv("C:/Users/l_viz/Documents/RCartoTematica/codigos_municipios_regioes.csv", header = TRUE, sep = ";", dec = ".", stringsAsFactors=FALSE, encoding="latin1")
+```
+
+Como o banco de dados é muito grande, podemos olhar para uma amostra bem menor, digamos, de 6 linhas do começo do banco de dados ou das últimas linhas. Para isso usamos a função **head()** (*cabeça*) ou **tail()** (*cauda*), respectivamente. Rode as duas funções para 'evol_casam' e 'codigos'.
+
+```{r }
+#para ver as 6 primeiras linhas do início
+head(evol_casam)
+head(codigos)
+#para ver as 6 últimas linhas
+tail(evol_casam)
+tail(codigos)
+```
+
+Vamos usar estes dois dataframes para as operações com o pacote **Tidyverse**, a seguir.
+
+# Básico do Tidyverse {#tidyverse}
+
+Quando instalamos o **R** e o **RStudio**, apenas as funções básicas do **R** são instaladas. Outros pacotes são necessários para funções específicas. 
+
+Um pacote que permite a organização e manipulação de dados é o **Tidyverse**. Este pacote contém outros, tais como: *ggplot2*, *dplyr*, *tidyr*, *readr*, *purrr*, *tibble*, *stringr*, *forcats*.
+
+O primeiro passo será instalar o pacote **tidyverse**, usando a função **install.packages()**. Alternativamente, é possível fazer a instalação usando a ferramenta **Tools/Install Packages** do menu do **RStudio**. 
+
+```{r eval=FALSE}
+#para instalar o pacote
+install.packages(tidyverse)
+```
+
+Depois de instalado, o pacote precisa ser carregado a partir da função **library()**.
+
+```{r warning=FALSE}
+#para carregar o pacote instalado
+library(tidyverse)
+```
+
+Observe que ao carregar o pacote **tidyverse**, os pacotes *ggplot2*, *dplyr*, *tidyr*, *readr*, *purrr*, *tibble*, *stringr*, *forcats* são carregados também.
+
+## O operador Pipe no tidyverse
+
+O operador **%>%** é usado para expressar uma sequência de operações múltiplas, por exemplo, a saída de uma função ou expressão é passada a uma outra função como um argumento. No código, pode ser traduzido como **então**. 
+
+**Pontos importantes no uso do Pipe no R**
+
++ quando usar o pacote **tidyverse** o operador %>% fica automaticamente disponível para uso.
+
++ ele considera a saída de uma função e a usa em outra função como um argumento;
+
++ funciona com uma função que leva uma entrada;
+
++ se uma função precisar de duas entradas, então não poderá ser usado.
+
+Quando você tem um código complexo para escrever na programação **R**, às vezes você aninha as operações que resultam em um código **R** ilegível e é difícil para outras pessoas entenderem. Usando o operador **%>%** é possível encadear uma sequência para evitar a gravação de código complexo.
+
+Além disso, usando o operador Pipe **%>%** ajuda a economizar memória. Por causa disso, tem sido usado em muitos pacotes do **R**. Por exemplo, imagine que você tenha chamado 3 funções e o resultado de cada função é passado como entrada para a função subsequente. Quando você não usa o Pipe, você tem que armazenar o resultado de cada função em uma variável e usar esta variável em outra função. Desta forma você armazena 3 variáveis na memória com os dados. Ao usar o operador Pipe, você pode evitar variáveis intermediárias e encadear as funções.
+
+## Selecionando colunas
+
+Vimos que 'codigos' contém diversas colunas que não serão utilizadas. Interessam-nos apenas as colunas 'cod_ibge', 'municipios' e 'reg_administrativa'. Para criar um novo dataframe com apenas estas duas colunas, vamos usar a função `select`. Atribuiremos à seleção, o nome de 'nomes_munic'.
+
+```{r }
+#para selecionar apenas as colunas 'cod_ibge', 'municipios' e 'reg_administrativa'
+nomes_munic <- codigos %>% 
+  select(cod_ibge, municipios, reg_administrativa)
+#para visualizar
+head(nomes_munic)
+```
+
+
+## Combinando dataframes
+
+O **Tidyverse** oferece diversas possibilidades de unir dois dataframes. Este resumo em pdf apresenta as principais funções do **Tidyverse** (https://www.rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf).
+Os conjuntos de dados podem ser combinados a partir das seguintes funções: `left_join`, `right_join`, `inner_join`, `full_join`, `semi_join` e `anti_join`.
+
+Como podemos observar, os dois dataframes ('evol_casam' e 'nomes_munic') têm uma coluna com o mesmo nome ('cod_ibge'), cujos códigos apresentam 7 dígitos. Desta forma, esta coluna será usada para unirmos os dois dataframes para termos os nomes dos municípios, que não aparecem em 'evol_casam'.
+
+Com os dois dataframes, podemos uni-los usando a função `right_join`. Imagine duas tabelas que serão unidas. A tabela de 'nomes_munic' contém 646 linhas. A tabela de 'evol_casam' contém 14123 linhas porque são 21 anos de dados. Queremos que a tabela 'evol_casam' receba os nomes dos municípios da tabela 'nomes_munic'. Usando a função `right_join` os nomes dos municípios da tabela à esquerda (nomes_munic) farão correspondência com todas as linhas da tabela à direita (evol_casam).
+
+```{r }
+#para unir os dois dataframes
+casam <- right_join(nomes_munic, evol_casam, by="cod_ibge")
+#para visualizar as 6 primeiras linhas
+head(casam)
+#para visualizar as 6 últimas linhas
+tail(casam)
+```
+
+Outra forma de entender melhor os dados é olhando a sua estrutura. Use **str()**
+
+```{r }
+#para ver a estrutura dos dados
+str(casam)
+```
+
+## Filtrando observações
+
+A função **filter()** filtra as observações (linhas) de acordo com uma condição.
+
+A partir do dataframe 'casam', vamos filtrar os dados para mantermos apenas dados do ano de 2021, criando o objeto 'casam_2021'.
+
+```{r }
+#para filtrar para o ano 2021
+casam_2021 <- casam %>%
+  filter(ano == 2021)
+```
+
+Outras condições podem ser também filtradas. Vamos filtrar para o município "São Paulo".
+
+```{r }
+casam %>%
+  filter(municipios == "São Paulo")
+```
+
+As duas condições podem ser filtradas em um mesmo código.
+
+```{r }
+casam %>%
+  filter(ano == 2021, municipios == "São Paulo")
+```
+
+Também é possível filtrar a partir de operadores lógicos. Vamos filtrar os municípios com casamentos entre pessoas de sexos diferentes maior do que 5000 em 2021.
+
+```{r }
+#para filtrar para o ano de 2021 e municípios com casamentos entre pessoas de sexos diferentes maiores do que 5 mil
+casam %>% 
+  filter(ano == 2021, entre.pessoas.de.sexos.diferentes > 5000)
+```
+
+## Organizando uma tabela com a função `arrange()`
+
+A função **arrange()** organiza uma tabela com base em uma variável (coluna). A condição *default* é a ordem crescente. Para indicar ordem decrescente, é necessário indicar *desc*. Vamos a um exemplo. Vamos solicitar a organização da tabela pela coluna entre.pessoas.de.mesmo.sexo.
+
+```{r }
+#para filtrar as linhas que correspondem ao ano 2021
+msexo_2021 <- casam %>%
+  filter(ano == 2021) %>%
+#para organizar em ordem crescente
+  arrange(entre.pessoas.do.mesmo.sexo)
+#para visualizar
+head(msexo_2021)
+```
+
+Para organizar em ordem decrescente:
+
+```{r }
+#para filtrar as linhas que correspondem ao ano 2021
+casam_msexo_desc <- casam %>%
+  filter(ano == 2021) %>%
+#para organizar em ordem decrescente
+  arrange(desc(entre.pessoas.do.mesmo.sexo))
+#para visualizar
+head(casam_msexo_desc)
+```
+
+## O verbo "mutate"
+
+Digamos que quiséssemos ter uma coluna com a porcentagem de casamentos entre pessoas de sexos diferentes. Para isso seria necessário dividir a coluna **entre.pessoas.de.sexos.diferentes** pela coluna **total** e multiplicar por 100. A função **mutate()** permite mudar por meio de cálculos ou adicionar variáveis (colunas).
+
+```{r }
+#para acrescentar uma coluna com os resultados da porcentagem de casamentos entre pessoas de sexos diferentes
+casam1 <- casam %>%
+  mutate(perc_sexodif = entre.pessoas.de.sexos.diferentes / total * 100) %>% 
+#para organizar a coluna em ordem decrescente
+  arrange(desc(perc_sexodif))
+#para visualizar as 6 primeiras linhas
+head(casam1)
+```
+
+Observe que municípios com pequeno número total de casamentos, quando 1 deles é entre pessoas do mesmo sexo, o percentual fica elevado.
+
+## Agrupando dados com a função `group_by`
+
+A função **group_by** permite aplicar cálculos de resumo segundo grupos, por exemplo, por ano, por Região Administrativa, etc. Para usar essa função é necessário definir o tipo de agregação que queremos. Em outras palavras, se vamos agrupar os casamentos por Região Administrativa, os resultados serão as somas dos casamentos das regiões? Ou seriam as médias? Dependendo da variável, não faz sentido efetuarmos a soma como no caso de variáveis resultantes de divisões (índices, porcentagens, razões, etc.) deve-se calcular a média, por meio da função `summarize` (mean). No nosso exemplo, vamos agrupar as regiões administrativas por meio de soma para as variáveis entre.pessoas.de.sexos.diferentes, entre.pessoas.do.mesmo.sexo e total.
+
+
+```{r }
+#para agrupar por região administrativa
+casam %>% 
+  group_by(reg_administrativa) %>%
+#para definir a soma como operação de agrupamento. 'na.omit' é usado para que a soma desconsidere os valores NA da coluna entre.pessoas.do.mesmo.sexo
+  summarize(tot_sexodif = sum(entre.pessoas.de.sexos.diferentes),
+            tot_msexo = sum(na.omit(entre.pessoas.do.mesmo.sexo)),
+            tot_todos = sum(total))
+```
+
+Observe que passamos a ter 16 linhas, correspondendo às 16 Regiões Administrativas do Estado.
+Vamos resumir por ano e região administrativa.
+
+```{r }
+#para agrupar por região administrativa
+casam_regadm <- casam %>% 
+  group_by(ano, reg_administrativa) %>%
+#para definir a soma como operação de agrupamento. 'na.omit' é usado para que a soma desconsidere os valores NA da coluna entre.pessoas.do.mesmo.sexo
+  summarize(tot_sexodif = sum(entre.pessoas.de.sexos.diferentes),
+            tot_msexo = sum(na.omit(entre.pessoas.do.mesmo.sexo)),
+            tot_todos = sum(total))
+#para visualizar
+head(casam_regadm)
+```
+
+Agora temos 352 linhas, resultantes de 16 regiões administrativas vezes 22 anos.
+
+## Rumo aos mapas
+
+Agora que você teve uma introdução rápida ao **R** e aprendeu a fazer cálculos entre colunas, unir dataframes e agrupar dados, tem a bagagem mínima para entrar em contato com a teoria da Cartografia Temática e a elaborar seus mapas em **R**.
+Novas funções serão apresentadas à medida que forem necessárias.

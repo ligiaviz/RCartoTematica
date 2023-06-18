@@ -1,0 +1,276 @@
+# Dados quantitativos absolutos: mapa dos pontos de contagem (ou densidade de pontos) {#quanti2}
+
+Diferente do mapa de figuras proporcionais, onde o tamanho das figuras remete à ideia de proporção, os pontos de contagem permitem estabelecer a ideia de densidade ao representar determinada quantidade espalhada aleatoriamente dentro dos polígonos de unidades administrativas.
+
+Utilizaremos como exemplo os dados de etnia da população na escala intraurbana do município de São Paulo. Cada ponto terá um valor de número de residentes por Distrito Administrativo. Aos pontos atribuiremos cores para proporcionar a visualização da distribuição espacial das etnias por área. Este mapa tem como inspiração o mapa de grupos étnicos de Chicago, desenvovido por [Bill Rankin (2009)](http://www.radicalcartography.net/index.html?chicagodots). Foi replicado em Londres para os votos segundo partidos políticos [Tom Campbell](https://gist.github.com/PaulC91/9cc8551d5475620cb5c5d87ee1609257). Este script foi utilizado e adaptado para a elaboração do mapa da população segundo etnia em São Paulo, que será desenvolvido a seguir.
+
+## Bases de dados
+
+Para a elaboração deste mapa precisaremos de dados da população segundo cor ou raça. O IBGE define cinco grupos de cor ou raça autodeclarados durante a pesquisa do Censo Demográfico: raça ou cor branca, preta, amarela, parda e indígena. Usaremos os dados disponíveis mais recentes que são os de 2010. A base cartográfica será a malha dos Distritos, também disponíveis no site do IBGE.
+
+Para darmos início, vamos limpar a memória e verificar o diretório.
+```{r }
+#para limpar a memoria
+rm(list= ls())
+#para verificar o diretório de trabalho
+getwd()
+```
+É sempre bom deixarmos alinhado com a língua que usaremos para evitar problemas com acentuação nos títulos. Também vamos desativar a notação científica para que os códigos do IBGE apareçam por completo.
+```{r }
+#para ajustar a lingua para portugues usando a funcao
+Sys.setlocale(category = "LC_ALL", locale = "pt_BR.UTF-8")
+#para desativar a notação científica
+options(scipen = 999)
+```
+
+
+```{r eval=FALSE, results='hide'}
+install.packages("R.utils")
+```
+
+Carregamos os pacotes que serão utilizados.
+```{r  results='hide', message=FALSE, warning=FALSE}
+library(R.utils)
+library(tidyverse)
+library(sf)
+library(ggplot2,warn.conflicts=FALSE)
+library(ggspatial)
+library(stringr)
+```
+O arquivo shapefile dos Distritos estão disponíveis no FTP do IBGE por Unidade da Federação. Desta forma, faremos o download do arquivo zip após a identificação da url (*Uniform Resource Locator*, ou Localizador Uniforme de Recursos - significa endereço web, ou seja, o texto que você digita na barra do navegador para acessar uma determinada página ou serviço). Para isso, usaremos a função `download.file` do pacote **R.utils**. A documentação completa dos pacotes e funções estão disponíveis em [R documentation](https://www.rdocumentation.org/). 
+```{r }
+url <- "https://geosampa.prefeitura.sp.gov.br/PaginasPublicas/downloadArquivo.aspx?orig=DownloadCamadas&arq=01_Limites%20Administrativos%5C%5CDistrito%5C%5CShapefile%5C%5CSIRGAS_SHP_distrito&arqTipo=Shapefile"
+
+destfile <- "C:/Users/l_viz/Documents/RCartoTematica/shapefile.zip"
+
+download.file(url, destfile, mode='wb')
+
+```
+
+Descompacte o arquivo zip diretamente na pasta de trabalho. Vamos abrir o shapefile com a função `st_read` do pacote **R.utils**.
+
+```{r }
+#para abrir o arquivo shapefile dos distritos da UF São Paulo 
+sp_distr <- st_read("C:/Users/l_viz/Documents/RCartoTematica/SIRGAS_SHP_distrito/SIRGAS_SHP_distrito.shp")
+```
+
+Para verificar o tipo de objeto, usamos `class` do pacote **R.utils**. Para olharmos as 6 primeiras linhas do objeto, usamos a função `head` do mesmo pacote.
+```{r }
+#para verificar o tipo de objeto
+class(sp_distr)
+#para vermos as 6 primeiras linhas
+head(sp_distr)
+```
+Vamos visualizar os Distritos usando `ggplot` do pacote **ggplot2**, definindo a geometria a partir de `geom_sf` com o contorno na cor preta e o preenchimento em cinza claro.
+
+```{r plot-distr-ufsp, warning=FALSE, fig.align = 'center', fig.cap='Malha de Distritos do Estado de São Paulo'}
+#para plotar a camada dos distritos do estado de SP
+ggplot()+
+  geom_sf(data = sp_distr, colour = "black", fill = "grey90") #para plotar
+```
+
+
+```{r }
+#para ver as colunas de sp_distr
+names(sp_distr)
+head(sp_distr)
+```
+A segunda etapa será a obtenção dos dados de raça ou cor a partir dos dados do Censo de 2010. Precisaremos fazer isso manualmente. Baixe os arquivos correspondentes ao município de São Paulo a partir do ftp do IBGE na sua pasta de trabalho https://ftp.ibge.gov.br/Censos/Censo_Demografico_2010/Resultados_do_Universo/Agregados_por_Setores_Censitarios/SP_Capital_20190823.zip. 
+Descompacte o arquivo manualmente na pasta do diretório onde se encontra para podermos selecionar e ler o arquivo que queremos. Depois de descompactado, execute a linha a seguir. `read.table` lerá o arquivo Pessoa03_SP1 de extensão csv com separador entre colunas ";" e primeira linha contendo os nomes das variáveis "(header = TRUE)", criando o objeto de nome "pessoa". Aproveitaremos para já selecionar as colunas que nos interessam usando `%>%` (*pipe*, que pode ser lido como "então") e a função `select` selecionando a coluna de código do setor e as variáveis "V001" a "V006". Com a função `head` verificamos as 6 primeiras linhas do objeto "pessoa".
+A documentação do Censo com todas as planilhas e variáveis encontra-se no arquivo [BASE DE INFORMAÇÕES POR SETOR CENSITÁRIO Censo 2010 - Universo.pdf](https://ftp.ibge.gov.br/Censos/Censo_Demografico_2010/Resultados_do_Universo/Agregados_por_Setores_Censitarios/Documentacao_Agregado_dos_Setores_20180416.zip).
+```{r }
+#para ler o arquivo Pessoa03_SP1.csv
+pessoa <- read.table("C:/Users/l_viz/Documents/RCartoTematica/Base informaçoes setores2010 universo SP_Capital/CSV/Pessoa03_SP1.csv", sep=";", header=T) %>%
+  select(Cod_setor, V001, V002, V003, V004, V005, V006)
+head(pessoa)
+```
+O resultado da função `head` nos mostra que as variáveis de "V002" a "V006" são do tipo caractere (chr). Teremos que alterar para "integer" para que possam ser executados cálculos com estes valores. Vamos usar `mutate` que permite a transformação de todas estas variáveis de uma única vez. Ou seja, se a variável for caractere, será transformada em "integer".
+```{r results='hide', warning=FALSE}
+#para transformar todas as variáveis do tipo chr em int
+pessoa <- pessoa %>% 
+ mutate_if(is.character, as.integer)
+```
+O aviso resultante do comando diz que foram introduzidos valores do tipo "NA" (not available, ou seja, valores faltantes) onde havia valores não numéricos do tipo "x". O IBGE restringe a informação para proteção de dados dos informantes. Segundo a documentação, 
+
+> "No arquivo agregado por setores, o IBGE optou pela restrição de dados como forma de proteção dos dados dos informantes do Censo Demográfico 2010. Assim, em todos os setores com menos de cinco domicílios particulares permanentes foram omitidos os valores da maioria das variáveis de dados. Foram mantidas apenas as variáveis estruturais tais como: a identificação das subdivisões geográficas, o número de domicílios e a população por sexo. Para indicar a omissão dos dados, os valores das variáveis foram preenchidos com “x”. (IBGE, 2011, p.35)>
+
+Como vimos, a coluna "Cod_setor" aparece como numérica "dbl"(double) e precisa ser convertida para caractere. Usamos a função a seguir.
+```{r }
+#para converter "dbl" para "chr"
+pessoa <- pessoa %>%
+  mutate(Cod_setor = as.character(Cod_setor))
+#para ver as 6 primeiras linhas
+head(pessoa)
+```
+Como vamos precisar unir a tabela de dados com o shapefile, as colunas de identificadores devem ser exatamente iguais. No shapefile temos 96 Distritos Administrativos, cuja coluna de identificação é CD_GEOCODD, com 9 dígitos. Na tabela "pessoa", o identificador é "Cod_setor", com 15 dígitos. Desta forma, precisaremos compatibilizar os identificadores deixando "Cod_setor" com 9 dígitos também.
+
+```{r }
+#para deixar o codigo do setor com o mesmo numero de caracteres do codigo do distrito
+pessoa$Cod_setor <- substring(pessoa$Cod_setor, 8, 9)
+#para ver as 6 primeiras linhas
+head(pessoa)
+#para ver o tipo de objeto
+class(pessoa)
+```
+
+```{r eval=FALSE}
+#para visualizar a tabela
+View(pessoa)
+```
+Ao abrirmos a tabela com a função `View`, percebemos que temos os códigos com 9 dígitos, mas continuamos com 18.363 linhas referentes aos setores censitários e não as 96 dos Distritos! Como cada Distrito tem vários setores (em média, 18.363/96=191 setores), precisamos somá-los dentro de cada Distrito para termos os valores corretos de cada variável, com um total de 96 linhas. Ou seja, precisamos agregar os valores dos setores por meio de soma.
+
+```{r }
+# Para agregar as variáveis das colunas 2 a 7, usando Cod_setor como quebra, função de soma e ignorando os valores NA
+pessoa_distr <- aggregate(pessoa[,2:7],by=list(pessoa$Cod_setor),FUN=sum, na.rm=TRUE)
+```
+
+```{r eval=FALSE}
+#para ver o arquivo
+View(pessoa_distr)
+```
+Agora sim, temos uma tabela com os 96 Distritos administrativos de São Paulo e os valores somados de cada variável. Vamos, então, corrigir os nomes das colunas.
+
+```{r }
+#para alterar os nomes das colunas de pessoa_distr
+names(pessoa_distr) <- c('ds_codigo', 'Total', 'Branca', 'Preta', 'Amarela', 'Parda', 'Indigena')
+#para verificar que a alteração foi feita
+names(pessoa_distr)
+class(pessoa_distr)
+```
+
+```{r eval=FALSE}
+View(pessoa_distr)
+```
+Observe que 'ds_codigo' em sp_distr tem apenas 1 dígito para os códigos menores do que 10 enquanto que 'ds_codigo' de pessoa_distr tem 2 dígitos para os códigos menores do que 10. Precisamos tornar estes campos iguais para que a união seja correta. Vamos usar o pacote `stringr` para isso.
+
+```{r }
+library(stringr)
+
+sp_distr <- sp_distr %>% 
+  mutate(ds_codigo = str_pad(ds_codigo, width=2,
+                             pad="0"))
+```
+
+Com a tabela compatível com o shapefile, podemos uni-los. Vamos chamar o novo objeto de "sp_pessoa_distr" e usar a função `left_join`, indicando o campo de união (ds_codigo). Uniremos o data.frame "pessoa_distr" ao objeto "sf" (simple feature) "sp_distr". Então, tranformamos o novo objeto em classe "sf" com a função `st_as_sf`.
+
+```{r }
+#para unir o arquivo shapefile com o dataframe
+sp_pessoa_distr <- sp_distr %>%
+  left_join(pessoa_distr, by = "ds_codigo") %>% 
+  st_as_sf()
+#para conferir os nomes das colunas
+names(sp_pessoa_distr)
+```
+
+```{r }
+#conferindo o tipo de objeto obtido
+head(sp_pessoa_distr)
+```
+
+## Definição dos pontos aleatórios
+
+A terceira etapa para a elaboração do mapa de densidade de pontos é a geração de um objeto de pontos definindo o valor de cada ponto. Se temos mais de 11 milhões de pessoas em São Paulo, um mapa com 11 milhões de pontos não ajudaria muito, pois eles cobririam todos os polígonos. Se cada ponto tiver o valor de 200 pessoas, teremos 55 mil pontos. Precisamos ficar atentos com os valores baixos da tabela. A população indígena varia de 16 a 1002 pessoas nos Distritos com menor e maior número, respectivamente. Ou seja, na divisão por 200, distritos com menos de 200 pessoas autodeclaradas indígenas vão ter 1 ponto devido a àproximação que será feita (superestimando valores baixos para evitar polígono com zero ponto desta etnia).
+```{r }
+# para gerar objeto do número de pontos para serem plotados para cada etnia (1 para cada 200 pessoas)
+num.pontos200 <- ceiling(select(as.data.frame(sp_pessoa_distr), Branca:Indigena) / 200)
+#para ver a classe do objeto criado
+class(num.pontos200)
+```
+Vamos olhar o objeto gerado.
+```{r }
+#para ver os nomes das colunas
+names(num.pontos200)
+```
+
+```{r eval=FALSE}
+#para visualizar a tabela
+View(num.pontos200)
+```
+A função `sapply` aplica o comando para todas as colunas. No caso, usamos `sapply` para ver a classe de todas as colunas.
+```{r }
+#para converter valores numéricos em inteiros ("integer")
+num.pontos200 <- num.pontos200 %>% 
+ mutate_if(is.numeric, as.integer)
+#para verificar as colunas e tipos de dados
+sapply(num.pontos200, class)
+```
+
+Agora vamos distribuir, de forma aleatória (random) os números de pontos gerados por polígono.
+```{r }
+#para gerar os pontos aleatórios em cada polígono: st_sample gera os pontos em cada polígono
+#st_cast lança o conjunto como "POINT"
+#st_coordinates extrai as coordenadas para uma matriz
+#converte como tibble
+#setNames define os nomes das colunas
+#cria a variável "Etnia"
+#map_df une cada tibble da Etnia em um
+pts <- map_df(names(num.pontos200),
+              ~ st_sample(sp_pessoa_distr, size = num.pontos200[,.x], type = "random") %>% 
+                    st_cast("POINT") %>%                                         
+                    st_coordinates() %>%                                         
+                    as_tibble() %>% 
+                    setNames(c("lon","lat")) %>%                                  
+                    mutate(Etnia = factor(.x, levels = names((num.pontos200))))        
+) 
+```
+Vamos definir as cores para cada etnia criando uma paleta de cores com o nome "pal". Tanto o nome das colunas quanto as cores devem estar entre aspas. Por ser um dado qualitativo, as cores devem ser bem diferentes, evitando ordenamento entre elas.
+```{r }
+#para definir as cores para cada etnia
+pal <- c("Branca" = "#0087DC", "Preta" = "#DC241F", "Amarela" = "#FCBB30", "Parda" = "#70147A", "Indigena" = "#78B943")
+```
+
+## Mapa de raça ou cor dos residentes do município de São Paulo
+
+Finalmente vamos elaborar o mapa adicionando as duas camadas: polígono com os Distritos Administrativos e camada de pontos segundo etnia. O mapa terá o fundo em preto, com os limites dos Distritos e textos em branco. A primeira camada (sp_pessoa_distr) será transparente com contorno branco. A segunda camada conterá a informação do objeto "pts" com os pontos aleatórios por polígono (cada ponto valendo 200 pessoas). As cores dos pontos se referem a cada etnia e são definidas pela paleta "pal". Definimos o CRS = 4989 (SIRGAS 2000). O tema será "theme_void" onde o tamanho da fonte será 30 pontos. `labs` define os textos para o título, subtítulo e nota de rodapé. `guides` define as cores da legenda e o tamanho. Por fim, `theme` define as cores do painel, posição da legenda, margens, cor dos textos e o tamanho da fonte da nota de rodapé. 
+```{r }
+head(sp_pessoa_distr)
+```
+
+```{r }
+p <- ggplot()+
+  geom_sf(data = sp_pessoa_distr, fill = "transparent", colour = "white")+
+  geom_point(data = pts, aes(lon, lat, colour = Etnia))+
+  scale_colour_manual(values = pal)+
+  coord_sf(crs = 31983)+
+  theme_void(base_family = "", base_size = 45)+
+  labs(x = NULL, y = NULL,
+       title = "Raça ou cor no município de São Paulo, Brasil",
+       subtitle = "1 ponto = 200 pessoas",
+       caption = "Fontes de dados: IBGE, Censo Demográfico 2010 | \n 
+       Elaborado por: @Ligiaviz")+
+  guides(colour = guide_legend(override.aes = list(size = 5)))+
+  theme(legend.position = c(1, 1.01), legend.direction = "horizontal",
+        plot.background = element_rect(fill = "#212121", color = NA), 
+        panel.background = element_rect(fill = "#212121", color = NA),
+        legend.background = element_rect(fill = "#212121", color = NA),
+        legend.key = element_rect(fill = "#212121", colour = NA),
+        plot.margin = margin(0.5, 0.5, 0.5, 0.5, "cm"),
+        text =  element_text(color = "white"),
+        title =  element_text(color = "white"),
+        plot.caption = element_text(size = 35, hjust = 1))+
+  ggspatial::annotation_scale(location = "br",
+                              text_cex= 2,
+                              text_col = "white",
+                              bar_cols = c("white", "white"),
+                              width_hint = 0.4,
+                              line_width = 0.5,
+                              height = unit(0.3,"cm"))
+```
+
+
+
+Vamos exportar no formato png com boa resolução.
+```{r }
+#para exportar o mapa como figura
+ggsave("etnia.png", plot = p, dpi = 320, width = 85, height = 70, units = "cm")
+```
+A figura exportada deverá ter a aparência a seguir.
+```{r echo=FALSE}
+knitr::include_graphics(rep("etnia.png"))
+```
+
+## Referências sugeridas
+
+**Grupos étnicos de Chicago**, desenvovido por [Bill Rankin (2009)](http://www.radicalcartography.net/index.html?chicagodots)
+
+**Votos em Londres, segundo partidos políticos**, [Tom Campbell](https://gist.github.com/PaulC91/9cc8551d5475620cb5c5d87ee1609257)
