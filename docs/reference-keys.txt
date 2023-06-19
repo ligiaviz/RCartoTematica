@@ -106,9 +106,8 @@ layout-do-mapa-coroplético-de-idhm-da-rmsp
 quanti4
 indo-além-proposta-de-exercício
 referências-sugeridas-3
-dados-quantitativos-a-partir-de-amostras-mapa-isarítmico
 referências-sugeridas-4
-mapa-de-fluxos-movimentos-no-espaço
-usando-dados-do-open-street-map
-anamorfose
-mapas-de-síntese
+quanti5
+osm
+anamorf
+sintese

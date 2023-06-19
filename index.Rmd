@@ -57,5 +57,3 @@ knitr::include_graphics(rep("88x31.png"))
 ```
 
 Este trabalho tem uma licença da [Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License](http://creativecommons.org/licenses/by-nc-nd/4.0/)
-
-
