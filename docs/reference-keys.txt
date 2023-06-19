@@ -57,6 +57,7 @@ matrizes
 cálculos-em-matrizes
 seleção-em-matrizes
 fatores
+referências-citadas
 dataframes
 criação-de-dataframe
 importação-de-um-dataframe
@@ -96,6 +97,8 @@ definição-dos-pontos-aleatórios
 mapa-de-raça-ou-cor-dos-residentes-do-município-de-são-paulo
 referências-sugeridas-2
 quanti3
+bancos-de-dados
+mapas-coropléticos
 o-número-de-classes
 os-intervalos-de-classes
 escalacores
@@ -103,3 +106,9 @@ layout-do-mapa-coroplético-de-idhm-da-rmsp
 quanti4
 indo-além-proposta-de-exercício
 referências-sugeridas-3
+dados-quantitativos-a-partir-de-amostras-mapa-isarítmico
+referências-sugeridas-4
+mapa-de-fluxos-movimentos-no-espaço
+usando-dados-do-open-street-map
+anamorfose
+mapas-de-síntese

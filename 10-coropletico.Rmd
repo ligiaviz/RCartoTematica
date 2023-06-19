@@ -36,7 +36,7 @@ library(tmap)
 library(RColorBrewer)
 ```
 
-##Bancos de dados
+## Bancos de dados
 
 O arquivo shapefile das UDHs está disponível de forma compactada junto com os indicadores por RM no sítio do Atlas Brasil. Como em capítulos anteriores, faremos o download do arquivo zip após a identificação da url dos dados. Para baixar os dados, usaremos a função `download.file` do pacote **R.utils**.
 
@@ -117,7 +117,7 @@ names(udh_dados_rmsp)
 #conferindo o tipo de objeto obtido
 head(udh_dados_rmsp)
 ```
-##Mapas coropléticos
+## Mapas coropléticos
 
 Existem decisões importantes quando vamos fazer um mapa coroplético:
 

@@ -48,5 +48,3 @@ Se você estiver usando o sistema operacional Windows, instale também o **RTool
 1. Vá para https://cran.r-project.org/, clique em *‘Download R for Windows’*, então em *‘Rtools’*, e selecione a versão mais atual do **RTools** para *download*.
 
 2. Depois que o *download* tiver sido feito, rode o instalador. Selecione todas as opções padrão.
-
-

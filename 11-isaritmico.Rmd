@@ -1,0 +1,7 @@
+# Dados quantitativos a partir de amostras: mapa isarítmico
+
+Algumas informações com referência espacial são obtidas a partir de amostras distribuídas no espaço. Tais amostras podem ser pontuais e até mesmo lineares, tais como curvas de nível com valores de altitude ou batimetria. As amostras de pontos são mais comuns e incluem medidas de variáveis atmosféricas, de poluição do ar, amostras de solo, entre outras. Muitas vezes temos interesse em visualizar os valores em área não amostrada, sendo possível recorrermos a modelos matemáticos para gerar interpolações dos valores entre os pontos amostrados, resultando em uma superfície contínua. O mapa resultante é do tipo isarítmico.
+
+**Capítulo em elaboração**
+
+## Referências sugeridas

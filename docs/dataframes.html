@@ -23,7 +23,6 @@
 <meta name="author" content="Ligia Vizeu Barrozo" />
 
 
-<meta name="date" content="2023-06-18" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -52,16 +51,6 @@
 <link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
 <link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
 <script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
-<script src="libs/htmlwidgets-1.6.2/htmlwidgets.js"></script>
-<link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
-<script src="libs/leaflet-1.3.1/leaflet.js"></script>
-<link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
-<script src="libs/proj4-2.6.2/proj4.min.js"></script>
-<script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
-<link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
-<script src="libs/leaflet-binding-2.1.2/leaflet.js"></script>
-<script src="libs/leaflet-providers-1.9.0/leaflet-providers_1.9.0.js"></script>
-<script src="libs/leaflet-providers-plugin-2.1.2/leaflet-providers-plugin.js"></script>
 
 
 <style type="text/css">
@@ -180,6 +169,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="2.9" data-path="básico-do-básico-do-r-e-rstudio.html"><a href="básico-do-básico-do-r-e-rstudio.html#cálculos-em-matrizes"><i class="fa fa-check"></i><b>2.9</b> Cálculos em Matrizes</a></li>
 <li class="chapter" data-level="2.10" data-path="básico-do-básico-do-r-e-rstudio.html"><a href="básico-do-básico-do-r-e-rstudio.html#seleção-em-matrizes"><i class="fa fa-check"></i><b>2.10</b> Seleção em Matrizes</a></li>
 <li class="chapter" data-level="2.11" data-path="básico-do-básico-do-r-e-rstudio.html"><a href="básico-do-básico-do-r-e-rstudio.html#fatores"><i class="fa fa-check"></i><b>2.11</b> Fatores</a></li>
+<li class="chapter" data-level="2.12" data-path="básico-do-básico-do-r-e-rstudio.html"><a href="básico-do-básico-do-r-e-rstudio.html#referências-citadas"><i class="fa fa-check"></i><b>2.12</b> Referências citadas</a></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="dataframes.html"><a href="dataframes.html"><i class="fa fa-check"></i><b>3</b> Dataframes</a>
 <ul>
@@ -213,7 +203,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="6.3" data-path="quali1.html"><a href="quali1.html#projeção-cartográfica"><i class="fa fa-check"></i><b>6.3</b> Projeção cartográfica</a></li>
 <li class="chapter" data-level="6.4" data-path="quali1.html"><a href="quali1.html#iniciando-com-o-ggplot2"><i class="fa fa-check"></i><b>6.4</b> Iniciando com o ggplot2</a></li>
 <li class="chapter" data-level="6.5" data-path="quali1.html"><a href="quali1.html#biomas-do-brasil"><i class="fa fa-check"></i><b>6.5</b> Biomas do Brasil</a></li>
-<li class="chapter" data-level="" data-path="quali1.html"><a href="quali1.html#referências-citadas"><i class="fa fa-check"></i>Referências citadas</a></li>
+<li class="chapter" data-level="" data-path="quali1.html"><a href="quali1.html#referências-citadas-1"><i class="fa fa-check"></i>Referências citadas</a></li>
 </ul></li>
 <li class="chapter" data-level="7" data-path="quali2.html"><a href="quali2.html"><i class="fa fa-check"></i><b>7</b> Dados qualitativos: mapa corocromático ordinal</a>
 <ul>
@@ -236,16 +226,28 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="10" data-path="quanti3.html"><a href="quanti3.html"><i class="fa fa-check"></i><b>10</b> Dados quantitativos relativos: mapa coroplético</a>
 <ul>
-<li class="chapter" data-level="10.0.1" data-path="quanti3.html"><a href="quanti3.html#o-número-de-classes"><i class="fa fa-check"></i><b>10.0.1</b> O número de classes</a></li>
-<li class="chapter" data-level="10.0.2" data-path="quanti3.html"><a href="quanti3.html#os-intervalos-de-classes"><i class="fa fa-check"></i><b>10.0.2</b> Os intervalos de classes</a></li>
-<li class="chapter" data-level="10.0.3" data-path="quanti3.html"><a href="quanti3.html#escalacores"><i class="fa fa-check"></i><b>10.0.3</b> A escala de cores</a></li>
-<li class="chapter" data-level="10.1" data-path="quanti3.html"><a href="quanti3.html#layout-do-mapa-coroplético-de-idhm-da-rmsp"><i class="fa fa-check"></i><b>10.1</b> Layout do mapa coroplético de IDHM da RMSP</a></li>
+<li class="chapter" data-level="10.1" data-path="quanti3.html"><a href="quanti3.html#bancos-de-dados"><i class="fa fa-check"></i><b>10.1</b> Bancos de dados</a></li>
+<li class="chapter" data-level="10.2" data-path="quanti3.html"><a href="quanti3.html#mapas-coropléticos"><i class="fa fa-check"></i><b>10.2</b> Mapas coropléticos</a>
+<ul>
+<li class="chapter" data-level="10.2.1" data-path="quanti3.html"><a href="quanti3.html#o-número-de-classes"><i class="fa fa-check"></i><b>10.2.1</b> O número de classes</a></li>
+<li class="chapter" data-level="10.2.2" data-path="quanti3.html"><a href="quanti3.html#os-intervalos-de-classes"><i class="fa fa-check"></i><b>10.2.2</b> Os intervalos de classes</a></li>
+<li class="chapter" data-level="10.2.3" data-path="quanti3.html"><a href="quanti3.html#escalacores"><i class="fa fa-check"></i><b>10.2.3</b> A escala de cores</a></li>
+</ul></li>
+<li class="chapter" data-level="10.3" data-path="quanti3.html"><a href="quanti3.html#layout-do-mapa-coroplético-de-idhm-da-rmsp"><i class="fa fa-check"></i><b>10.3</b> Layout do mapa coroplético de IDHM da RMSP</a></li>
 </ul></li>
 <li class="chapter" data-level="11" data-path="quanti4.html"><a href="quanti4.html"><i class="fa fa-check"></i><b>11</b> Mapa coroplético interativo</a>
 <ul>
 <li class="chapter" data-level="11.1" data-path="quanti4.html"><a href="quanti4.html#indo-além-proposta-de-exercício"><i class="fa fa-check"></i><b>11.1</b> Indo além: Proposta de exercício</a></li>
 <li class="chapter" data-level="11.2" data-path="quanti4.html"><a href="quanti4.html#referências-sugeridas-3"><i class="fa fa-check"></i><b>11.2</b> Referências sugeridas</a></li>
 </ul></li>
+<li class="chapter" data-level="12" data-path="dados-quantitativos-a-partir-de-amostras-mapa-isarítmico.html"><a href="dados-quantitativos-a-partir-de-amostras-mapa-isarítmico.html"><i class="fa fa-check"></i><b>12</b> Dados quantitativos a partir de amostras: mapa isarítmico</a>
+<ul>
+<li class="chapter" data-level="12.1" data-path="dados-quantitativos-a-partir-de-amostras-mapa-isarítmico.html"><a href="dados-quantitativos-a-partir-de-amostras-mapa-isarítmico.html#referências-sugeridas-4"><i class="fa fa-check"></i><b>12.1</b> Referências sugeridas</a></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="mapa-de-fluxos-movimentos-no-espaço.html"><a href="mapa-de-fluxos-movimentos-no-espaço.html"><i class="fa fa-check"></i><b>13</b> Mapa de fluxos: movimentos no espaço</a></li>
+<li class="chapter" data-level="14" data-path="usando-dados-do-open-street-map.html"><a href="usando-dados-do-open-street-map.html"><i class="fa fa-check"></i><b>14</b> Usando dados do Open Street Map</a></li>
+<li class="chapter" data-level="15" data-path="anamorfose.html"><a href="anamorfose.html"><i class="fa fa-check"></i><b>15</b> Anamorfose</a></li>
+<li class="chapter" data-level="16" data-path="mapas-de-síntese.html"><a href="mapas-de-síntese.html"><i class="fa fa-check"></i><b>16</b> Mapas de síntese</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 </ul>
@@ -341,20 +343,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## 4  3500303               Aguaí                      686
 ## 5  3500402      Águas da Prata                      686
 ## 6  3500501    Águas de Lindóia                      686
-##            reg_administrativa       reg_metropolitanas cod_ibge6
-## 1    Estado sem especificação Estado sem especificação    350000
-## 2   RA de Presidente Prudente        Demais municípios    350010
-## 3 RA de São José do Rio Preto RM São José do Rio Preto    350020
-## 4              RA de Campinas        Demais municípios    350030
-## 5              RA de Campinas        Demais municípios    350040
-## 6              RA de Campinas        Demais municípios    350050
-##                    pop2020             porte_pop2020
-## 1 Estado sem especificação  Estado sem especificação
-## 2                    33894 Mais de 20 mil até 50 mil
-## 3                     3447                 Até 5 mil
-## 4                    35608 Mais de 20 mil até 50 mil
-## 5                     7797  Mais de 5 mil até 10 mil
-## 6                    18374 Mais de 10 mil até 20 mil
+##            reg_administrativa       reg_metropolitanas
+## 1    Estado sem especificação Estado sem especificação
+## 2   RA de Presidente Prudente        Demais municípios
+## 3 RA de São José do Rio Preto RM São José do Rio Preto
+## 4              RA de Campinas        Demais municípios
+## 5              RA de Campinas        Demais municípios
+## 6              RA de Campinas        Demais municípios
+##   cod_ibge6                  pop2020             porte_pop2020
+## 1    350000 Estado sem especificação  Estado sem especificação
+## 2    350010                    33894 Mais de 20 mil até 50 mil
+## 3    350020                     3447                 Até 5 mil
+## 4    350030                    35608 Mais de 20 mil até 50 mil
+## 5    350040                     7797  Mais de 5 mil até 10 mil
+## 6    350050                    18374 Mais de 10 mil até 20 mil
 ##                    cod_drs                      drs
 ## 1 Estado sem especificação Estado sem especificação
 ## 2                        5                  Marília

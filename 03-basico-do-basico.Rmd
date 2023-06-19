@@ -42,6 +42,8 @@ A utilização da função **help** auxilia enormemente a compreensão das funç
 
 ## Tipos de objetos
 
+Uma referência bastante interessante para a estruturação deste capítulo é o DataCamp, a primeira plataforma de aprendizado on-line para Ciência de Dados. Os cursos são ministrados em inglês e fornecem a base necessária para a compreensão dos tipos de objetos e manipulação de dados (DataCamp, 2023).
+
 A forma mais simples de utilização do **R** é como uma calculadora. Vamos fazer um teste: digite na área do script **3 + 4**. Selecione esta linha digitada e rode (pressione a tecla Ctrl ao mesmo tempo em que digita a tecla Enter). 
 
 ```{r }
@@ -68,9 +70,13 @@ No caso, o objeto obtido foi do tipo "double". Se você atribuir a **x** um outr
 Todos os objetos têm dois atributos intrínsecos: modo (mode) e comprimento (length).
 
 No **R**, os tipos de dados que são inseridos nos objetos são divididos em:
+
 - **numeric**: armazena números no formato "integer" (inteiro) ou "double" (reais);
+
 - **character**: armazena dados categóricos ou qualitativos por meio de caracteres (variáveis de texto);
+
 - **logical**: armazena variáveis que assumem os valores "FALSE" (falso) ou "TRUE" (verdadeiro). Variáveis lógicas são conhecidas como "booleanas" porque é um tipo de dado lógico que pode ter apenas um de dois valores possíveis: verdadeiro ou falso;
+
 - **complex**: relacionados ao número imaginário "i".
 
 Quando um número aparece entre aspas (simples ou dupla), o objeto é atribuído a um tipo "character". Vejamos alguns exemplos:
@@ -585,3 +591,14 @@ Verifique se 'vuln6' é maior do que 'vuln2'.
 #para verificar se vuln6 é maior do que vuln2
 vuln6 > vuln2
 ```
+
+## Referências citadas
+
+AQUINO, J.A. **R para cientistas sociais**. Ilhéus: Editora da UESC, 2014. 167p.
+
+DATACAMP. 2023. Cornelissen, J. **Introduction to R**. On-line Course.
+
+DATACAMP. 2023. Robinson, D. **Introduction to the Tidyverse**. On-line Course.
+
+DATACAMP. 2023. Chapman, J. **Data manipulation with Dplyr**. On-line Course.
+

@@ -1,7 +1,7 @@
 --- 
 title: "Cartografia Temática em R para estudantes de Geografia"
 author: "Ligia Vizeu Barrozo"
-date: "`r Sys.Date()`"
+date: "06-18-2023"
 site: bookdown::bookdown_site
 ---
 # Apresentação {-}
@@ -44,9 +44,13 @@ Ligia Vizeu Barrozo
 Professora Titular, Departamento de Geografia, da 
 Fac. de Filosofia, Letras e Ciências Humanas
 
+e-mail: lija@usp.br
+
 **Universidade de São Paulo - USP**
 
-e-mail: lija@usp.br
+Pesquisadora Visitante, *Big Data Analytics*
+
+**Hospital Israelita Albert Einstein**
 
 ```{r echo=FALSE, out.width='20%'}
 knitr::include_graphics(rep("88x31.png"))
