@@ -1,3 +1,12 @@
 # Usando dados do Open Street Map {#osm}
 
 **Capítulo em elaboração**
+
+```{r eval=FALSE}
+install.packages(osmdata)
+```
+
+```{r }
+library(osmdata)
+```
+

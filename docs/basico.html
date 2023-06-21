@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title> 2 Básico do básico do R e RStudio | Cartografia Temática em R para estudantes de Geografia</title>
+  <meta name="description" content=" 2 Básico do básico do R e RStudio | Cartografia Temática em R para estudantes de Geografia" />
+  <meta name="generator" content="bookdown 0.34 and GitBook 2.6.7" />
+
+  <meta property="og:title" content=" 2 Básico do básico do R e RStudio | Cartografia Temática em R para estudantes de Geografia" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content=" 2 Básico do básico do R e RStudio | Cartografia Temática em R para estudantes de Geografia" />
+  
+  
+  
+
+<meta name="author" content="Ligia Vizeu Barrozo" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="intro.html"/>
+<link rel="next" href="dataframes.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">R Carto Tem Geo</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Apresentação</a>
+<ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#referência-citada"><i class="fa fa-check"></i>Referência citada</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="sobre-o-livro.html"><a href="sobre-o-livro.html"><i class="fa fa-check"></i>Sobre o livro</a></li>
+<li class="chapter" data-level="" data-path="agradecimentos.html"><a href="agradecimentos.html"><i class="fa fa-check"></i>Agradecimentos</a></li>
+<li class="chapter" data-level="1" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>1</b> Introdução</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="intro.html"><a href="intro.html#o-programa-r"><i class="fa fa-check"></i><b>1.1</b> O programa R</a></li>
+<li class="chapter" data-level="1.2" data-path="intro.html"><a href="intro.html#instalação-do-r-e-rstudio"><i class="fa fa-check"></i><b>1.2</b> Instalação do R e RStudio</a>
+<ul>
+<li class="chapter" data-level="1.2.1" data-path="intro.html"><a href="intro.html#instalação-do-r-para-windows"><i class="fa fa-check"></i><b>1.2.1</b> Instalação do R para Windows</a></li>
+<li class="chapter" data-level="1.2.2" data-path="intro.html"><a href="intro.html#instalação-do-r-para-mac"><i class="fa fa-check"></i><b>1.2.2</b> Instalação do R para Mac</a></li>
+<li class="chapter" data-level="1.2.3" data-path="intro.html"><a href="intro.html#instalação-do-rstudio"><i class="fa fa-check"></i><b>1.2.3</b> Instalação do RStudio</a></li>
+<li class="chapter" data-level="1.2.4" data-path="intro.html"><a href="intro.html#instalação-do-rtools"><i class="fa fa-check"></i><b>1.2.4</b> Instalação do RTools</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="basico.html"><a href="basico.html"><i class="fa fa-check"></i><b>2</b> Básico do básico do R e RStudio</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="basico.html"><a href="basico.html#os-paineis"><i class="fa fa-check"></i><b>2.1</b> Os paineis</a></li>
+<li class="chapter" data-level="2.2" data-path="basico.html"><a href="basico.html#tipos-de-objetos"><i class="fa fa-check"></i><b>2.2</b> Tipos de objetos</a></li>
+<li class="chapter" data-level="2.3" data-path="basico.html"><a href="basico.html#estrutura-dos-dados"><i class="fa fa-check"></i><b>2.3</b> Estrutura dos dados</a></li>
+<li class="chapter" data-level="2.4" data-path="basico.html"><a href="basico.html#vetores"><i class="fa fa-check"></i><b>2.4</b> Vetores</a></li>
+<li class="chapter" data-level="2.5" data-path="basico.html"><a href="basico.html#nomeando-os-vetores"><i class="fa fa-check"></i><b>2.5</b> Nomeando os vetores</a></li>
+<li class="chapter" data-level="2.6" data-path="basico.html"><a href="basico.html#seleção-em-vetores"><i class="fa fa-check"></i><b>2.6</b> Seleção em vetores</a></li>
+<li class="chapter" data-level="2.7" data-path="basico.html"><a href="basico.html#totais-e-médias-em-vetores"><i class="fa fa-check"></i><b>2.7</b> Totais e médias em vetores</a></li>
+<li class="chapter" data-level="2.8" data-path="basico.html"><a href="basico.html#matrizes"><i class="fa fa-check"></i><b>2.8</b> Matrizes</a></li>
+<li class="chapter" data-level="2.9" data-path="basico.html"><a href="basico.html#cálculos-em-matrizes"><i class="fa fa-check"></i><b>2.9</b> Cálculos em Matrizes</a></li>
+<li class="chapter" data-level="2.10" data-path="basico.html"><a href="basico.html#seleção-em-matrizes"><i class="fa fa-check"></i><b>2.10</b> Seleção em Matrizes</a></li>
+<li class="chapter" data-level="2.11" data-path="basico.html"><a href="basico.html#fatores"><i class="fa fa-check"></i><b>2.11</b> Fatores</a></li>
+<li class="chapter" data-level="2.12" data-path="basico.html"><a href="basico.html#referências-citadas"><i class="fa fa-check"></i><b>2.12</b> Referências citadas</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="dataframes.html"><a href="dataframes.html"><i class="fa fa-check"></i><b>3</b> Dataframes</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="dataframes.html"><a href="dataframes.html#criação-de-dataframe"><i class="fa fa-check"></i><b>3.1</b> Criação de dataframe</a></li>
+<li class="chapter" data-level="3.2" data-path="dataframes.html"><a href="dataframes.html#importação-de-um-dataframe"><i class="fa fa-check"></i><b>3.2</b> Importação de um dataframe</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="tidyverse.html"><a href="tidyverse.html"><i class="fa fa-check"></i><b>4</b> Básico do Tidyverse</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="tidyverse.html"><a href="tidyverse.html#o-operador-pipe-no-tidyverse"><i class="fa fa-check"></i><b>4.1</b> O operador Pipe no tidyverse</a></li>
+<li class="chapter" data-level="4.2" data-path="tidyverse.html"><a href="tidyverse.html#selecionando-colunas"><i class="fa fa-check"></i><b>4.2</b> Selecionando colunas</a></li>
+<li class="chapter" data-level="4.3" data-path="tidyverse.html"><a href="tidyverse.html#combinando-dataframes"><i class="fa fa-check"></i><b>4.3</b> Combinando dataframes</a></li>
+<li class="chapter" data-level="4.4" data-path="tidyverse.html"><a href="tidyverse.html#filtrando-observações"><i class="fa fa-check"></i><b>4.4</b> Filtrando observações</a></li>
+<li class="chapter" data-level="4.5" data-path="tidyverse.html"><a href="tidyverse.html#organizando-uma-tabela-com-a-função-arrange"><i class="fa fa-check"></i><b>4.5</b> Organizando uma tabela com a função <code>arrange()</code></a></li>
+<li class="chapter" data-level="4.6" data-path="tidyverse.html"><a href="tidyverse.html#o-verbo-mutate"><i class="fa fa-check"></i><b>4.6</b> O verbo “mutate”</a></li>
+<li class="chapter" data-level="4.7" data-path="tidyverse.html"><a href="tidyverse.html#agrupando-dados-com-a-função-group_by"><i class="fa fa-check"></i><b>4.7</b> Agrupando dados com a função <code>group_by</code></a></li>
+<li class="chapter" data-level="4.8" data-path="tidyverse.html"><a href="tidyverse.html#rumo-aos-mapas"><i class="fa fa-check"></i><b>4.8</b> Rumo aos mapas</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="tipos.html"><a href="tipos.html"><i class="fa fa-check"></i><b>5</b> Tipos de dados, conceitos e representação cartográfica</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="tipos.html"><a href="tipos.html#definição-do-tipo-de-representação-cartográfica"><i class="fa fa-check"></i><b>5.1</b> Definição do tipo de representação cartográfica</a></li>
+<li class="chapter" data-level="5.2" data-path="tipos.html"><a href="tipos.html#variáveis-visuais"><i class="fa fa-check"></i><b>5.2</b> Variáveis visuais</a></li>
+<li class="chapter" data-level="5.3" data-path="tipos.html"><a href="tipos.html#o-conceito-diversidade"><i class="fa fa-check"></i><b>5.3</b> O conceito <em>diversidade</em></a></li>
+<li class="chapter" data-level="5.4" data-path="tipos.html"><a href="tipos.html#o-conceito-ordem"><i class="fa fa-check"></i><b>5.4</b> O conceito <em>ordem</em></a></li>
+<li class="chapter" data-level="5.5" data-path="tipos.html"><a href="tipos.html#o-conceito-de-proporcionalidade"><i class="fa fa-check"></i><b>5.5</b> O conceito de <em>proporcionalidade</em></a></li>
+<li class="chapter" data-level="5.6" data-path="tipos.html"><a href="tipos.html#referências-sugeridas"><i class="fa fa-check"></i><b>5.6</b> Referências sugeridas</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="quali1.html"><a href="quali1.html"><i class="fa fa-check"></i><b>6</b> Dados qualitativos: mapa corocromático nominal</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="quali1.html"><a href="quali1.html#instalando-e-carregando-pacotes-do-r"><i class="fa fa-check"></i><b>6.1</b> Instalando e carregando pacotes do R</a></li>
+<li class="chapter" data-level="6.2" data-path="quali1.html"><a href="quali1.html#o-pacote-geobr"><i class="fa fa-check"></i><b>6.2</b> O pacote geobr</a></li>
+<li class="chapter" data-level="6.3" data-path="quali1.html"><a href="quali1.html#projeção-cartográfica"><i class="fa fa-check"></i><b>6.3</b> Projeção cartográfica</a></li>
+<li class="chapter" data-level="6.4" data-path="quali1.html"><a href="quali1.html#iniciando-com-o-ggplot2"><i class="fa fa-check"></i><b>6.4</b> Iniciando com o ggplot2</a></li>
+<li class="chapter" data-level="6.5" data-path="quali1.html"><a href="quali1.html#biomas-do-brasil"><i class="fa fa-check"></i><b>6.5</b> Biomas do Brasil</a></li>
+<li class="chapter" data-level="" data-path="quali1.html"><a href="quali1.html#referências-citadas-1"><i class="fa fa-check"></i>Referências citadas</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="quali2.html"><a href="quali2.html"><i class="fa fa-check"></i><b>7</b> Dados qualitativos: mapa corocromático ordinal</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="quali2.html"><a href="quali2.html#banco-de-dados"><i class="fa fa-check"></i><b>7.1</b> Banco de dados</a></li>
+<li class="chapter" data-level="7.2" data-path="quali2.html"><a href="quali2.html#potencial-de-agressividade-climática-na-amazônia-legal-do-brasil"><i class="fa fa-check"></i><b>7.2</b> Potencial de agressividade climática na Amazônia Legal do Brasil</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="quanti1.html"><a href="quanti1.html"><i class="fa fa-check"></i><b>8</b> Dados quantitativos absolutos: mapa das figuras geométricas proporcionais</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="quanti1.html"><a href="quanti1.html#bases-de-dados"><i class="fa fa-check"></i><b>8.1</b> Bases de dados</a></li>
+<li class="chapter" data-level="8.2" data-path="quanti1.html"><a href="quanti1.html#centroides-dos-municípios"><i class="fa fa-check"></i><b>8.2</b> Centroides dos municípios</a></li>
+<li class="chapter" data-level="8.3" data-path="quanti1.html"><a href="quanti1.html#mapa-da-população-do-estado-de-são-paulo"><i class="fa fa-check"></i><b>8.3</b> Mapa da população do estado de São Paulo</a></li>
+<li class="chapter" data-level="8.4" data-path="quanti1.html"><a href="quanti1.html#referências-sugeridas-1"><i class="fa fa-check"></i><b>8.4</b> Referências sugeridas</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="quanti2.html"><a href="quanti2.html"><i class="fa fa-check"></i><b>9</b> Dados quantitativos absolutos: mapa dos pontos de contagem (ou densidade de pontos)</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="quanti2.html"><a href="quanti2.html#bases-de-dados-1"><i class="fa fa-check"></i><b>9.1</b> Bases de dados</a></li>
+<li class="chapter" data-level="9.2" data-path="quanti2.html"><a href="quanti2.html#definição-dos-pontos-aleatórios"><i class="fa fa-check"></i><b>9.2</b> Definição dos pontos aleatórios</a></li>
+<li class="chapter" data-level="9.3" data-path="quanti2.html"><a href="quanti2.html#mapa-de-raça-ou-cor-dos-residentes-do-município-de-são-paulo"><i class="fa fa-check"></i><b>9.3</b> Mapa de raça ou cor dos residentes do município de São Paulo</a></li>
+<li class="chapter" data-level="9.4" data-path="quanti2.html"><a href="quanti2.html#referências-sugeridas-2"><i class="fa fa-check"></i><b>9.4</b> Referências sugeridas</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="quanti3.html"><a href="quanti3.html"><i class="fa fa-check"></i><b>10</b> Dados quantitativos relativos: mapa coroplético</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="quanti3.html"><a href="quanti3.html#bancos-de-dados"><i class="fa fa-check"></i><b>10.1</b> Bancos de dados</a></li>
+<li class="chapter" data-level="10.2" data-path="quanti3.html"><a href="quanti3.html#mapas-coropléticos"><i class="fa fa-check"></i><b>10.2</b> Mapas coropléticos</a>
+<ul>
+<li class="chapter" data-level="10.2.1" data-path="quanti3.html"><a href="quanti3.html#o-número-de-classes"><i class="fa fa-check"></i><b>10.2.1</b> O número de classes</a></li>
+<li class="chapter" data-level="10.2.2" data-path="quanti3.html"><a href="quanti3.html#histogramas-das-variáveis"><i class="fa fa-check"></i><b>10.2.2</b> Histogramas das variáveis</a></li>
+<li class="chapter" data-level="10.2.3" data-path="quanti3.html"><a href="quanti3.html#os-intervalos-de-classes"><i class="fa fa-check"></i><b>10.2.3</b> Os intervalos de classes</a></li>
+<li class="chapter" data-level="10.2.4" data-path="quanti3.html"><a href="quanti3.html#escalacores"><i class="fa fa-check"></i><b>10.2.4</b> A escala de cores</a></li>
+</ul></li>
+<li class="chapter" data-level="10.3" data-path="quanti3.html"><a href="quanti3.html#layout-do-mapa-coroplético-de-idhm-da-rmsp"><i class="fa fa-check"></i><b>10.3</b> Layout do mapa coroplético de IDHM da RMSP</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="quanti4.html"><a href="quanti4.html"><i class="fa fa-check"></i><b>11</b> Mapa coroplético interativo</a>
+<ul>
+<li class="chapter" data-level="11.1" data-path="quanti4.html"><a href="quanti4.html#indo-além-proposta-de-exercício"><i class="fa fa-check"></i><b>11.1</b> Indo além: Proposta de exercício</a></li>
+<li class="chapter" data-level="11.2" data-path="quanti4.html"><a href="quanti4.html#referências-sugeridas-3"><i class="fa fa-check"></i><b>11.2</b> Referências sugeridas</a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="quanti5.html"><a href="quanti5.html"><i class="fa fa-check"></i><b>12</b> Dados quantitativos a partir de amostras: mapa isarítmico</a>
+<ul>
+<li class="chapter" data-level="12.1" data-path="quanti5.html"><a href="quanti5.html#referências-sugeridas-4"><i class="fa fa-check"></i><b>12.1</b> Referências sugeridas</a></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="quanti6.html"><a href="quanti6.html"><i class="fa fa-check"></i><b>13</b> Mapa de fluxos: movimentos no espaço</a></li>
+<li class="chapter" data-level="14" data-path="osm.html"><a href="osm.html"><i class="fa fa-check"></i><b>14</b> Usando dados do Open Street Map</a></li>
+<li class="chapter" data-level="15" data-path="anamorf.html"><a href="anamorf.html"><i class="fa fa-check"></i><b>15</b> Anamorfose</a></li>
+<li class="chapter" data-level="16" data-path="sintese.html"><a href="sintese.html"><i class="fa fa-check"></i><b>16</b> Mapas de síntese</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Cartografia Temática em R para estudantes de Geografia</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="basico" class="section level1 hasAnchor" number="2">
+<h1><span class="header-section-number"> 2</span> Básico do básico do R e RStudio<a href="basico.html#basico" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="os-paineis" class="section level2 hasAnchor" number="2.1">
+<h2><span class="header-section-number">2.1</span> Os paineis<a href="basico.html#os-paineis" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Ao abrir o <strong>RStudio</strong> você encontrará os seguintes paineis (Figura <a href="basico.html#fig:console">2.1</a>).</p>
+<div class="figure"><span style="display:block;" id="fig:console"></span>
+<img src="console.jpg" alt="Tela do RStudio" width="80%" />
+<p class="caption">
+Figure 2.1: Tela do RStudio
+</p>
+</div>
+<p>O painel “console” é o <strong>R</strong> propriamente dito; onde você pode digitar os comandos e executá-los diretamente. As outras janelas são opcionais existentes no <strong>RStudio</strong> para facilitar as tarefas. É recomendado utilizar o painel de Editor de Texto (ou script) pois você pode digitar comentários sobre os comandos para que possa se recordar futuramente ou para que outra pessoa possa compreender o raciocínio percorrido. Para abrir um script, use o menu <strong>File/New file/R script</strong>. Desta forma, terá uma tela como a da Figura <a href="basico.html#fig:script">2.2</a>.</p>
+<div class="figure"><span style="display:block;" id="fig:script"></span>
+<img src="script.jpg" alt="Tela do script" width="80%" />
+<p class="caption">
+Figure 2.2: Tela do script
+</p>
+</div>
+<p>O script permite a digitação de um texto sem formatação, como no Bloco de Notas do Windows. No lado direito, encontramos o painel “Environment” (ou Ambiente, em português) onde são listados os objetos e funções da sessão corrente. No lado inferior direito existe o navegador de arquivos entre outras guias que serão vistas no decorrer das atividades. O navegador de arquivos funciona como o “Explorer” do Windows, onde você pode apagar, renomear e gerenciar os arquivos.</p>
+<p>O script do RStudio apresenta algumas funcionalidades muito úteis, tais como a conclusão do código. Ao digitar parte de um código, opções de códigos semelhantes surgirão e poderão ser completados ao se utilizar a tecla <strong>Tab</strong>. Além deste, o <strong>RStudio</strong> também armazena a história dos comandos. Assim, usando as teclas com as setas para cima ou para baixo, você pode navegar nos comandos anteriores.</p>
+<p>O <strong>R</strong> é um programa de linha de comando, ou seja, após abri-lo, digitamos o código no <em>script</em>. Para executá-lo, você pode selecionar a linha digitada e as teclas <strong>Ctrl+Enter</strong> para enviar a linha para o seu interpretador. Ou pode usar o comando <strong>Run</strong> que fica na barra de cima do script. Todos os códigos do <strong>R</strong> são baseados em inglês e seus nomes, normalmente, dão dicas a respeito do seu uso.</p>
+<p>O símbolo <strong>&gt;</strong> no início da última linha exibida no console chama-se <em>prompt</em> e indica que o <strong>R</strong> está pronto para receber comandos.
+Todos as funções terminam com (). Quando quiser fechar o <strong>R</strong>, utilize a função <strong>quit()</strong>. O programa lhe perguntará se quer salvar a área de trabalho. Escolha “Yes” se quiser continuar o trabalho da próxima vez que abrir o <strong>R</strong> na mesma pasta. Os objetos criados serão salvos no arquivo <strong>.RData</strong> e o histórico de todos os comandos digitados no arquivo <strong>.Rhistory</strong>. Se quiser sair sem salvar a área de trabalho e o histórico, escolha “No”. O comando <strong>quit()</strong> possui uma versão mais curta <strong>q()</strong>.</p>
+<p>A acentuação no <strong>R</strong> pode ficar com caracteres estranhos devido à incompatibilidade com a língua portuguesa. Para resolver este problema, vamos ajustar para português.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="basico.html#cb1-1" tabindex="-1"></a><span class="co">#para ajustar a língua para portugues usando a função</span></span>
+<span id="cb1-2"><a href="basico.html#cb1-2" tabindex="-1"></a><span class="fu">Sys.setlocale</span>(<span class="at">category =</span> <span class="st">&quot;LC_ALL&quot;</span>, <span class="at">locale =</span> <span class="st">&quot;pt_BR.UTF-8&quot;</span>)</span></code></pre></div>
+<pre><code>## [1] &quot;LC_COLLATE=pt_BR.UTF-8;LC_CTYPE=pt_BR.UTF-8;LC_MONETARY=pt_BR.UTF-8;LC_NUMERIC=C;LC_TIME=pt_BR.UTF-8&quot;</code></pre>
+<p>Neste livro, os comandos a serem digitados no script do <strong>R</strong> estão coloridos de forma a facilitar a sua interpretação. Os resultados dos comandos impressos no console do <strong>R</strong> são exibidos aqui precedidos do símbolo <strong>##</strong> e de <strong>[1]</strong> (indica o primeiro elemento requerido). Por exemplo, ao digitar no <em>script</em> do <strong>R</strong> a primeira linha, a segunda será exibida no console:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="basico.html#cb3-1" tabindex="-1"></a><span class="st">&quot;Olá geógraf@s&quot;</span></span></code></pre></div>
+<pre><code>## [1] &quot;Olá geógraf@s&quot;</code></pre>
+<p>Observe que ao digitar ou colar comandos longos no console, ocupando mais de uma linha, o <strong>R</strong> adiciona o símbolo <strong>+</strong> à primeira coluna da tela para indicar que a linha é a continuação do comando anterior.</p>
+<p>Crie o hábito de adicionar comentários aos fragmentos de códigos que você digita no script. Para isso, utilize o símbolo <strong>#</strong> ao começar o comentário. O <strong>RStudio</strong> ignora tudo o que vier depois deste símbolo. Fazer comentários no código ajuda muito o aprendizado e a recuperar o raciocínio utilizado.</p>
+<p>A utilização da função <strong>help</strong> auxilia enormemente a compreensão das funções. Use <strong>? nome_da_função</strong> ou <strong>help(nome_da_função)</strong>. Quando se deparar com algo que não consegue resolver, busque a solução na internet, nos fóruns de discussão sobre o <strong>R</strong>. Existem páginas como <a href="https://stackoverflow.com/" class="uri">https://stackoverflow.com/</a>, onde os usuários se ajudam mutuamente para a solução de problemas. Existe um grupo com discussão em português <a href="https://pt.stackoverflow.com/questions" class="uri">https://pt.stackoverflow.com/questions</a>.</p>
+</div>
+<div id="tipos-de-objetos" class="section level2 hasAnchor" number="2.2">
+<h2><span class="header-section-number">2.2</span> Tipos de objetos<a href="basico.html#tipos-de-objetos" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Uma referência bastante interessante para a estruturação deste capítulo é o DataCamp, a primeira plataforma de aprendizado on-line para Ciência de Dados. Os cursos são ministrados em inglês e fornecem a base necessária para a compreensão dos tipos de objetos e manipulação de dados (DataCamp, 2023).</p>
+<p>A forma mais simples de utilização do <strong>R</strong> é como uma calculadora. Vamos fazer um teste: digite na área do script <strong>3 + 4</strong>. Selecione esta linha digitada e rode (pressione a tecla Ctrl ao mesmo tempo em que digita a tecla Enter).</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="basico.html#cb5-1" tabindex="-1"></a><span class="dv">3</span> <span class="sc">+</span> <span class="dv">4</span></span></code></pre></div>
+<pre><code>## [1] 7</code></pre>
+<p>No console, você verá a resposta <strong>[1] 7</strong>, ou seja, o <strong>R</strong> retornou um valor [1] solicitado cuja resposta é 7. Observe o painel do “Ambiente”, do lado direito superior. Ele está vazio, ou seja, não atribui a resposta (7) a nenhum objeto. No entanto, se quisermos gravar esta resposta, podemos atribui-la a um objeto, como <code>x</code> ou qualquer outro nome. Uma variável permite que você salve um valor (e.g., 102) ou um objeto (e.g., descrição de uma função, listas, matrizes) em <strong>R</strong>. Em outro momento, você pode usar o nome da variável armazenada para acessar o valor ou o objeto que foi salvo dentro desta variável. A atribuição a uma variável é feita com os símbolos <strong>&lt;-</strong>. Este símbolo parece uma flecha apontando para o nome que se quer dar à variàvel e pode ser usado para o outro lado <strong>-&gt;</strong>.</p>
+<p>Rode novamente, agora digitando <code>x</code> seguido dos sinais de menor e de subtração antes da soma desejada. Use espaços antes e depois dos operadores de atribuição <code>&lt;-</code>, mas não entre &lt; e -. O atalho muito útil para &lt;- é pressionar simultaneamente as teclas alt e a tecla menos (Alt + -).</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="basico.html#cb7-1" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="dv">3</span> <span class="sc">+</span> <span class="dv">4</span> <span class="co">#dê o nome de &quot;x&quot; ao valor resultante de 3 + 4</span></span>
+<span id="cb7-2"><a href="basico.html#cb7-2" tabindex="-1"></a><span class="dv">3</span> <span class="sc">+</span> <span class="dv">4</span> <span class="ot">-&gt;</span> x <span class="co">#dê ao valor resultante de 3 + 4 o nome de &quot;x&quot;</span></span></code></pre></div>
+<p>Observe que agora existe um <strong>objeto</strong> no painel “Ambiente”. O objeto é <strong>x</strong> e seu valor é 7. Deve-se observar que para nomear um objeto, o nome deve iniciar com uma letra (A-Z ou a-z) e pode incluir letras, dígitos (0-9), ponto (.) e sublinhado (_). No entanto, os nomes não podem começar com um número ou por um ponto seguido de um número. As palavras “if” e “for” não são permitidas para um objeto. O <strong>R</strong> discrimina letras maiúsculas de minúsculas nos nomes dos objetos. Assim, <strong>Y</strong> e <strong>y</strong> são dois objetos diferentes.</p>
+<p>Digite a função <code>typeof</code>para verificar o tipo de objeto criado.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="basico.html#cb8-1" tabindex="-1"></a><span class="fu">typeof</span>(x)</span></code></pre></div>
+<pre><code>## [1] &quot;double&quot;</code></pre>
+<p>No caso, o objeto obtido foi do tipo “double”. Se você atribuir a <strong>x</strong> um outro valor, digamos 8, o valor anterior é apagado e passa a ter o novo valor. Esta modificação afeta apenas os objetos na memória ativa, não os dados que estão no disco rígido (Paradis, 2005). Para excluir um objeto, usa-se a função <strong>rm</strong>. Por exemplo, <code>rm(x)</code> exclui o objeto <code>x</code>. O comando <code>rm(list=ls())</code> apaga todos os objetos da memória.</p>
+<p>Todos os objetos têm dois atributos intrínsecos: modo (mode) e comprimento (length).</p>
+<p>No <strong>R</strong>, os tipos de dados que são inseridos nos objetos são divididos em:</p>
+<ul>
+<li><p><strong>numeric</strong>: armazena números no formato “integer” (inteiro) ou “double” (reais);</p></li>
+<li><p><strong>character</strong>: armazena dados categóricos ou qualitativos por meio de caracteres (variáveis de texto);</p></li>
+<li><p><strong>logical</strong>: armazena variáveis que assumem os valores “FALSE” (falso) ou “TRUE” (verdadeiro). Variáveis lógicas são conhecidas como “booleanas” porque é um tipo de dado lógico que pode ter apenas um de dois valores possíveis: verdadeiro ou falso;</p></li>
+<li><p><strong>complex</strong>: relacionados ao número imaginário “i”.</p></li>
+</ul>
+<p>Quando um número aparece entre aspas (simples ou dupla), o objeto é atribuído a um tipo “character”. Vejamos alguns exemplos:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="basico.html#cb10-1" tabindex="-1"></a><span class="fu">typeof</span>(<span class="st">&#39;20&#39;</span>)</span></code></pre></div>
+<pre><code>## [1] &quot;character&quot;</code></pre>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="basico.html#cb12-1" tabindex="-1"></a><span class="fu">typeof</span>(<span class="st">&quot;20&quot;</span>)</span></code></pre></div>
+<pre><code>## [1] &quot;character&quot;</code></pre>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="basico.html#cb14-1" tabindex="-1"></a><span class="fu">typeof</span>(<span class="dv">20</span>)</span></code></pre></div>
+<pre><code>## [1] &quot;double&quot;</code></pre>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="basico.html#cb16-1" tabindex="-1"></a><span class="fu">typeof</span>(<span class="cn">FALSE</span>)</span></code></pre></div>
+<pre><code>## [1] &quot;logical&quot;</code></pre>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="basico.html#cb18-1" tabindex="-1"></a><span class="fu">typeof</span>(<span class="fl">150.4</span>)</span></code></pre></div>
+<pre><code>## [1] &quot;double&quot;</code></pre>
+<p>Para que um número inteiro seja armazenado como “integer” é preciso que seja seguido da letra <strong>L</strong>. Já vimos que o tipo de objeto <code>x</code> é “double”. Vamos criar um objeto <code>y</code> do tipo “integer”.</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="basico.html#cb20-1" tabindex="-1"></a>y <span class="ot">&lt;-</span> 3L <span class="sc">+</span> 4L</span>
+<span id="cb20-2"><a href="basico.html#cb20-2" tabindex="-1"></a><span class="fu">typeof</span>(y)</span></code></pre></div>
+<pre><code>## [1] &quot;integer&quot;</code></pre>
+<p>Perceba que a <code>class</code>de x é “numeric” e a de y é “integer”. As outras classes são “character” e “logical”.</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="basico.html#cb22-1" tabindex="-1"></a><span class="fu">class</span>(x)</span></code></pre></div>
+<pre><code>## [1] &quot;numeric&quot;</code></pre>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="basico.html#cb24-1" tabindex="-1"></a><span class="fu">class</span>(y)</span></code></pre></div>
+<pre><code>## [1] &quot;integer&quot;</code></pre>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="basico.html#cb26-1" tabindex="-1"></a><span class="fu">class</span>(<span class="st">&#39;20&#39;</span>)</span></code></pre></div>
+<pre><code>## [1] &quot;character&quot;</code></pre>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="basico.html#cb28-1" tabindex="-1"></a><span class="fu">class</span>(<span class="cn">TRUE</span>)</span></code></pre></div>
+<pre><code>## [1] &quot;logical&quot;</code></pre>
+<p>A classe é uma propriedade de um objeto que determina o comportamento das funções aplicadas a ele.</p>
+<p>A tabela sistematizada por Aquino (2014), apresenta os operadores matemáticos e lógicos que podemos usar no <strong>R</strong> e seus significados.</p>
+<table>
+<colgroup>
+<col width="29%" />
+<col width="20%" />
+<col width="23%" />
+<col width="26%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Operador matemático</th>
+<th align="center">Significado</th>
+<th align="center">Operador lógico</th>
+<th align="center">Significado</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">+</td>
+<td align="center">soma</td>
+<td align="center">&gt;</td>
+<td align="center">maior que</td>
+</tr>
+<tr class="even">
+<td align="center">-</td>
+<td align="center">subtração</td>
+<td align="center">&lt;</td>
+<td align="center">menor que</td>
+</tr>
+<tr class="odd">
+<td align="center">/</td>
+<td align="center">divisão</td>
+<td align="center">&gt;=</td>
+<td align="center">maior ou igual a</td>
+</tr>
+<tr class="even">
+<td align="center">*</td>
+<td align="center">multiplicação</td>
+<td align="center">&lt;=</td>
+<td align="center">menor ou igual a</td>
+</tr>
+<tr class="odd">
+<td align="center">^</td>
+<td align="center">exponenciação</td>
+<td align="center">&amp;</td>
+<td align="center">e</td>
+</tr>
+<tr class="even">
+<td align="center"></td>
+<td align="center"></td>
+<td align="center">|</td>
+<td align="center">ou</td>
+</tr>
+<tr class="odd">
+<td align="center"></td>
+<td align="center"></td>
+<td align="center">==</td>
+<td align="center">igual a</td>
+</tr>
+<tr class="even">
+<td align="center"></td>
+<td align="center"></td>
+<td align="center">!</td>
+<td align="center">não</td>
+</tr>
+<tr class="odd">
+<td align="center"></td>
+<td align="center"></td>
+<td align="center">!=</td>
+<td align="center">diferente de</td>
+</tr>
+</tbody>
+</table>
+<p>Quando temos objetos, podemos fazer operações matemáticas entre eles. Por exemplo, vamos criar o objeto <strong>laranjas</strong> e atribuir o valor de 36. Criamos também o objeto <strong>bananas</strong> e atribuímos o valor de 48. Agora, podemos ter um novo objeto <strong>minhas_frutas</strong>, resultante da soma entre <strong>bananas</strong> e <strong>laranjas</strong>.</p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="basico.html#cb30-1" tabindex="-1"></a><span class="co">#para criar o objeto &#39;laranjas&#39;</span></span>
+<span id="cb30-2"><a href="basico.html#cb30-2" tabindex="-1"></a>laranjas <span class="ot">&lt;-</span> <span class="dv">36</span></span>
+<span id="cb30-3"><a href="basico.html#cb30-3" tabindex="-1"></a><span class="co">#para criar o objeto &#39;bananas&#39;</span></span>
+<span id="cb30-4"><a href="basico.html#cb30-4" tabindex="-1"></a>bananas <span class="ot">&lt;-</span> <span class="dv">48</span></span>
+<span id="cb30-5"><a href="basico.html#cb30-5" tabindex="-1"></a><span class="co">#para criar o objeto &#39;minhas_frutas&#39;</span></span>
+<span id="cb30-6"><a href="basico.html#cb30-6" tabindex="-1"></a>minhas_frutas <span class="ot">&lt;-</span> laranjas <span class="sc">+</span> bananas</span>
+<span id="cb30-7"><a href="basico.html#cb30-7" tabindex="-1"></a><span class="co">#para mostrar o objeto &#39;minhas_frutas&#39;</span></span>
+<span id="cb30-8"><a href="basico.html#cb30-8" tabindex="-1"></a>minhas_frutas</span></code></pre></div>
+<pre><code>## [1] 84</code></pre>
+</div>
+<div id="estrutura-dos-dados" class="section level2 hasAnchor" number="2.3">
+<h2><span class="header-section-number">2.3</span> Estrutura dos dados<a href="basico.html#estrutura-dos-dados" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Segundo Wickham (2019), a estrutura dos dados no <strong>R</strong> pode ser organizada segundo sua <strong>dimensionalidade</strong> (1 dimensão, 2 dimensões ou <em>n</em> dimensões) e se ela é <strong>homogênea</strong> (todos os conteúdos são do mesmo tipo) ou <strong>heterogênea</strong> (conteúdos podem ser de tipos diferentes). A tabela organizada por Wickham (2019), a seguir, mostra os cinco tipos de dados mais frequentemente utilizados em análise de dados.</p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Dimensão</th>
+<th align="left">Homogênea</th>
+<th align="left">Heterogênea</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">1d</td>
+<td align="left">Atomic vector</td>
+<td align="left">List</td>
+</tr>
+<tr class="even">
+<td align="left">2d</td>
+<td align="left">Matrix</td>
+<td align="left">Data frame</td>
+</tr>
+<tr class="odd">
+<td align="left"><em>n</em>d</td>
+<td align="left">Array</td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
+<p>Para saber a estrutura de um objeto, use <code>str()</code>. A função <code>str</code> mostra o modo e o comprimento (número de elementos do objeto). Dados faltantes são representados por <strong>NA</strong> (<em>not available</em>, ou não disponível, em português). Valores não numéricos são representados por <strong>NaN</strong> (<em>not a number</em>, ou não é um número, em português).</p>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="basico.html#cb32-1" tabindex="-1"></a><span class="fu">str</span>(x)</span></code></pre></div>
+<pre><code>##  num 7</code></pre>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="basico.html#cb34-1" tabindex="-1"></a><span class="fu">str</span>(y)</span></code></pre></div>
+<pre><code>##  int 7</code></pre>
+</div>
+<div id="vetores" class="section level2 hasAnchor" number="2.4">
+<h2><span class="header-section-number">2.4</span> Vetores<a href="basico.html#vetores" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Os vetores são matrizes de <strong>uma dimensão</strong> que podem conter dados numéricos, dados de caracteres <strong>ou</strong> dados lógicos. Em outras palavras, um vetor é uma ferramenta simples para armazenar dados de um único tipo.</p>
+<p>Em <strong>R</strong>, criamos um vetor com a função <code>c()</code>. Para facilitar a memorização, “c” vem de “<em>concatenate</em>” (concatenar, unir). Os elementos são colocados dentro dos parênteses, separados por vírgula. A partir de vetores é possível fazer cálculos.</p>
+<p>Por exemplo, podemos criar vetores para armazenar os dados de temperatura do ar e precipitação média mensal de Mirante do Parnaíba, em São Paulo (Fonte: <a href="https://pt.wikipedia.org/wiki/Clima_da_cidade_de_São_Paulo#" class="uri">https://pt.wikipedia.org/wiki/Clima_da_cidade_de_São_Paulo#</a>).</p>
+<p>Vamos criar vetores de temperatura média anual do ar, que receberá o nome de <strong>temp</strong>. Os dados de <strong>temp</strong> são: 23.1, 23.5, 22.5, 21.2, 18.4, 17.5, 17.2, 18.1, 19.1, 20.5, 21.2, 22.6 (Dica: para ter o exato conjunto de dados, copie e cole desde o primeiro valor até o último dentro dos parênteses da função).</p>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="basico.html#cb36-1" tabindex="-1"></a><span class="co">#para criar o objeto &#39;temp&#39;</span></span>
+<span id="cb36-2"><a href="basico.html#cb36-2" tabindex="-1"></a>temp <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">23.1</span>, <span class="fl">23.5</span>, <span class="fl">22.5</span>, <span class="fl">21.2</span>, <span class="fl">18.4</span>, <span class="fl">17.5</span>, <span class="fl">17.2</span>, <span class="fl">18.1</span>, <span class="fl">19.1</span>, <span class="fl">20.5</span>, <span class="fl">21.2</span>, <span class="fl">22.6</span>)</span>
+<span id="cb36-3"><a href="basico.html#cb36-3" tabindex="-1"></a><span class="co">#para visualizar &#39;temp&#39;</span></span>
+<span id="cb36-4"><a href="basico.html#cb36-4" tabindex="-1"></a>temp</span></code></pre></div>
+<pre><code>##  [1] 23.1 23.5 22.5 21.2 18.4 17.5 17.2 18.1 19.1 20.5 21.2 22.6</code></pre>
+<p>A precipitação média anual receberá o nome de <strong>prec</strong>. Os dados de precipitação arredondados são: 292, 257, 229, 87, 66, 59, 48, 32, 83, 127, 143, 231</p>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="basico.html#cb38-1" tabindex="-1"></a><span class="co">#para criar o objeto &#39;prec&#39;</span></span>
+<span id="cb38-2"><a href="basico.html#cb38-2" tabindex="-1"></a>prec <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">292</span>, <span class="dv">257</span>, <span class="dv">229</span>, <span class="dv">87</span>, <span class="dv">66</span>, <span class="dv">59</span>, <span class="dv">48</span>, <span class="dv">32</span>, <span class="dv">83</span>, <span class="dv">127</span>, <span class="dv">143</span>, <span class="dv">231</span>)</span>
+<span id="cb38-3"><a href="basico.html#cb38-3" tabindex="-1"></a><span class="co">#para visualizar &#39;prec&#39;</span></span>
+<span id="cb38-4"><a href="basico.html#cb38-4" tabindex="-1"></a>prec</span></code></pre></div>
+<pre><code>##  [1] 292 257 229  87  66  59  48  32  83 127 143 231</code></pre>
+</div>
+<div id="nomeando-os-vetores" class="section level2 hasAnchor" number="2.5">
+<h2><span class="header-section-number">2.5</span> Nomeando os vetores<a href="basico.html#nomeando-os-vetores" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Vimos que podemos criar conjuntos de dados usando a função <code>c()</code> em R.
+Como temos dados de precipitação e temperatura, seria interessante que estes valores fossem associados ao mês correspondente. Esta tarefa pode ser executada por meio da função <code>names()</code>.</p>
+<p>Podemos dar os nomes dos meses aos dados de temperatura e precipitação criando um vetor de meses. Atribua a uma variável chamada ‘meses’ o conjunto de nomes dos meses do ano. Os nomes dos meses serão abreviados: “jan”, “fev”, “mar”, “abr”, “mai”, “jun”, “jul”, “ago”, “set”, “out”, “nov”, “dez”. Lembre-se que nomes são textos e, portanto, devem entrar entre aspas.</p>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="basico.html#cb40-1" tabindex="-1"></a><span class="co">#para atribuir os meses do ano ao objeto &#39;meses&#39;</span></span>
+<span id="cb40-2"><a href="basico.html#cb40-2" tabindex="-1"></a>meses <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;jan&quot;</span>, <span class="st">&quot;fev&quot;</span>, <span class="st">&quot;mar&quot;</span>, <span class="st">&quot;abr&quot;</span>, <span class="st">&quot;mai&quot;</span>, <span class="st">&quot;jun&quot;</span>, <span class="st">&quot;jul&quot;</span>, <span class="st">&quot;ago&quot;</span>, <span class="st">&quot;set&quot;</span>, <span class="st">&quot;out&quot;</span>, <span class="st">&quot;nov&quot;</span>, <span class="st">&quot;dez&quot;</span>)</span></code></pre></div>
+<p>Agora, atribua o vetor de “meses” diretamente à variável <strong>temp</strong> usando a função <strong>names()</strong>.</p>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="basico.html#cb41-1" tabindex="-1"></a><span class="fu">names</span>(temp) <span class="ot">&lt;-</span> <span class="fu">c</span>(meses) <span class="co">#para atribuir os meses a &#39;temp&#39;</span></span>
+<span id="cb41-2"><a href="basico.html#cb41-2" tabindex="-1"></a>temp <span class="co">#para imprimir &#39;temp&#39;</span></span></code></pre></div>
+<pre><code>##  jan  fev  mar  abr  mai  jun  jul  ago  set  out  nov  dez 
+## 23.1 23.5 22.5 21.2 18.4 17.5 17.2 18.1 19.1 20.5 21.2 22.6</code></pre>
+<p>Faça o mesmo para a variável <strong>prec</strong>.</p>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="basico.html#cb43-1" tabindex="-1"></a><span class="fu">names</span>(prec) <span class="ot">&lt;-</span> <span class="fu">c</span>(meses) <span class="co">#para atribuir os meses a &#39;prec&#39;</span></span>
+<span id="cb43-2"><a href="basico.html#cb43-2" tabindex="-1"></a>prec <span class="co">#para imprimir &#39;prec&#39;</span></span></code></pre></div>
+<pre><code>## jan fev mar abr mai jun jul ago set out nov dez 
+## 292 257 229  87  66  59  48  32  83 127 143 231</code></pre>
+</div>
+<div id="seleção-em-vetores" class="section level2 hasAnchor" number="2.6">
+<h2><span class="header-section-number">2.6</span> Seleção em vetores<a href="basico.html#seleção-em-vetores" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Como geógrafos, gostaríamos de saber quanto chove em cada estação do ano. Para chegarmos nesta resposta, começaremos criando variáveis para cada estação do ano com os valores de precipitação correspondentes. Considere <strong>primavera</strong> contendo os seguintes meses: setembro, outubro e novembro; <strong>verão</strong> contendo dezembro, janeiro e fevereiro; <strong>outono</strong> contendo março, abril e maio e, <strong>inverno</strong> contendo junho, julho e agosto.</p>
+<p>Para selecionar elementos de um vetor (e depois em matrizes, dataframes, …), são usados os colchetes <strong>[]</strong>. Dentro dos colchetes são indicados os elementos do conjunto de dados que serão selecionados. Por exemplo, para selecionar a precipitação do mês de janeiro usa-se a seguinte forma de seleção <strong>prec[1]</strong>. A seleção do segundo elemento seria <strong>prec[2]</strong> e assim por diante. Em <strong>R</strong>, o primeiro elemento de um vetor tem a posição 1 (em Python, a primeira posição tem o índice 0).
+Para selecionar múltiplos elementos de um vetor, são usados os <strong>[]</strong> contendo o vetor com a posição dos elementos desejados. Como exemplo, se quisermos selecionar as precipitações dos meses de janeiro e dezembro, usamos <code>c(1, 12)</code> entre colchetes, depois de definir o nome da variável que contém os dados.</p>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="basico.html#cb45-1" tabindex="-1"></a><span class="co">#para selecionar as precipitações de janeiro e dezembro</span></span>
+<span id="cb45-2"><a href="basico.html#cb45-2" tabindex="-1"></a>prec_selecao <span class="ot">&lt;-</span> prec[<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">12</span>)]</span>
+<span id="cb45-3"><a href="basico.html#cb45-3" tabindex="-1"></a><span class="co">#para imprimir a seleção</span></span>
+<span id="cb45-4"><a href="basico.html#cb45-4" tabindex="-1"></a>prec_selecao</span></code></pre></div>
+<pre><code>## jan dez 
+## 292 231</code></pre>
+<p>Observe que para selecionar intervalos de dados, pode-se usar <strong>:</strong>. Por exemplo, para criar uma variável selecionando as precipitações durante os meses do primeiro semestre:</p>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="basico.html#cb47-1" tabindex="-1"></a><span class="co">#para selecionar as precipitações do semestre 1</span></span>
+<span id="cb47-2"><a href="basico.html#cb47-2" tabindex="-1"></a>prec_semestre1 <span class="ot">&lt;-</span> prec[<span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>)]</span>
+<span id="cb47-3"><a href="basico.html#cb47-3" tabindex="-1"></a><span class="co">#para imprimir prec_semestre1</span></span>
+<span id="cb47-4"><a href="basico.html#cb47-4" tabindex="-1"></a>prec_semestre1</span></code></pre></div>
+<pre><code>## jan fev mar abr mai jun 
+## 292 257 229  87  66  59</code></pre>
+<p>Crie os arquivos de precipitação para cada estação do ano: <strong>primavera_prec</strong>, <strong>verao_prec</strong>, <strong>outono_prec</strong> e <strong>inverno_prec</strong> usando seleção múltipla.</p>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="basico.html#cb49-1" tabindex="-1"></a><span class="co">#para criar a &#39;primavera_prec&#39; a partir de seleção</span></span>
+<span id="cb49-2"><a href="basico.html#cb49-2" tabindex="-1"></a>primavera_prec <span class="ot">&lt;-</span> prec[<span class="fu">c</span>(<span class="dv">9</span>, <span class="dv">10</span>, <span class="dv">11</span>)]</span>
+<span id="cb49-3"><a href="basico.html#cb49-3" tabindex="-1"></a><span class="co">#para criar a &#39;verao_prec&#39; a partir de seleção</span></span>
+<span id="cb49-4"><a href="basico.html#cb49-4" tabindex="-1"></a>verao_prec <span class="ot">&lt;-</span> prec[<span class="fu">c</span>(<span class="dv">12</span>, <span class="dv">1</span>, <span class="dv">2</span>)]</span>
+<span id="cb49-5"><a href="basico.html#cb49-5" tabindex="-1"></a><span class="co">#para criar a &#39;outono_prec&#39; a partir de seleção</span></span>
+<span id="cb49-6"><a href="basico.html#cb49-6" tabindex="-1"></a>outono_prec <span class="ot">&lt;-</span> prec[<span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>)]</span>
+<span id="cb49-7"><a href="basico.html#cb49-7" tabindex="-1"></a><span class="co">#para criar a &#39;inverno_prec&#39; a partir de seleção</span></span>
+<span id="cb49-8"><a href="basico.html#cb49-8" tabindex="-1"></a>inverno_prec <span class="ot">&lt;-</span> prec[<span class="fu">c</span>(<span class="dv">6</span>, <span class="dv">7</span>, <span class="dv">8</span>)]</span>
+<span id="cb49-9"><a href="basico.html#cb49-9" tabindex="-1"></a><span class="co">#para visualizar os resultados</span></span>
+<span id="cb49-10"><a href="basico.html#cb49-10" tabindex="-1"></a>primavera_prec</span></code></pre></div>
+<pre><code>## set out nov 
+##  83 127 143</code></pre>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="basico.html#cb51-1" tabindex="-1"></a>verao_prec</span></code></pre></div>
+<pre><code>## dez jan fev 
+## 231 292 257</code></pre>
+<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="basico.html#cb53-1" tabindex="-1"></a>outono_prec</span></code></pre></div>
+<pre><code>## mar abr mai 
+## 229  87  66</code></pre>
+<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb55-1"><a href="basico.html#cb55-1" tabindex="-1"></a>inverno_prec</span></code></pre></div>
+<pre><code>## jun jul ago 
+##  59  48  32</code></pre>
+<p>Vamos fazer a seleção segundo estação do ano para a variável ‘temp’.</p>
+<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb57-1"><a href="basico.html#cb57-1" tabindex="-1"></a><span class="co">#para criar a &#39;primavera_temp&#39; a partir de seleção</span></span>
+<span id="cb57-2"><a href="basico.html#cb57-2" tabindex="-1"></a>primavera_temp <span class="ot">&lt;-</span> temp[<span class="fu">c</span>(<span class="dv">9</span>, <span class="dv">10</span>, <span class="dv">11</span>)]</span>
+<span id="cb57-3"><a href="basico.html#cb57-3" tabindex="-1"></a><span class="co">#para criar a &#39;verao_temp&#39; a partir de seleção</span></span>
+<span id="cb57-4"><a href="basico.html#cb57-4" tabindex="-1"></a>verao_temp <span class="ot">&lt;-</span> temp[<span class="fu">c</span>(<span class="dv">12</span>, <span class="dv">1</span>, <span class="dv">2</span>)]</span>
+<span id="cb57-5"><a href="basico.html#cb57-5" tabindex="-1"></a><span class="co">#para criar a &#39;outono_temp&#39; a partir de seleção</span></span>
+<span id="cb57-6"><a href="basico.html#cb57-6" tabindex="-1"></a>outono_temp <span class="ot">&lt;-</span> temp[<span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>)]</span>
+<span id="cb57-7"><a href="basico.html#cb57-7" tabindex="-1"></a><span class="co">#para criar a &#39;inverno_temp&#39; a partir de seleção</span></span>
+<span id="cb57-8"><a href="basico.html#cb57-8" tabindex="-1"></a>inverno_temp <span class="ot">&lt;-</span> temp[<span class="fu">c</span>(<span class="dv">6</span>, <span class="dv">7</span>, <span class="dv">8</span>)]</span>
+<span id="cb57-9"><a href="basico.html#cb57-9" tabindex="-1"></a><span class="co">#para visualizar os resultados</span></span>
+<span id="cb57-10"><a href="basico.html#cb57-10" tabindex="-1"></a>primavera_temp</span></code></pre></div>
+<pre><code>##  set  out  nov 
+## 19.1 20.5 21.2</code></pre>
+<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb59-1"><a href="basico.html#cb59-1" tabindex="-1"></a>verao_temp</span></code></pre></div>
+<pre><code>##  dez  jan  fev 
+## 22.6 23.1 23.5</code></pre>
+<div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb61-1"><a href="basico.html#cb61-1" tabindex="-1"></a>outono_temp</span></code></pre></div>
+<pre><code>##  mar  abr  mai 
+## 22.5 21.2 18.4</code></pre>
+<div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb63-1"><a href="basico.html#cb63-1" tabindex="-1"></a>inverno_temp</span></code></pre></div>
+<pre><code>##  jun  jul  ago 
+## 17.5 17.2 18.1</code></pre>
+<p><strong>R</strong> permite fazer seleções a partir de operadores lógicos:</p>
+<ul>
+<li><p><code>&lt;</code> para menor do que</p></li>
+<li><p><code>&gt;</code> para maior do que</p></li>
+<li><p><code>&lt;=</code> para menor ou igual a</p></li>
+<li><p><code>&gt;=</code> para maior ou igual a</p></li>
+<li><p><code>==</code> para igual a</p></li>
+<li><p><code>!=</code> para não igual a</p></li>
+</ul>
+<p>Suponha que gostaríamos de saber em quais meses do ano temos precipitação acima de 100 mm. Você consegue imaginar como seria a linha de comando? Crie uma variável chamada <strong>prec100</strong>.</p>
+<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb65-1"><a href="basico.html#cb65-1" tabindex="-1"></a><span class="co">#para selecionar os meses com valores acima de 100 mm de precipitação</span></span>
+<span id="cb65-2"><a href="basico.html#cb65-2" tabindex="-1"></a>prec100 <span class="ot">&lt;-</span> prec <span class="sc">&gt;</span> <span class="dv">100</span></span>
+<span id="cb65-3"><a href="basico.html#cb65-3" tabindex="-1"></a><span class="co">#para visualizar os meses que atendem à seleção</span></span>
+<span id="cb65-4"><a href="basico.html#cb65-4" tabindex="-1"></a>prec100</span></code></pre></div>
+<pre><code>##   jan   fev   mar   abr   mai   jun   jul   ago   set   out   nov 
+##  TRUE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE 
+##   dez 
+##  TRUE</code></pre>
+<p>Como você observou, o código criado gerou um resultado lógico mostrando <strong>TRUE</strong> para meses com valores acima de 100 mm e <strong>FALSE</strong> para meses com valores abaixo ou até 100 mm. No entanto, gostaríamos de saber também não apenas os meses com precipitação acima de 100 mm, mas também quanto choveu nestes meses. Você pode criar uma nova variável <strong>meses_prec100</strong> selecionando diretamente [prec &gt; 100] após <strong>prec</strong>.</p>
+<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb67-1"><a href="basico.html#cb67-1" tabindex="-1"></a>meses_prec100 <span class="ot">&lt;-</span> prec[prec <span class="sc">&gt;</span> <span class="dv">100</span>]</span>
+<span id="cb67-2"><a href="basico.html#cb67-2" tabindex="-1"></a>meses_prec100</span></code></pre></div>
+<pre><code>## jan fev mar out nov dez 
+## 292 257 229 127 143 231</code></pre>
+</div>
+<div id="totais-e-médias-em-vetores" class="section level2 hasAnchor" number="2.7">
+<h2><span class="header-section-number">2.7</span> Totais e médias em vetores<a href="basico.html#totais-e-médias-em-vetores" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Como queremos compreender um pouco mais as variáveis meteorológicas de São Paulo, precisamos saber os totais de precipitação durante cada estação do ano.
+Como já temos os valores para cada estação, podemos simplesmente criar novas variáveis (primavera_prec_total, verao_prec_total, outono_prec_total e inverno_prec_total) usando a função de soma, <strong>sum(primavera_prec)</strong> e assim por diante.</p>
+<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb69-1"><a href="basico.html#cb69-1" tabindex="-1"></a><span class="co">#para criar o total da precipitação na primavera</span></span>
+<span id="cb69-2"><a href="basico.html#cb69-2" tabindex="-1"></a>primavera_prec_total <span class="ot">&lt;-</span> <span class="fu">sum</span>(primavera_prec)</span>
+<span id="cb69-3"><a href="basico.html#cb69-3" tabindex="-1"></a><span class="co">#para criar o total da precipitação no verão</span></span>
+<span id="cb69-4"><a href="basico.html#cb69-4" tabindex="-1"></a>verao_prec_total <span class="ot">&lt;-</span> <span class="fu">sum</span>(verao_prec)</span>
+<span id="cb69-5"><a href="basico.html#cb69-5" tabindex="-1"></a><span class="co">#para criar o total da precipitação no outono</span></span>
+<span id="cb69-6"><a href="basico.html#cb69-6" tabindex="-1"></a>outono_prec_total <span class="ot">&lt;-</span> <span class="fu">sum</span>(outono_prec)</span>
+<span id="cb69-7"><a href="basico.html#cb69-7" tabindex="-1"></a><span class="co">#para criar o total da precipitação no inverno</span></span>
+<span id="cb69-8"><a href="basico.html#cb69-8" tabindex="-1"></a>inverno_prec_total <span class="ot">&lt;-</span> <span class="fu">sum</span>(inverno_prec)</span>
+<span id="cb69-9"><a href="basico.html#cb69-9" tabindex="-1"></a><span class="co">#para visualizar os totais</span></span>
+<span id="cb69-10"><a href="basico.html#cb69-10" tabindex="-1"></a>primavera_prec_total</span></code></pre></div>
+<pre><code>## [1] 353</code></pre>
+<div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb71-1"><a href="basico.html#cb71-1" tabindex="-1"></a>verao_prec_total</span></code></pre></div>
+<pre><code>## [1] 780</code></pre>
+<div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb73-1"><a href="basico.html#cb73-1" tabindex="-1"></a>outono_prec_total</span></code></pre></div>
+<pre><code>## [1] 382</code></pre>
+<div class="sourceCode" id="cb75"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb75-1"><a href="basico.html#cb75-1" tabindex="-1"></a>inverno_prec_total</span></code></pre></div>
+<pre><code>## [1] 139</code></pre>
+<p>Sabendo que a função para o cálculo das médias de temperatura é <strong>mean()</strong>, como você faria para calcular as médias de temperaturas segundo estação do ano?</p>
+<div class="sourceCode" id="cb77"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb77-1"><a href="basico.html#cb77-1" tabindex="-1"></a><span class="co">#para criar a média da temperatura na primavera</span></span>
+<span id="cb77-2"><a href="basico.html#cb77-2" tabindex="-1"></a>primavera_temp_media <span class="ot">&lt;-</span> <span class="fu">mean</span>(primavera_temp)</span>
+<span id="cb77-3"><a href="basico.html#cb77-3" tabindex="-1"></a><span class="co">#para criar a média da temperatura no verão</span></span>
+<span id="cb77-4"><a href="basico.html#cb77-4" tabindex="-1"></a>verao_temp_media <span class="ot">&lt;-</span> <span class="fu">mean</span>(verao_temp)</span>
+<span id="cb77-5"><a href="basico.html#cb77-5" tabindex="-1"></a><span class="co">#para criar a média da temperatura no outono</span></span>
+<span id="cb77-6"><a href="basico.html#cb77-6" tabindex="-1"></a>outono_temp_media <span class="ot">&lt;-</span> <span class="fu">mean</span>(outono_temp)</span>
+<span id="cb77-7"><a href="basico.html#cb77-7" tabindex="-1"></a><span class="co">#para criar a média da temperatura no inverno</span></span>
+<span id="cb77-8"><a href="basico.html#cb77-8" tabindex="-1"></a>inverno_temp_media <span class="ot">&lt;-</span> <span class="fu">mean</span>(inverno_temp)</span>
+<span id="cb77-9"><a href="basico.html#cb77-9" tabindex="-1"></a><span class="co">#para visualizar as médias</span></span>
+<span id="cb77-10"><a href="basico.html#cb77-10" tabindex="-1"></a>primavera_temp_media</span></code></pre></div>
+<pre><code>## [1] 20.26667</code></pre>
+<div class="sourceCode" id="cb79"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb79-1"><a href="basico.html#cb79-1" tabindex="-1"></a>verao_temp_media</span></code></pre></div>
+<pre><code>## [1] 23.06667</code></pre>
+<div class="sourceCode" id="cb81"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb81-1"><a href="basico.html#cb81-1" tabindex="-1"></a>outono_temp_media</span></code></pre></div>
+<pre><code>## [1] 20.7</code></pre>
+<div class="sourceCode" id="cb83"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb83-1"><a href="basico.html#cb83-1" tabindex="-1"></a>inverno_temp_media</span></code></pre></div>
+<pre><code>## [1] 17.6</code></pre>
+<p>Será que em São Paulo chove mais no verão ou no inverno? Escreva um código para verificar se chove mais no verão ou no inverno em São Paulo.</p>
+<p>Verifique se a temperatura média no outono é diferente da do inverno.</p>
+<p>Qual seria a precipitação em cada mês do ano se chovesse o dobro? Crie uma variável chamada <strong>prec2x</strong>. Imprima o resultado de prec2x.</p>
+<p>Qual a diferença de precipitação entre primavera e verão (nesta ordem)? Chame a nova variável de <strong>dif_prec</strong>. Imprima o resultado.</p>
+</div>
+<div id="matrizes" class="section level2 hasAnchor" number="2.8">
+<h2><span class="header-section-number">2.8</span> Matrizes<a href="basico.html#matrizes" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Em <strong>R</strong>, uma matriz é uma coleção de elementos do mesmo tipo de dados (numeric, character ou logical) arrumados em um número fixo de linhas e colunas. Como está organizada em linhas e colunas, uma matriz é bi-dimensional.</p>
+<p>Uma matriz pode ser criada com a função <strong>matrix()</strong>.</p>
+<p>Por exemplo se queremos construir uma matriz com 9 elementos e 3 linhas, podemos usar o código a seguir:</p>
+<div class="sourceCode" id="cb85"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb85-1"><a href="basico.html#cb85-1" tabindex="-1"></a><span class="co">#para criar uma matriz com 3 linhas</span></span>
+<span id="cb85-2"><a href="basico.html#cb85-2" tabindex="-1"></a><span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">9</span>, <span class="at">byrow =</span> <span class="cn">TRUE</span>, <span class="at">nrow =</span> <span class="dv">3</span>)</span></code></pre></div>
+<pre><code>##      [,1] [,2] [,3]
+## [1,]    1    2    3
+## [2,]    4    5    6
+## [3,]    7    8    9</code></pre>
+<p>Nesta função, o primeiro argumento <strong>1:9</strong> é a coleção de elementos que <strong>R</strong> vai formar em colunas e linhas em uma matriz. Neste caso será 1:9, ou seja c(1, 2, 3, 4, 5, 6, 7, 8, 9).</p>
+<p>O segundo argumento <strong>byrow</strong> indica que a matriz vai ser preenchida pelos números de 1 a 9 seguindo as linhas (<em>by row</em> = por linha). Se queremos preencher segundo as colunas, o argumento deverá ser <strong>byrow = FALSE</strong>.</p>
+<p>O terceiro argumento <strong>nrow</strong> indica que a matriz deve ter 3 linhas (nrow significa number of rows).</p>
+<p>Vamos construir uma matriz para ver como se distribui a população de São Paulo segundo tipo de assentamento. Dividimos os assentamentos em: assentamentos regulares, aglomerados subnormais (definidos pelo IBGE) e assentamentos precários, em três faixas etárias: de 0 a 19 anos; de 20 a 59 anos e + de 60 anos de idade.</p>
+<p>Para construir uma matriz, vamos primeiro criar os vetores das populações por faixa etária de cada tipo de assentamento. Chame o primeiro vetor de ‘ass_reg’ e atribua os seguintes valores: 2540608, 5794529, 1253256.</p>
+<p>O segundo vetor terá o nome de ‘ass_prec’ e conterá os seguintes valores: 97712, 161663, 19225.</p>
+<p>O terceiro vetor será o ‘agsn’, com: 539918, 777051, 65114</p>
+<div class="sourceCode" id="cb87"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb87-1"><a href="basico.html#cb87-1" tabindex="-1"></a><span class="co">#para criar o vetor &#39;ass_reg&#39;</span></span>
+<span id="cb87-2"><a href="basico.html#cb87-2" tabindex="-1"></a>ass_reg <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">2540608</span>, <span class="dv">5794529</span>, <span class="dv">1253256</span>)</span>
+<span id="cb87-3"><a href="basico.html#cb87-3" tabindex="-1"></a><span class="co">#para criar o vetor &#39;ass_prec&#39;</span></span>
+<span id="cb87-4"><a href="basico.html#cb87-4" tabindex="-1"></a>ass_prec <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">97712</span>, <span class="dv">161663</span>, <span class="dv">19225</span>)</span>
+<span id="cb87-5"><a href="basico.html#cb87-5" tabindex="-1"></a><span class="co">#para criar o vetor &#39;agsn&#39;</span></span>
+<span id="cb87-6"><a href="basico.html#cb87-6" tabindex="-1"></a>agsn <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">539918</span>, <span class="dv">777051</span>, <span class="dv">65114</span>)</span></code></pre></div>
+<p>Agora podemos definir a matriz com 3 linhas, seguindo a sequência das linhas. Vamos chamá-la de <strong>pop_sp_matrix</strong>.</p>
+<div class="sourceCode" id="cb88"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb88-1"><a href="basico.html#cb88-1" tabindex="-1"></a><span class="co">#para criar a matriz com os 3 vetores </span></span>
+<span id="cb88-2"><a href="basico.html#cb88-2" tabindex="-1"></a>pop_sp_matrix <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(ass_reg, ass_prec, agsn), <span class="at">nrow =</span> <span class="dv">3</span>, <span class="at">byrow =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb88-3"><a href="basico.html#cb88-3" tabindex="-1"></a><span class="co">#para imprimi-la</span></span>
+<span id="cb88-4"><a href="basico.html#cb88-4" tabindex="-1"></a>pop_sp_matrix</span></code></pre></div>
+<pre><code>##         [,1]    [,2]    [,3]
+## [1,] 2540608 5794529 1253256
+## [2,]   97712  161663   19225
+## [3,]  539918  777051   65114</code></pre>
+<p>Como você viu, não temos nomes para linhas e colunas. Vamos gerar dois vetores contendo os nomes. Um para as linhas, outro para as colunas. As linhas vão receber o nome de ‘tipos’ e vão conter: ‘ass. regular’, ‘ass. precário’ e ‘agsn’. A ordem de entrada dos elementos precisa ser correta. Lembre-se que por serem texto, precisam estar entre aspas.</p>
+<div class="sourceCode" id="cb90"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb90-1"><a href="basico.html#cb90-1" tabindex="-1"></a><span class="co">#para criar o vetor &#39;tipos&#39;</span></span>
+<span id="cb90-2"><a href="basico.html#cb90-2" tabindex="-1"></a>tipos <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;ass. regular&quot;</span>, <span class="st">&quot;ass. precário&quot;</span>, <span class="st">&quot;agsn&quot;</span>)</span></code></pre></div>
+<p>As colunas serão chamadas de ‘idades’ e deverão conter: 0 a 19, 20 a 59, 60 e mais</p>
+<div class="sourceCode" id="cb91"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb91-1"><a href="basico.html#cb91-1" tabindex="-1"></a><span class="co">#para criar o vetor &#39;idades&#39;</span></span>
+<span id="cb91-2"><a href="basico.html#cb91-2" tabindex="-1"></a>idades <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;0 a 19&quot;</span>, <span class="st">&quot;20 a 59&quot;</span>, <span class="st">&quot;60 e mais&quot;</span>)</span></code></pre></div>
+<p>Para atribuir os nomes das colunas à matriz, vamos usar a função <strong>colnames()</strong>.</p>
+<div class="sourceCode" id="cb92"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb92-1"><a href="basico.html#cb92-1" tabindex="-1"></a><span class="co">#para dar nomes às colunas</span></span>
+<span id="cb92-2"><a href="basico.html#cb92-2" tabindex="-1"></a><span class="fu">colnames</span>(pop_sp_matrix) <span class="ot">&lt;-</span> idades</span></code></pre></div>
+<p>Você consegue atribuir o nome ‘tipos’ para as linhas usando a função <strong>rownames()</strong>? Imprima novamente a matrix.</p>
+<div class="sourceCode" id="cb93"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb93-1"><a href="basico.html#cb93-1" tabindex="-1"></a><span class="co">#para dar nomes às linhas</span></span>
+<span id="cb93-2"><a href="basico.html#cb93-2" tabindex="-1"></a><span class="fu">rownames</span>(pop_sp_matrix) <span class="ot">&lt;-</span> tipos</span></code></pre></div>
+</div>
+<div id="cálculos-em-matrizes" class="section level2 hasAnchor" number="2.9">
+<h2><span class="header-section-number">2.9</span> Cálculos em Matrizes<a href="basico.html#cálculos-em-matrizes" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Gostaríamos de saber qual a população total em cada tipo de assentamento. Para isso, usamos a função <strong>rowSums()</strong> para criar ‘total’</p>
+<div class="sourceCode" id="cb94"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb94-1"><a href="basico.html#cb94-1" tabindex="-1"></a><span class="co">#para somar as linhas</span></span>
+<span id="cb94-2"><a href="basico.html#cb94-2" tabindex="-1"></a>tot_rows <span class="ot">&lt;-</span> <span class="fu">rowSums</span>(pop_sp_matrix)</span>
+<span id="cb94-3"><a href="basico.html#cb94-3" tabindex="-1"></a><span class="co">#Imprima para ver o resultado</span></span>
+<span id="cb94-4"><a href="basico.html#cb94-4" tabindex="-1"></a>tot_rows</span></code></pre></div>
+<pre><code>##  ass. regular ass. precário          agsn 
+##       9588393        278600       1382083</code></pre>
+<p>Seria interessante criarmos uma nova coluna com os totais encontrados. Para isso vamos adicionar o vetor ‘total’ à matriz ‘pop_sp_matrix’ e chamar de ‘pop_sp_tot_rows’, usando a função <strong>cbind()</strong>. A letra ‘c’ neste caso, indica ‘column’</p>
+<div class="sourceCode" id="cb96"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb96-1"><a href="basico.html#cb96-1" tabindex="-1"></a><span class="co">#para unir a coluna &#39;tot_rows&#39; à matriz</span></span>
+<span id="cb96-2"><a href="basico.html#cb96-2" tabindex="-1"></a>pop_sp_tot_rows <span class="ot">&lt;-</span> <span class="fu">cbind</span>(pop_sp_matrix, tot_rows)</span>
+<span id="cb96-3"><a href="basico.html#cb96-3" tabindex="-1"></a><span class="co">#imprima pop_sp_total</span></span>
+<span id="cb96-4"><a href="basico.html#cb96-4" tabindex="-1"></a>pop_sp_tot_rows</span></code></pre></div>
+<pre><code>##                0 a 19 20 a 59 60 e mais tot_rows
+## ass. regular  2540608 5794529   1253256  9588393
+## ass. precário   97712  161663     19225   278600
+## agsn           539918  777051     65114  1382083</code></pre>
+<p>Usando o raciocínio percorrido para adicionar uma nova coluna com a função <strong>cbind()</strong>, você seria capaz de acrescentar uma linha com os totais de cada faixa etária na matriz ‘pop_sp_total’ usando as funções <code>colSums()</code> e <code>rbind()</code>?</p>
+<div class="sourceCode" id="cb98"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb98-1"><a href="basico.html#cb98-1" tabindex="-1"></a><span class="co">#para somar as colunas</span></span>
+<span id="cb98-2"><a href="basico.html#cb98-2" tabindex="-1"></a>tot_cols <span class="ot">&lt;-</span> <span class="fu">colSums</span>(pop_sp_tot_rows)</span>
+<span id="cb98-3"><a href="basico.html#cb98-3" tabindex="-1"></a><span class="co">#para unir a linha &#39;tot_cols&#39; à matriz</span></span>
+<span id="cb98-4"><a href="basico.html#cb98-4" tabindex="-1"></a>pop_sp_total <span class="ot">&lt;-</span> <span class="fu">rbind</span>(pop_sp_tot_rows, tot_cols)</span>
+<span id="cb98-5"><a href="basico.html#cb98-5" tabindex="-1"></a><span class="co">#Imprima para ver o resultado</span></span>
+<span id="cb98-6"><a href="basico.html#cb98-6" tabindex="-1"></a>pop_sp_total</span></code></pre></div>
+<pre><code>##                0 a 19 20 a 59 60 e mais tot_rows
+## ass. regular  2540608 5794529   1253256  9588393
+## ass. precário   97712  161663     19225   278600
+## agsn           539918  777051     65114  1382083
+## tot_cols      3178238 6733243   1337595 11249076</code></pre>
+<p>Imagine, hipoteticamente, que 90% da população, independente da faixa etária e tipo de assentamento, tenha tomado todas as doses da vacina contra a COVID-19 em São Paulo. Para saber quantas pessoas ainda precisam tomá-la podemos multiplicar toda a matriz por 0.10. Chame o resultado de ‘pop_sp_10’</p>
+<div class="sourceCode" id="cb100"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb100-1"><a href="basico.html#cb100-1" tabindex="-1"></a><span class="co">#para multiplicar a matriz por 10%</span></span>
+<span id="cb100-2"><a href="basico.html#cb100-2" tabindex="-1"></a>pop_sp_10 <span class="ot">&lt;-</span> pop_sp_total <span class="sc">*</span> <span class="fl">0.10</span></span>
+<span id="cb100-3"><a href="basico.html#cb100-3" tabindex="-1"></a><span class="co">#para visualizar o resultado</span></span>
+<span id="cb100-4"><a href="basico.html#cb100-4" tabindex="-1"></a>pop_sp_10</span></code></pre></div>
+<pre><code>##                 0 a 19  20 a 59 60 e mais  tot_rows
+## ass. regular  254060.8 579452.9  125325.6  958839.3
+## ass. precário   9771.2  16166.3    1922.5   27860.0
+## agsn           53991.8  77705.1    6511.4  138208.3
+## tot_cols      317823.8 673324.3  133759.5 1124907.6</code></pre>
+<p>Mas na verdade descobrimos que a cobertura vacinal variou entre as faixas etárias e também entre os tipos de assentamentos. Criamos uma matriz com os valores (hipotéticos) de cobertura vacinal.</p>
+<div class="sourceCode" id="cb102"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb102-1"><a href="basico.html#cb102-1" tabindex="-1"></a><span class="co">#vetor da cobertura vacinal</span></span>
+<span id="cb102-2"><a href="basico.html#cb102-2" tabindex="-1"></a>cob_vac <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">0.59</span>, <span class="fl">0.88</span>, <span class="fl">0.93</span>, <span class="fl">0.8</span>, <span class="fl">0.61</span>, <span class="fl">0.79</span>, <span class="fl">0.75</span>, <span class="fl">0.66</span>, <span class="fl">0.56</span>, <span class="fl">0.65</span>, <span class="fl">0.72</span>, <span class="fl">0.64</span>, <span class="fl">0.59</span>, <span class="fl">0.77</span>, <span class="fl">0.8</span>, <span class="fl">0.7</span>)</span>
+<span id="cb102-3"><a href="basico.html#cb102-3" tabindex="-1"></a><span class="co">#para criar a matriz</span></span>
+<span id="cb102-4"><a href="basico.html#cb102-4" tabindex="-1"></a>cob_vac_matrix <span class="ot">&lt;-</span> <span class="fu">matrix</span>(cob_vac, <span class="at">nrow =</span> <span class="dv">4</span>, <span class="at">byrow =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb102-5"><a href="basico.html#cb102-5" tabindex="-1"></a><span class="co">#para imprimir a matriz</span></span>
+<span id="cb102-6"><a href="basico.html#cb102-6" tabindex="-1"></a>cob_vac_matrix</span></code></pre></div>
+<pre><code>##      [,1] [,2] [,3] [,4]
+## [1,] 0.59 0.88 0.93 0.80
+## [2,] 0.61 0.79 0.75 0.66
+## [3,] 0.56 0.65 0.72 0.64
+## [4,] 0.59 0.77 0.80 0.70</code></pre>
+<p>Agora queremos saber quantas pessoas já foram vacinadas por faixa etária e tipo de assentamento. Para isso, multiplique as duas matrizes.</p>
+<div class="sourceCode" id="cb104"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb104-1"><a href="basico.html#cb104-1" tabindex="-1"></a><span class="co">#para multiplicar as matrizes</span></span>
+<span id="cb104-2"><a href="basico.html#cb104-2" tabindex="-1"></a>sp_cob_vac <span class="ot">&lt;-</span> pop_sp_total <span class="sc">*</span> cob_vac_matrix</span>
+<span id="cb104-3"><a href="basico.html#cb104-3" tabindex="-1"></a><span class="co">#para visualizar o resultado</span></span>
+<span id="cb104-4"><a href="basico.html#cb104-4" tabindex="-1"></a>sp_cob_vac</span></code></pre></div>
+<pre><code>##                   0 a 19   20 a 59  60 e mais  tot_rows
+## ass. regular  1498958.72 5099185.5 1165528.08 7670714.4
+## ass. precário   59604.32  127713.8   14418.75  183876.0
+## agsn           302354.08  505083.2   46882.08  884533.1
+## tot_cols      1875160.42 5184597.1 1070076.00 7874353.2</code></pre>
+<p>Veja que a aritmética entre matrizes só é possível quando elas têm o mesmo número de linhas e colunas.</p>
+</div>
+<div id="seleção-em-matrizes" class="section level2 hasAnchor" number="2.10">
+<h2><span class="header-section-number">2.10</span> Seleção em Matrizes<a href="basico.html#seleção-em-matrizes" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Já vimos que para selecionar um elemento de um vetor podemos usar colchetes <strong>[ ]</strong>. O mesmo acontece com a seleção em matrizes. A diferença é que um vetor é unidimensional enquanto uma matriz é bidimensional. Desta forma, dentro dos colchetes precisamos indicar qual a linha e qual a coluna correspondente ao elemento que desejamos selecionar.</p>
+<p>Outro aspecto que precisamos recordar é que quando desejamos selecionar um intervalo de dados podemos usar <strong>:</strong> para indicar que os dados estão em uma sequência. Por exemplo, para selecionar elementos que estão nas linhas 23 a 35, na coluna 12: <strong>[23:35,12]</strong>.</p>
+<p>Ao selecionar uma linha inteira definimos apenas o número da linha. Por exemplo, seleção da linha 63: <strong>nomearquivo[63,]</strong>. Se fosse a coluna 31, seria <strong>[,31]</strong>.</p>
+<p>Com base na matriz de população por tipo de assentamento e faixa etária, selecione a população de 20 a 59 anos que mora em aglomerados subnormais. Chame a variável de ‘agsn_20a59’. Se achar mais fácil, imprima a matriz ‘pop_sp_total’ para visualizar os dados. Observe que a matriz de dados é 4 x 4 (os nomes das linhas e das colunas não contam).</p>
+<div class="sourceCode" id="cb106"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb106-1"><a href="basico.html#cb106-1" tabindex="-1"></a><span class="co">#para visualizar a matriz</span></span>
+<span id="cb106-2"><a href="basico.html#cb106-2" tabindex="-1"></a>pop_sp_total</span></code></pre></div>
+<pre><code>##                0 a 19 20 a 59 60 e mais tot_rows
+## ass. regular  2540608 5794529   1253256  9588393
+## ass. precário   97712  161663     19225   278600
+## agsn           539918  777051     65114  1382083
+## tot_cols      3178238 6733243   1337595 11249076</code></pre>
+<div class="sourceCode" id="cb108"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb108-1"><a href="basico.html#cb108-1" tabindex="-1"></a><span class="co">#para selecionar o que se deseja e criar uma nova variável</span></span>
+<span id="cb108-2"><a href="basico.html#cb108-2" tabindex="-1"></a>agsn_20a59 <span class="ot">&lt;-</span> pop_sp_total[<span class="dv">3</span>,<span class="dv">2</span>]</span>
+<span id="cb108-3"><a href="basico.html#cb108-3" tabindex="-1"></a><span class="co">#para visualizar o resultado</span></span>
+<span id="cb108-4"><a href="basico.html#cb108-4" tabindex="-1"></a>agsn_20a59</span></code></pre></div>
+<pre><code>## [1] 777051</code></pre>
+<p>Selecione a linha inteira dos assentamentos precários e chame a nova variável de ‘pop_ass_prec’.</p>
+<div class="sourceCode" id="cb110"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb110-1"><a href="basico.html#cb110-1" tabindex="-1"></a><span class="co">#para atribuir &#39;pop_ass_prec&#39; à seleção da linha inteira</span></span>
+<span id="cb110-2"><a href="basico.html#cb110-2" tabindex="-1"></a>pop_ass_prec <span class="ot">&lt;-</span> pop_sp_total[<span class="dv">2</span>,]</span>
+<span id="cb110-3"><a href="basico.html#cb110-3" tabindex="-1"></a><span class="co">#para visualizar</span></span>
+<span id="cb110-4"><a href="basico.html#cb110-4" tabindex="-1"></a>pop_ass_prec</span></code></pre></div>
+<pre><code>##    0 a 19   20 a 59 60 e mais  tot_rows 
+##     97712    161663     19225    278600</code></pre>
+</div>
+<div id="fatores" class="section level2 hasAnchor" number="2.11">
+<h2><span class="header-section-number">2.11</span> Fatores<a href="basico.html#fatores" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Fatores armazenam dados de variáveis categóricas (ou qualitativas). Enquanto as variáveis contínuas correspondem a infinitos valores, as variáveis categóricas só podem pertencer a um número limitado de classes.</p>
+<p>Um bom exemplo de variável categórica são as classes de raça ou cor (segundo classificação do IBGE). No Censo Demográfico brasileiro há 5 grupos autorreferidos de raça ou cor: preta, branca, amarela, indígena ou parda. Deixando de lado todas as discussões sobre a definição e nomes destas categorias, podemos criar um vetor atribuindo a cada pessoa entrevistada uma cor ou raça referida por ela.</p>
+<p>Vamos criar um vetor chamado ‘vetor_cor’ para uma amostragem de 10 pessoas, cujas respostas ordenadas foram: preta, preta, branca, parda, branca, amarela, indigena, preta, branca, parda. Como as respostas são em texto, é necessário usar ““.</p>
+<div class="sourceCode" id="cb112"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb112-1"><a href="basico.html#cb112-1" tabindex="-1"></a>vetor_cor <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;preta&quot;</span>, <span class="st">&quot;preta&quot;</span>, <span class="st">&quot;branca&quot;</span>, <span class="st">&quot;parda&quot;</span>, <span class="st">&quot;branca&quot;</span>, <span class="st">&quot;amarela&quot;</span>, <span class="st">&quot;indigena&quot;</span>, <span class="st">&quot;preta&quot;</span>, <span class="st">&quot;branca&quot;</span>, <span class="st">&quot;parda&quot;</span>)</span>
+<span id="cb112-2"><a href="basico.html#cb112-2" tabindex="-1"></a></span>
+<span id="cb112-3"><a href="basico.html#cb112-3" tabindex="-1"></a><span class="co">#Imprima para ver o vetor</span></span>
+<span id="cb112-4"><a href="basico.html#cb112-4" tabindex="-1"></a>vetor_cor</span></code></pre></div>
+<pre><code>##  [1] &quot;preta&quot;    &quot;preta&quot;    &quot;branca&quot;   &quot;parda&quot;    &quot;branca&quot;   &quot;amarela&quot; 
+##  [7] &quot;indigena&quot; &quot;preta&quot;    &quot;branca&quot;   &quot;parda&quot;</code></pre>
+<p>Para que o R reconheça este vetor como um fator, usamos a função <strong>factor()</strong>. Crie ‘fator_vetor_cor’ usando a função <strong>factor()</strong>. Imprima para ver o resultado.</p>
+<div class="sourceCode" id="cb114"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb114-1"><a href="basico.html#cb114-1" tabindex="-1"></a><span class="co">#para criar o fator</span></span>
+<span id="cb114-2"><a href="basico.html#cb114-2" tabindex="-1"></a>fator_vetor_cor <span class="ot">&lt;-</span> <span class="fu">factor</span>(vetor_cor)</span>
+<span id="cb114-3"><a href="basico.html#cb114-3" tabindex="-1"></a><span class="co">#para visualizar</span></span>
+<span id="cb114-4"><a href="basico.html#cb114-4" tabindex="-1"></a>fator_vetor_cor</span></code></pre></div>
+<pre><code>##  [1] preta    preta    branca   parda    branca   amarela  indigena
+##  [8] preta    branca   parda   
+## Levels: amarela branca indigena parda preta</code></pre>
+<p>Observe que quando imprimimos o objeto do tipo fator, existe a linha “Levels” mostrando todas as categorias encontradas no conjunto de dados.</p>
+<p>Os dados categóricos podem ser nominais ou ordinais. Como vimos no fator cor, não existe ordem entre as categorias. Neste caso, eles são listados em ordem alfabética na linha “Levels”.</p>
+<p>Uma função muito útil é <strong>summary()</strong>. Com ela você tem uma boa ideia do conteúdo de cada objeto. Tente <strong>summary()</strong> para ver ‘vetor_cor’ e em seguida, para ver ‘fator_vetor_cor’.</p>
+<p>Qual a diferença entre os dois?</p>
+<div class="sourceCode" id="cb116"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb116-1"><a href="basico.html#cb116-1" tabindex="-1"></a><span class="co">#para ver o resumo do vetor</span></span>
+<span id="cb116-2"><a href="basico.html#cb116-2" tabindex="-1"></a><span class="fu">summary</span>(vetor_cor)</span></code></pre></div>
+<pre><code>##    Length     Class      Mode 
+##        10 character character</code></pre>
+<div class="sourceCode" id="cb118"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb118-1"><a href="basico.html#cb118-1" tabindex="-1"></a><span class="co">#para vero resumo do fator</span></span>
+<span id="cb118-2"><a href="basico.html#cb118-2" tabindex="-1"></a><span class="fu">summary</span>(fator_vetor_cor)</span></code></pre></div>
+<pre><code>##  amarela   branca indigena    parda    preta 
+##        1        3        1        2        3</code></pre>
+<p>Em um fator, o ‘summary’ resume o número de elementos presentes em cada categoria. No vetor, ‘summary’ apresenta o comprimento do vetor e o tipo de dados.</p>
+<p>Fatores podem ser nominais ou ordinais. Para criar um fator ordinal, é preciso especificar os níveis entre os elementos. Vamos criar um vetor com a vulnerabilidade a inundações de 10 municípios. Chame este vetor de ‘vuln’.</p>
+<div class="sourceCode" id="cb120"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb120-1"><a href="basico.html#cb120-1" tabindex="-1"></a><span class="co">#para criar o vetor</span></span>
+<span id="cb120-2"><a href="basico.html#cb120-2" tabindex="-1"></a>vuln <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;alta&quot;</span>, <span class="st">&quot;baixa&quot;</span>, <span class="st">&quot;baixa&quot;</span>, <span class="st">&quot;muito alta&quot;</span>, <span class="st">&quot;nenhuma&quot;</span>, <span class="st">&quot;intermediária&quot;</span>, <span class="st">&quot;intermediária&quot;</span>, <span class="st">&quot;intermediária&quot;</span>, <span class="st">&quot;baixa&quot;</span>, <span class="st">&quot;baixa&quot;</span>)</span>
+<span id="cb120-3"><a href="basico.html#cb120-3" tabindex="-1"></a><span class="co">#para visualizar</span></span>
+<span id="cb120-4"><a href="basico.html#cb120-4" tabindex="-1"></a>vuln</span></code></pre></div>
+<pre><code>##  [1] &quot;alta&quot;          &quot;baixa&quot;         &quot;baixa&quot;         &quot;muito alta&quot;   
+##  [5] &quot;nenhuma&quot;       &quot;intermediária&quot; &quot;intermediária&quot; &quot;intermediária&quot;
+##  [9] &quot;baixa&quot;         &quot;baixa&quot;</code></pre>
+<p>Vamos converter o vetor ‘vuln’ em um fator ordenado. Para isso precisaremos indicar a ordem dos níveis. Ordem de elementos segundo vulnerabilidade (nenhuma, baixa, intermediária, alta, muito alta).</p>
+<div class="sourceCode" id="cb122"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb122-1"><a href="basico.html#cb122-1" tabindex="-1"></a><span class="co">#para criar o fator</span></span>
+<span id="cb122-2"><a href="basico.html#cb122-2" tabindex="-1"></a>factor_vuln <span class="ot">&lt;-</span> <span class="fu">factor</span>(vuln, <span class="at">ordered =</span> T, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">&quot;nenhuma&quot;</span>, <span class="st">&quot;baixa&quot;</span>, <span class="st">&quot;intermediária&quot;</span>, <span class="st">&quot;alta&quot;</span>, <span class="st">&quot;muito alta&quot;</span>))</span>
+<span id="cb122-3"><a href="basico.html#cb122-3" tabindex="-1"></a><span class="co">#para visualizar o fator criado</span></span>
+<span id="cb122-4"><a href="basico.html#cb122-4" tabindex="-1"></a>factor_vuln</span></code></pre></div>
+<pre><code>##  [1] alta          baixa         baixa         muito alta   
+##  [5] nenhuma       intermediária intermediária intermediária
+##  [9] baixa         baixa        
+## Levels: nenhuma &lt; baixa &lt; intermediária &lt; alta &lt; muito alta</code></pre>
+<p>Em um fator ordenado, as classes aparecem em ordem crescente de acordo com os níveis estabelecidos.</p>
+<p>Visualize o <strong>summary()</strong> de ‘factor_vuln’.</p>
+<div class="sourceCode" id="cb124"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb124-1"><a href="basico.html#cb124-1" tabindex="-1"></a><span class="fu">summary</span>(factor_vuln)</span></code></pre></div>
+<pre><code>##       nenhuma         baixa intermediária          alta    muito alta 
+##             1             4             3             1             1</code></pre>
+<p>Vamos selecionar e criar novos objetos com os elementos de ‘factor_vuln’. Selecione o elemento 6 e crie um objeto. Selecione o elemento 2 e crie um elemento. Chame de ‘vuln6’ e ‘vuln2’, respectivamente</p>
+<div class="sourceCode" id="cb126"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb126-1"><a href="basico.html#cb126-1" tabindex="-1"></a><span class="co">#para selecionar o elemento 6</span></span>
+<span id="cb126-2"><a href="basico.html#cb126-2" tabindex="-1"></a>vuln6 <span class="ot">&lt;-</span> factor_vuln[<span class="dv">6</span>]</span>
+<span id="cb126-3"><a href="basico.html#cb126-3" tabindex="-1"></a><span class="co">#para selecionar o elemento 2</span></span>
+<span id="cb126-4"><a href="basico.html#cb126-4" tabindex="-1"></a>vuln2 <span class="ot">&lt;-</span> factor_vuln[<span class="dv">2</span>]</span>
+<span id="cb126-5"><a href="basico.html#cb126-5" tabindex="-1"></a></span>
+<span id="cb126-6"><a href="basico.html#cb126-6" tabindex="-1"></a><span class="co">#para visualizar</span></span>
+<span id="cb126-7"><a href="basico.html#cb126-7" tabindex="-1"></a>vuln6</span></code></pre></div>
+<pre><code>## [1] intermediária
+## Levels: nenhuma &lt; baixa &lt; intermediária &lt; alta &lt; muito alta</code></pre>
+<div class="sourceCode" id="cb128"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb128-1"><a href="basico.html#cb128-1" tabindex="-1"></a>vuln2</span></code></pre></div>
+<pre><code>## [1] baixa
+## Levels: nenhuma &lt; baixa &lt; intermediária &lt; alta &lt; muito alta</code></pre>
+<p>Agora poderemos comparar ‘vuln6’ com ‘vuln2’. Verifique se ‘vuln6’ é igual a ‘vuln2’.</p>
+<div class="sourceCode" id="cb130"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb130-1"><a href="basico.html#cb130-1" tabindex="-1"></a><span class="co">#para verificar se vuln6 é igual a vuln2</span></span>
+<span id="cb130-2"><a href="basico.html#cb130-2" tabindex="-1"></a>vuln6 <span class="sc">==</span> vuln2</span></code></pre></div>
+<pre><code>## [1] FALSE</code></pre>
+<p>Verifique se ‘vuln6’ é maior do que ‘vuln2’.</p>
+<div class="sourceCode" id="cb132"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb132-1"><a href="basico.html#cb132-1" tabindex="-1"></a><span class="co">#para verificar se vuln6 é maior do que vuln2</span></span>
+<span id="cb132-2"><a href="basico.html#cb132-2" tabindex="-1"></a>vuln6 <span class="sc">&gt;</span> vuln2</span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+</div>
+<div id="referências-citadas" class="section level2 hasAnchor" number="2.12">
+<h2><span class="header-section-number">2.12</span> Referências citadas<a href="basico.html#referências-citadas" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>AQUINO, J.A. <strong>R para cientistas sociais</strong>. Ilhéus: Editora da UESC, 2014. 167p.</p>
+<p>DATACAMP. 2023. Cornelissen, J. <strong>Introduction to R</strong>. On-line Course.</p>
+<p>DATACAMP. 2023. Robinson, D. <strong>Introduction to the Tidyverse</strong>. On-line Course.</p>
+<p>DATACAMP. 2023. Chapman, J. <strong>Data manipulation with Dplyr</strong>. On-line Course.</p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="intro.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="dataframes.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/ligiaviz/RCartoTematica/edit/main/03-basico-do-basico.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": "https://github.com/ligiaviz/RCartoTematica/blob/main/03-basico-do-basico.Rmd",
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

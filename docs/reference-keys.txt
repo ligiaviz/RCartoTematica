@@ -45,7 +45,7 @@ instalação-do-r-para-windows
 instalação-do-r-para-mac
 instalação-do-rstudio
 instalação-do-rtools
-básico-do-básico-do-r-e-rstudio
+basico
 os-paineis
 tipos-de-objetos
 estrutura-dos-dados
@@ -100,14 +100,16 @@ quanti3
 bancos-de-dados
 mapas-coropléticos
 o-número-de-classes
+histogramas-das-variáveis
 os-intervalos-de-classes
 escalacores
 layout-do-mapa-coroplético-de-idhm-da-rmsp
 quanti4
 indo-além-proposta-de-exercício
 referências-sugeridas-3
-referências-sugeridas-4
 quanti5
+referências-sugeridas-4
+quanti6
 osm
 anamorf
 sintese

@@ -20,7 +20,7 @@ Fazer mapas não é sobre saber fazer código em **R**. O(A) geógrafo(a) pensa 
 
 ## Referência citada {-}
 
-Comber, L., Brunsdom, C. (2021) **Geographical Data Science & Spatial Data Analysis**: an introduction in R. Los Angeles: SAGE, 431p. https://study.sagepub.com/comber
+COMBER, L., BRUNSDOM, C. (2021) **Geographical Data Science & Spatial Data Analysis**: an introduction in R. Los Angeles: SAGE, 431p. https://study.sagepub.com/comber
 
 # Sobre o livro {-}
 

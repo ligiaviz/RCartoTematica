@@ -44,7 +44,7 @@ library(rnaturalearthdata)
 
 ## O pacote geobr
 
-O pacote **geobr** foi desenvolvido por pesquisadores do Instituto de Pesquisa Econômica Aplicada (IPEA), que é uma fundação pública federal vinculada ao Ministério da Economia do Brasil, para importar os dados do IBGE (Pereira & Gonçalves, 2021). Este pacote está depositado no *github* do IPEA. Para facilitar a instalação de pacotes que não estão no repositório CRAN, pode-se usar o pacote **devtools** com a função **install_github()**. Se você seguiu os passos anteriores, o **devtools** já está instalado e carregado no **RStudio**.
+O pacote **geobr** foi desenvolvido por pesquisadores do Instituto de Pesquisa Econômica Aplicada (IPEA), que é uma fundação pública federal vinculada ao Ministério da Economia do Brasil, para importar os dados do IBGE (PEREIRA & GONÇALVES, 2021). Este pacote está depositado no *github* do IPEA. Para facilitar a instalação de pacotes que não estão no repositório CRAN, pode-se usar o pacote **devtools** com a função **install_github()**. Se você seguiu os passos anteriores, o **devtools** já está instalado e carregado no **RStudio**.
 
 ```{r eval=FALSE, warning=FALSE}
 #para instalar o pacote ‘geobr’
@@ -126,7 +126,7 @@ sf::st_crs(mundo)
 O sistema de coordenadas de **mundo** é **+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0**.
 
 Vamos colocar **biomas** na mesma projeção.
-O pacote **sf** (*simple features for R*) (Pebesma, 2018) permite a manipulação das bases de dados espaciais. Vamos usá-lo para alterar o CRS da camada **biomas**, usando a função **st_transform**.
+O pacote **sf** (*simple features for R*) (PEBESMA, 2018) permite a manipulação das bases de dados espaciais. Vamos usá-lo para alterar o CRS da camada **biomas**, usando a função **st_transform**.
 
 ```{r }
 #para alterar o CRS de 'biomas'
@@ -143,7 +143,7 @@ O embasamento teórico sobre as projeções cartográficas e sistemas de coorden
 
 **ggplot2** é um pacote do **R** para produzir gráficos estatísticos ou dados (e mapas, claro!). Seu enorme potencial é descrito em diversos livros. Para aqueles que pretendem se aprofundar, uma ótima referência é Wickham et al. (2016). Todos os detalhes do pacote podem ser encontrados em https://ggplot2.tidyverse.org/reference/index.html.
 
-Ao contrário da maioria dos outros pacotes gráficos, o **ggplot2** possui uma gramática subjacente, com base na teoria da *gramática dos gráficos* (Wilkinson & Wills, 2005; Wickham, 2010), que permite compor gráficos combinando componentes independentes.
+Ao contrário da maioria dos outros pacotes gráficos, o **ggplot2** possui uma gramática subjacente, com base na teoria da *gramática dos gráficos* (WILKINSON & WILLS, 2005; WICKHAM, 2010), que permite compor gráficos combinando componentes independentes.
 
 Resumidamente, parte-se da ideia de que todo gráfico ou mapa é composto por um conjunto de dados (que fornecerá a informação a ser representada) e o arranjo (a descrição de como as variáveis dos dados são representadas por meio dos atributos estéticos). O arranjo tem cinco componentes:
 
@@ -159,7 +159,7 @@ Resumidamente, parte-se da ideia de que todo gráfico ou mapa é composto por um
 
 O pacote **ggplot2** só permite a elaboração de gráficos ou mapas estáticos. Para mapas interativos, outros pacotes podem ser usados, tais como o **leaflet** ou **tmap**.
 
-Usando **ggplot2** podemos especificar diferentes partes do gráfico e combiná-las usando o operador **+** (Wickham et al., 2016).
+Usando **ggplot2** podemos especificar diferentes partes do gráfico e combiná-las usando o operador **+** (WICKHAM et al., 2016).
 
 ## Biomas do Brasil
 
@@ -267,7 +267,7 @@ theme(legend.key.size = unit(1, 'cm'), #muda o tamanho da caixa da legenda
         legend.title = element_text(size=14), #muda o tamanho da fonte do título
         legend.text = element_text(size=10)) #muda o tamanho da fonte do texto
 ```
-Vamos reduzir o tamanho da fonte do título da legenda e do texto (Figura \@ref(fig:plot-text-size)). As possibilidades de edição são inúmeras usando **ggplot2**. Sugiro consultar o site https://ggplot2.tidyverse.org/index.html e o livro online "R Graphics Cookbook" (Chang, 2023), que cobrem todos os detalhes. 
+Vamos reduzir o tamanho da fonte do título da legenda e do texto (Figura \@ref(fig:plot-text-size)). As possibilidades de edição são inúmeras usando **ggplot2**. Sugiro consultar o site https://ggplot2.tidyverse.org/index.html e o livro online **R Graphics Cookbook** (CHANG, 2023), que cobrem todos os detalhes. 
 
 ```{r plot-text-size, fig.align = 'center', fig.cap='Redução das fontes do título da legenda e texto'}
 ggplot(mundo) + 
