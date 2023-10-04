@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title> 11 Interpolação por Proximidade | Cartografia Temática em R para estudantes de Geografia</title>
+  <meta name="description" content=" 11 Interpolação por Proximidade | Cartografia Temática em R para estudantes de Geografia" />
+  <meta name="generator" content="bookdown 0.35 and GitBook 2.6.7" />
+
+  <meta property="og:title" content=" 11 Interpolação por Proximidade | Cartografia Temática em R para estudantes de Geografia" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content=" 11 Interpolação por Proximidade | Cartografia Temática em R para estudantes de Geografia" />
+  
+  
+  
+
+<meta name="author" content="Ligia Vizeu Barrozo" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="quanti5.html"/>
+<link rel="next" href="abordagens-estocásticas.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/htmlwidgets-1.6.2/htmlwidgets.js"></script>
+<link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-1.3.1/leaflet.js"></script>
+<link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
+<script src="libs/proj4-2.6.2/proj4.min.js"></script>
+<script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
+<link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-binding-2.1.2/leaflet.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">R Carto Tem Geo</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Apresentação</a>
+<ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#referência-citada"><i class="fa fa-check"></i>Referência citada</a></li>
+</ul></li>
+<li class="chapter" data-level="1" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>1</b> Introdução</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="intro.html"><a href="intro.html#o-programa-r"><i class="fa fa-check"></i><b>1.1</b> O programa R</a></li>
+<li class="chapter" data-level="1.2" data-path="intro.html"><a href="intro.html#instalação-do-r-e-rstudio"><i class="fa fa-check"></i><b>1.2</b> Instalação do R e RStudio</a>
+<ul>
+<li class="chapter" data-level="1.2.1" data-path="intro.html"><a href="intro.html#instalação-do-r-para-windows"><i class="fa fa-check"></i><b>1.2.1</b> Instalação do R para Windows</a></li>
+<li class="chapter" data-level="1.2.2" data-path="intro.html"><a href="intro.html#instalação-do-r-para-mac"><i class="fa fa-check"></i><b>1.2.2</b> Instalação do R para Mac</a></li>
+<li class="chapter" data-level="1.2.3" data-path="intro.html"><a href="intro.html#instalação-do-rstudio"><i class="fa fa-check"></i><b>1.2.3</b> Instalação do RStudio</a></li>
+<li class="chapter" data-level="1.2.4" data-path="intro.html"><a href="intro.html#instalação-do-rtools"><i class="fa fa-check"></i><b>1.2.4</b> Instalação do RTools</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="basico.html"><a href="basico.html"><i class="fa fa-check"></i><b>2</b> Básico do básico do R e RStudio</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="basico.html"><a href="basico.html#os-paineis"><i class="fa fa-check"></i><b>2.1</b> Os paineis</a></li>
+<li class="chapter" data-level="2.2" data-path="basico.html"><a href="basico.html#tipos-de-objetos"><i class="fa fa-check"></i><b>2.2</b> Tipos de objetos</a></li>
+<li class="chapter" data-level="2.3" data-path="basico.html"><a href="basico.html#estrutura-dos-dados"><i class="fa fa-check"></i><b>2.3</b> Estrutura dos dados</a></li>
+<li class="chapter" data-level="2.4" data-path="basico.html"><a href="basico.html#vetores"><i class="fa fa-check"></i><b>2.4</b> Vetores</a></li>
+<li class="chapter" data-level="2.5" data-path="basico.html"><a href="basico.html#nomeando-os-vetores"><i class="fa fa-check"></i><b>2.5</b> Nomeando os vetores</a></li>
+<li class="chapter" data-level="2.6" data-path="basico.html"><a href="basico.html#seleção-em-vetores"><i class="fa fa-check"></i><b>2.6</b> Seleção em vetores</a></li>
+<li class="chapter" data-level="2.7" data-path="basico.html"><a href="basico.html#totais-e-médias-em-vetores"><i class="fa fa-check"></i><b>2.7</b> Totais e médias em vetores</a></li>
+<li class="chapter" data-level="2.8" data-path="basico.html"><a href="basico.html#matrizes"><i class="fa fa-check"></i><b>2.8</b> Matrizes</a></li>
+<li class="chapter" data-level="2.9" data-path="basico.html"><a href="basico.html#cálculos-em-matrizes"><i class="fa fa-check"></i><b>2.9</b> Cálculos em Matrizes</a></li>
+<li class="chapter" data-level="2.10" data-path="basico.html"><a href="basico.html#seleção-em-matrizes"><i class="fa fa-check"></i><b>2.10</b> Seleção em Matrizes</a></li>
+<li class="chapter" data-level="2.11" data-path="basico.html"><a href="basico.html#fatores"><i class="fa fa-check"></i><b>2.11</b> Fatores</a></li>
+<li class="chapter" data-level="2.12" data-path="basico.html"><a href="basico.html#referências-citadas"><i class="fa fa-check"></i><b>2.12</b> Referências citadas</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="dataframes.html"><a href="dataframes.html"><i class="fa fa-check"></i><b>3</b> Dataframes</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="dataframes.html"><a href="dataframes.html#criação-de-dataframe"><i class="fa fa-check"></i><b>3.1</b> Criação de dataframe</a></li>
+<li class="chapter" data-level="3.2" data-path="dataframes.html"><a href="dataframes.html#importação-de-um-dataframe"><i class="fa fa-check"></i><b>3.2</b> Importação de um dataframe</a></li>
+<li class="chapter" data-level="3.3" data-path="dataframes.html"><a href="dataframes.html#o-operador-pipe-no-tidyverse"><i class="fa fa-check"></i><b>3.3</b> O operador Pipe no tidyverse</a></li>
+<li class="chapter" data-level="3.4" data-path="dataframes.html"><a href="dataframes.html#selecionando-colunas"><i class="fa fa-check"></i><b>3.4</b> Selecionando colunas</a></li>
+<li class="chapter" data-level="3.5" data-path="dataframes.html"><a href="dataframes.html#combinando-dataframes"><i class="fa fa-check"></i><b>3.5</b> Combinando dataframes</a></li>
+<li class="chapter" data-level="3.6" data-path="dataframes.html"><a href="dataframes.html#filtrando-observações"><i class="fa fa-check"></i><b>3.6</b> Filtrando observações</a></li>
+<li class="chapter" data-level="3.7" data-path="dataframes.html"><a href="dataframes.html#organizando-uma-tabela-com-a-função-arrange"><i class="fa fa-check"></i><b>3.7</b> Organizando uma tabela com a função <code>arrange()</code></a></li>
+<li class="chapter" data-level="3.8" data-path="dataframes.html"><a href="dataframes.html#o-verbo-mutate"><i class="fa fa-check"></i><b>3.8</b> O verbo “mutate”</a></li>
+<li class="chapter" data-level="3.9" data-path="dataframes.html"><a href="dataframes.html#agrupando-dados-com-a-função-group_by"><i class="fa fa-check"></i><b>3.9</b> Agrupando dados com a função <code>group_by</code></a></li>
+<li class="chapter" data-level="3.10" data-path="dataframes.html"><a href="dataframes.html#rumo-aos-mapas"><i class="fa fa-check"></i><b>3.10</b> Rumo aos mapas</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="tipos.html"><a href="tipos.html"><i class="fa fa-check"></i><b>4</b> Tipos de dados, conceitos e representação cartográfica</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="tipos.html"><a href="tipos.html#definição-do-tipo-de-representação-cartográfica"><i class="fa fa-check"></i><b>4.1</b> Definição do tipo de representação cartográfica</a></li>
+<li class="chapter" data-level="4.2" data-path="tipos.html"><a href="tipos.html#variáveis-visuais"><i class="fa fa-check"></i><b>4.2</b> Variáveis visuais</a></li>
+<li class="chapter" data-level="4.3" data-path="tipos.html"><a href="tipos.html#o-conceito-diversidade"><i class="fa fa-check"></i><b>4.3</b> O conceito <em>diversidade</em></a></li>
+<li class="chapter" data-level="4.4" data-path="tipos.html"><a href="tipos.html#o-conceito-ordem"><i class="fa fa-check"></i><b>4.4</b> O conceito <em>ordem</em></a></li>
+<li class="chapter" data-level="4.5" data-path="tipos.html"><a href="tipos.html#o-conceito-de-proporcionalidade"><i class="fa fa-check"></i><b>4.5</b> O conceito de <em>proporcionalidade</em></a></li>
+<li class="chapter" data-level="4.6" data-path="tipos.html"><a href="tipos.html#referências-sugeridas"><i class="fa fa-check"></i><b>4.6</b> Referências sugeridas</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="quali1.html"><a href="quali1.html"><i class="fa fa-check"></i><b>5</b> Dados qualitativos: mapa corocromático nominal</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="quali1.html"><a href="quali1.html#instalando-e-carregando-pacotes-do-r"><i class="fa fa-check"></i><b>5.1</b> Instalando e carregando pacotes do R</a></li>
+<li class="chapter" data-level="5.2" data-path="quali1.html"><a href="quali1.html#o-pacote-geobr"><i class="fa fa-check"></i><b>5.2</b> O pacote geobr</a></li>
+<li class="chapter" data-level="5.3" data-path="quali1.html"><a href="quali1.html#projeção-cartográfica"><i class="fa fa-check"></i><b>5.3</b> Projeção cartográfica</a></li>
+<li class="chapter" data-level="5.4" data-path="quali1.html"><a href="quali1.html#iniciando-com-o-ggplot2"><i class="fa fa-check"></i><b>5.4</b> Iniciando com o ggplot2</a></li>
+<li class="chapter" data-level="5.5" data-path="quali1.html"><a href="quali1.html#biomas-do-brasil"><i class="fa fa-check"></i><b>5.5</b> Biomas do Brasil</a></li>
+<li class="chapter" data-level="" data-path="quali1.html"><a href="quali1.html#referências-citadas-1"><i class="fa fa-check"></i>Referências citadas</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="quali2.html"><a href="quali2.html"><i class="fa fa-check"></i><b>6</b> Dados qualitativos: mapa corocromático ordinal</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="quali2.html"><a href="quali2.html#banco-de-dados"><i class="fa fa-check"></i><b>6.1</b> Banco de dados</a></li>
+<li class="chapter" data-level="6.2" data-path="quali2.html"><a href="quali2.html#potencial-de-agressividade-climática-na-amazônia-legal-do-brasil"><i class="fa fa-check"></i><b>6.2</b> Potencial de agressividade climática na Amazônia Legal do Brasil</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="quanti1.html"><a href="quanti1.html"><i class="fa fa-check"></i><b>7</b> Dados quantitativos absolutos: mapa das figuras geométricas proporcionais</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="quanti1.html"><a href="quanti1.html#bases-de-dados"><i class="fa fa-check"></i><b>7.1</b> Bases de dados</a></li>
+<li class="chapter" data-level="7.2" data-path="quanti1.html"><a href="quanti1.html#centroides-dos-municípios"><i class="fa fa-check"></i><b>7.2</b> Centroides dos municípios</a></li>
+<li class="chapter" data-level="7.3" data-path="quanti1.html"><a href="quanti1.html#mapa-da-população-do-estado-de-são-paulo"><i class="fa fa-check"></i><b>7.3</b> Mapa da população do estado de São Paulo</a></li>
+<li class="chapter" data-level="7.4" data-path="quanti1.html"><a href="quanti1.html#referências-sugeridas-1"><i class="fa fa-check"></i><b>7.4</b> Referências sugeridas</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="quanti2.html"><a href="quanti2.html"><i class="fa fa-check"></i><b>8</b> Dados quantitativos absolutos: mapa dos pontos de contagem (ou densidade de pontos)</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="quanti2.html"><a href="quanti2.html#bases-de-dados-1"><i class="fa fa-check"></i><b>8.1</b> Bases de dados</a></li>
+<li class="chapter" data-level="8.2" data-path="quanti2.html"><a href="quanti2.html#definição-dos-pontos-aleatórios"><i class="fa fa-check"></i><b>8.2</b> Definição dos pontos aleatórios</a></li>
+<li class="chapter" data-level="8.3" data-path="quanti2.html"><a href="quanti2.html#mapa-de-raça-ou-cor-dos-residentes-do-município-de-são-paulo"><i class="fa fa-check"></i><b>8.3</b> Mapa de raça ou cor dos residentes do município de São Paulo</a></li>
+<li class="chapter" data-level="8.4" data-path="quanti2.html"><a href="quanti2.html#referências-sugeridas-2"><i class="fa fa-check"></i><b>8.4</b> Referências sugeridas</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="quanti3.html"><a href="quanti3.html"><i class="fa fa-check"></i><b>9</b> Dados quantitativos relativos: mapa coroplético</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="quanti3.html"><a href="quanti3.html#bancos-de-dados"><i class="fa fa-check"></i><b>9.1</b> Bancos de dados</a></li>
+<li class="chapter" data-level="9.2" data-path="quanti3.html"><a href="quanti3.html#mapas-coropléticos"><i class="fa fa-check"></i><b>9.2</b> Mapas coropléticos</a>
+<ul>
+<li class="chapter" data-level="9.2.1" data-path="quanti3.html"><a href="quanti3.html#o-número-de-classes"><i class="fa fa-check"></i><b>9.2.1</b> O número de classes</a></li>
+<li class="chapter" data-level="9.2.2" data-path="quanti3.html"><a href="quanti3.html#histogramas-das-variáveis"><i class="fa fa-check"></i><b>9.2.2</b> Histogramas das variáveis</a></li>
+<li class="chapter" data-level="9.2.3" data-path="quanti3.html"><a href="quanti3.html#os-intervalos-de-classes"><i class="fa fa-check"></i><b>9.2.3</b> Os intervalos de classes</a></li>
+<li class="chapter" data-level="9.2.4" data-path="quanti3.html"><a href="quanti3.html#escalacores"><i class="fa fa-check"></i><b>9.2.4</b> A escala de cores</a></li>
+</ul></li>
+<li class="chapter" data-level="9.3" data-path="quanti3.html"><a href="quanti3.html#layout-do-mapa-coroplético-de-idhm-da-rmsp"><i class="fa fa-check"></i><b>9.3</b> Layout do mapa coroplético de IDHM da RMSP</a></li>
+<li class="chapter" data-level="9.4" data-path="quanti3.html"><a href="quanti3.html#indo-além-proposta-de-exercício"><i class="fa fa-check"></i><b>9.4</b> Indo além: Proposta de exercício</a></li>
+<li class="chapter" data-level="9.5" data-path="quanti3.html"><a href="quanti3.html#referências-sugeridas-3"><i class="fa fa-check"></i><b>9.5</b> Referências sugeridas</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="quanti5.html"><a href="quanti5.html"><i class="fa fa-check"></i><b>10</b> Dados quantitativos a partir de amostras: mapa isarítmico</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="quanti5.html"><a href="quanti5.html#abordagens-de-interpolação-espacial"><i class="fa fa-check"></i><b>10.1</b> Abordagens de interpolação espacial</a>
+<ul>
+<li class="chapter" data-level="10.1.1" data-path="quanti5.html"><a href="quanti5.html#abordagens-determinísticas"><i class="fa fa-check"></i><b>10.1.1</b> Abordagens determinísticas</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="interpolação-por-proximidade.html"><a href="interpolação-por-proximidade.html"><i class="fa fa-check"></i><b>11</b> Interpolação por Proximidade</a>
+<ul>
+<li class="chapter" data-level="11.1" data-path="interpolação-por-proximidade.html"><a href="interpolação-por-proximidade.html#validação-cruzada"><i class="fa fa-check"></i><b>11.1</b> Validação cruzada</a></li>
+<li class="chapter" data-level="11.2" data-path="interpolação-por-proximidade.html"><a href="interpolação-por-proximidade.html#interpolação-por-vizinho-mais-próximo-nearest-neighbor"><i class="fa fa-check"></i><b>11.2</b> Interpolação por Vizinho mais Próximo (Nearest Neighbor)</a></li>
+<li class="chapter" data-level="11.3" data-path="interpolação-por-proximidade.html"><a href="interpolação-por-proximidade.html#interpolação-por-inverso-da-distância-ponderada-idw"><i class="fa fa-check"></i><b>11.3</b> Interpolação por Inverso da Distância Ponderada (IDW)</a></li>
+<li class="chapter" data-level="11.4" data-path="interpolação-por-proximidade.html"><a href="interpolação-por-proximidade.html#validação-cruzada-do-modelo-por-inverso-da-distância-ponderada"><i class="fa fa-check"></i><b>11.4</b> Validação cruzada do modelo por Inverso da Distância Ponderada</a></li>
+<li class="chapter" data-level="11.5" data-path="interpolação-por-proximidade.html"><a href="interpolação-por-proximidade.html#interpolação-global-por-superfície-de-tendência"><i class="fa fa-check"></i><b>11.5</b> Interpolação global por Superfície de Tendência</a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="abordagens-estocásticas.html"><a href="abordagens-estocásticas.html"><i class="fa fa-check"></i><b>12</b> Abordagens Estocásticas</a>
+<ul>
+<li class="chapter" data-level="12.1" data-path="abordagens-estocásticas.html"><a href="abordagens-estocásticas.html#krigagem-ordinária"><i class="fa fa-check"></i><b>12.1</b> Krigagem Ordinária</a></li>
+<li class="chapter" data-level="12.2" data-path="abordagens-estocásticas.html"><a href="abordagens-estocásticas.html#referências-citadas-2"><i class="fa fa-check"></i><b>12.2</b> Referências citadas</a></li>
+<li class="chapter" data-level="12.3" data-path="abordagens-estocásticas.html"><a href="abordagens-estocásticas.html#sugestões-de-leitura"><i class="fa fa-check"></i><b>12.3</b> Sugestões de leitura</a></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="quanti6.html"><a href="quanti6.html"><i class="fa fa-check"></i><b>13</b> Mapa de fluxos: movimentos no espaço</a></li>
+<li class="chapter" data-level="14" data-path="osm.html"><a href="osm.html"><i class="fa fa-check"></i><b>14</b> Usando dados do Open Street Map</a></li>
+<li class="chapter" data-level="15" data-path="anamorf.html"><a href="anamorf.html"><i class="fa fa-check"></i><b>15</b> Anamorfose</a></li>
+<li class="chapter" data-level="16" data-path="sintese.html"><a href="sintese.html"><i class="fa fa-check"></i><b>16</b> Mapas de síntese</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Cartografia Temática em R para estudantes de Geografia</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="interpolação-por-proximidade" class="section level1 hasAnchor" number="11">
+<h1><span class="header-section-number"> 11</span> Interpolação por Proximidade<a href="interpolação-por-proximidade.html#interpolação-por-proximidade" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>Uma das interpolações mais simples. Pode ser gerada a partir de polígonos de Thiessen ou por Polígonos de Voronoi. As duas técnicas dividem o espaço com base na proximidade dos pontos de dados. A diferença principal está na maneira como as células são delimitadas: os <strong>polígonos de Voronoi</strong> têm bordas equidistantes entre pontos de dados mais próximos, enquanto os <strong>polígonos de Thiessen</strong> incluem todos os pontos mais próximos a um ponto de dados específico.</p>
+<p>Vamos calcular o Diagrama de Voronoi. Cada polígono de Voronoi representa a área em torno de um ponto de amostra onde esse ponto é o ponto mais próximo em comparação com todos os outros pontos de amostra. Cada ponto em um polígono de Voronoi é mais próximo do ponto associado a esse polígono do que de qualquer outro ponto de amostra. Isso cria uma tesselação do espaço onde cada ponto dentro de um polígono de Voronoi é atribuído ao valor do ponto associado a esse polígono.</p>
+<p>Este método de interpolação é eficaz quando a distribuição dos pontos de amostra é representativa da variação espacial dos dados. No entanto, pode não ser ideal quando a densidade dos pontos é muito alta ou muito baixa. Além disso, a Interpolação por Polígonos de Voronoi pode produzir resultados descontínuos em locais onde os polígonos se encontram, resultando em superfícies interpoladas com bordas nítidas.</p>
+<p>Vamos seguir o roteiro de Davis (2022) para a elaboração de um mapa com base nos polígonos de Voronoi e sua validação. O primeiro passo será gerar um vetor de pontos a partir dos dados de precipitação. Com o vetor, geramos os polígonos de Voronoi e plotamos os resultados.</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="interpolação-por-proximidade.html#cb28-1" tabindex="-1"></a><span class="co">#para gerar um vetor de pontos a partir dos dados de precipitação</span></span>
+<span id="cb28-2"><a href="interpolação-por-proximidade.html#cb28-2" tabindex="-1"></a>veraoV <span class="ot">&lt;-</span> <span class="fu">vect</span>(verao_sirgas)</span>
+<span id="cb28-3"><a href="interpolação-por-proximidade.html#cb28-3" tabindex="-1"></a></span>
+<span id="cb28-4"><a href="interpolação-por-proximidade.html#cb28-4" tabindex="-1"></a><span class="co">#para gerar os polígonos de Voronoi a partir do vetor criado</span></span>
+<span id="cb28-5"><a href="interpolação-por-proximidade.html#cb28-5" tabindex="-1"></a>v <span class="ot">&lt;-</span> <span class="fu">voronoi</span>(veraoV)</span>
+<span id="cb28-6"><a href="interpolação-por-proximidade.html#cb28-6" tabindex="-1"></a></span>
+<span id="cb28-7"><a href="interpolação-por-proximidade.html#cb28-7" tabindex="-1"></a><span class="co">#para plotar os polígonos</span></span>
+<span id="cb28-8"><a href="interpolação-por-proximidade.html#cb28-8" tabindex="-1"></a><span class="fu">plot</span>(v)</span>
+<span id="cb28-9"><a href="interpolação-por-proximidade.html#cb28-9" tabindex="-1"></a></span>
+<span id="cb28-10"><a href="interpolação-por-proximidade.html#cb28-10" tabindex="-1"></a><span class="co">#para plotar os pontos sobre os polígonos</span></span>
+<span id="cb28-11"><a href="interpolação-por-proximidade.html#cb28-11" tabindex="-1"></a><span class="fu">points</span>(veraoV)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:plot-voronoi"></span>
+<img src="bookdownproj_files/figure-html/plot-voronoi-1.png" alt="Polígonos de Voronoi" width="672" />
+<p class="caption">
+Figure 11.1: Polígonos de Voronoi
+</p>
+</div>
+<p>Para que a visualização fique mais compreensível, vamos recortar os polígonos gerados, usando os limites do objeto ‘ufsp’. Aproveitamos para criar uma paleta de cores adequada, já que um mapa isarítmico deve ser representado por meio das variáveis visuais <strong>valor</strong> ou <strong>cor ordenada</strong> (Figura <a href="interpolação-por-proximidade.html#fig:plot-voronoi-ufsp">11.2</a>). <a href="https://r-charts.com/color-palettes/" class="uri">https://r-charts.com/color-palettes/</a> e <a href="https://pmassicotte.github.io/paletteer_gallery/" class="uri">https://pmassicotte.github.io/paletteer_gallery/</a></p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="interpolação-por-proximidade.html#cb29-1" tabindex="-1"></a><span class="co">#para recortar os polígonos de Voronoi considerando os limites dos municípios de &#39;ufsp&#39; que contêm estações pluviométricas</span></span>
+<span id="cb29-2"><a href="interpolação-por-proximidade.html#cb29-2" tabindex="-1"></a>vVerao <span class="ot">&lt;-</span> <span class="fu">crop</span>(v, <span class="fu">vect</span>(<span class="fu">st_union</span>(ufsp)))</span>
+<span id="cb29-3"><a href="interpolação-por-proximidade.html#cb29-3" tabindex="-1"></a></span>
+<span id="cb29-4"><a href="interpolação-por-proximidade.html#cb29-4" tabindex="-1"></a><span class="co">#para criar uma paleta de cores usando RColorBrewer para 5 cores em blue+purple (&quot;BuPu&quot;)</span></span>
+<span id="cb29-5"><a href="interpolação-por-proximidade.html#cb29-5" tabindex="-1"></a>azuis <span class="ot">&lt;-</span> <span class="fu">brewer.pal</span>(<span class="dv">7</span>, <span class="st">&quot;BuPu&quot;</span>) </span>
+<span id="cb29-6"><a href="interpolação-por-proximidade.html#cb29-6" tabindex="-1"></a></span>
+<span id="cb29-7"><a href="interpolação-por-proximidade.html#cb29-7" tabindex="-1"></a>breaks <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">200</span>, <span class="dv">400</span>, <span class="dv">600</span>, <span class="dv">800</span>, <span class="dv">1000</span>, <span class="dv">1200</span>)</span>
+<span id="cb29-8"><a href="interpolação-por-proximidade.html#cb29-8" tabindex="-1"></a></span>
+<span id="cb29-9"><a href="interpolação-por-proximidade.html#cb29-9" tabindex="-1"></a><span class="co">#para plotar a precipitação nos polígonos nos municípios, usando a paleta de cores &#39;azuis&#39;</span></span>
+<span id="cb29-10"><a href="interpolação-por-proximidade.html#cb29-10" tabindex="-1"></a><span class="fu">plot</span>(vVerao, <span class="st">&quot;prec&quot;</span>, <span class="at">col =</span> azuis, <span class="at">breaks =</span> breaks)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:plot-voronoi-ufsp"></span>
+<img src="bookdownproj_files/figure-html/plot-voronoi-ufsp-1.png" alt="Precipitação (em mm) segundo polígonos de Voronoi no Estado de São Paulo" width="672" />
+<p class="caption">
+Figure 11.2: Precipitação (em mm) segundo polígonos de Voronoi no Estado de São Paulo
+</p>
+</div>
+<p>Os polígonos podem ser convertidos para uma imagem raster. Para isso, define-se primeiro a resolução espacial do raster, em em seguida, são atribuídos os valores.</p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="interpolação-por-proximidade.html#cb30-1" tabindex="-1"></a><span class="co">#para criar uma imagem raster em branco</span></span>
+<span id="cb30-2"><a href="interpolação-por-proximidade.html#cb30-2" tabindex="-1"></a>r <span class="ot">&lt;-</span> <span class="fu">rast</span>(vVerao, <span class="at">res =</span> <span class="fl">0.01</span>)</span>
+<span id="cb30-3"><a href="interpolação-por-proximidade.html#cb30-3" tabindex="-1"></a></span>
+<span id="cb30-4"><a href="interpolação-por-proximidade.html#cb30-4" tabindex="-1"></a><span class="co">#para criar a imagem com os dados</span></span>
+<span id="cb30-5"><a href="interpolação-por-proximidade.html#cb30-5" tabindex="-1"></a>vr <span class="ot">&lt;-</span> <span class="fu">rasterize</span>(vVerao, r, <span class="st">&quot;prec&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="interpolação-por-proximidade.html#cb31-1" tabindex="-1"></a><span class="fu">plot</span>(vr, <span class="at">breaks =</span> breaks, <span class="at">col =</span> azuis)</span></code></pre></div>
+<p><img src="bookdownproj_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
+<div id="validação-cruzada" class="section level2 hasAnchor" number="11.1">
+<h2><span class="header-section-number">11.1</span> Validação cruzada<a href="interpolação-por-proximidade.html#validação-cruzada" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Para avaliar o desempenho da interpolação por polígonos de Voronoi, vamos usar a <strong>validação cruzada</strong>. Esta técnica consiste em particionar o conjunto de dados em subconjuntos mutuamente exclusivos. Em seguida, alguns destes subconjuntos são usados para a estimação dos parâmetros do modelo (dados de treinamento), sendo os subconjuntos restantes (dados de validação) usados para a validação. Existem diversas formas de particionar os dados, tais como: métodos <em>holdout</em>, <em>k-fold</em> e o <em>leave-one-out</em> (KOHAVI, 1995). Aqui, usaremos o método ‘k-fold’.</p>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="interpolação-por-proximidade.html#cb32-1" tabindex="-1"></a><span class="co"># validação cruzada usando o método k-fold</span></span>
+<span id="cb32-2"><a href="interpolação-por-proximidade.html#cb32-2" tabindex="-1"></a>k <span class="ot">&lt;-</span> <span class="dv">5</span></span>
+<span id="cb32-3"><a href="interpolação-por-proximidade.html#cb32-3" tabindex="-1"></a></span>
+<span id="cb32-4"><a href="interpolação-por-proximidade.html#cb32-4" tabindex="-1"></a><span class="co">#pode ser qualquer número </span></span>
+<span id="cb32-5"><a href="interpolação-por-proximidade.html#cb32-5" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">23</span>) <span class="co"># 5132015</span></span>
+<span id="cb32-6"><a href="interpolação-por-proximidade.html#cb32-6" tabindex="-1"></a></span>
+<span id="cb32-7"><a href="interpolação-por-proximidade.html#cb32-7" tabindex="-1"></a><span class="co">#para gerar números aleatórios entre 1 e 5 do mesmo tamanho dos pontos de entrada de veraoV</span></span>
+<span id="cb32-8"><a href="interpolação-por-proximidade.html#cb32-8" tabindex="-1"></a>kf <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span>k, <span class="at">size =</span> <span class="fu">nrow</span>(veraoV), <span class="at">replace=</span><span class="cn">TRUE</span>)  </span>
+<span id="cb32-9"><a href="interpolação-por-proximidade.html#cb32-9" tabindex="-1"></a></span>
+<span id="cb32-10"><a href="interpolação-por-proximidade.html#cb32-10" tabindex="-1"></a><span class="co">#para gerar conjunto em branco de 5 NAs </span></span>
+<span id="cb32-11"><a href="interpolação-por-proximidade.html#cb32-11" tabindex="-1"></a>rmse <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="cn">NA</span>, k)</span>
+<span id="cb32-12"><a href="interpolação-por-proximidade.html#cb32-12" tabindex="-1"></a></span>
+<span id="cb32-13"><a href="interpolação-por-proximidade.html#cb32-13" tabindex="-1"></a><span class="co">#função</span></span>
+<span id="cb32-14"><a href="interpolação-por-proximidade.html#cb32-14" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>k) {</span>
+<span id="cb32-15"><a href="interpolação-por-proximidade.html#cb32-15" tabindex="-1"></a>  teste <span class="ot">&lt;-</span> veraoV[kf <span class="sc">==</span> i, ]  <span class="co"># divide em k conjunto de pontos, </span></span>
+<span id="cb32-16"><a href="interpolação-por-proximidade.html#cb32-16" tabindex="-1"></a>                              <span class="co"># (k-1)/k vai para o conjunto de treino,</span></span>
+<span id="cb32-17"><a href="interpolação-por-proximidade.html#cb32-17" tabindex="-1"></a>  treino <span class="ot">&lt;-</span> veraoV[kf <span class="sc">!=</span> i, ] <span class="co"># e 1/k vai para teste, incluindo todas as variaveis</span></span>
+<span id="cb32-18"><a href="interpolação-por-proximidade.html#cb32-18" tabindex="-1"></a>  <span class="co">#para gerar os valores para o modelo gerado por interpolação Voronoi</span></span>
+<span id="cb32-19"><a href="interpolação-por-proximidade.html#cb32-19" tabindex="-1"></a>  v <span class="ot">&lt;-</span> <span class="fu">voronoi</span>(treino)</span>
+<span id="cb32-20"><a href="interpolação-por-proximidade.html#cb32-20" tabindex="-1"></a>  v</span>
+<span id="cb32-21"><a href="interpolação-por-proximidade.html#cb32-21" tabindex="-1"></a>  teste</span>
+<span id="cb32-22"><a href="interpolação-por-proximidade.html#cb32-22" tabindex="-1"></a>  <span class="co"># para extrair valores do conjunto de dados de treino nos locais do teste</span></span>
+<span id="cb32-23"><a href="interpolação-por-proximidade.html#cb32-23" tabindex="-1"></a>  p <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">extract</span>(v, teste)</span>
+<span id="cb32-24"><a href="interpolação-por-proximidade.html#cb32-24" tabindex="-1"></a>  </span>
+<span id="cb32-25"><a href="interpolação-por-proximidade.html#cb32-25" tabindex="-1"></a>  <span class="co">#para calcular o rmse dos 5 pontos</span></span>
+<span id="cb32-26"><a href="interpolação-por-proximidade.html#cb32-26" tabindex="-1"></a>  rmse[i] <span class="ot">&lt;-</span> <span class="fu">RMSE</span>(teste<span class="sc">$</span>prec, p<span class="sc">$</span>prec)</span>
+<span id="cb32-27"><a href="interpolação-por-proximidade.html#cb32-27" tabindex="-1"></a>}</span>
+<span id="cb32-28"><a href="interpolação-por-proximidade.html#cb32-28" tabindex="-1"></a>rmse</span></code></pre></div>
+<pre><code>## [1] 270.9683 270.8918 295.1786 302.2570 269.3387</code></pre>
+<p>Foram calculdados 5 valores de RMSE. A média destes valores é calculada a seguir.</p>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="interpolação-por-proximidade.html#cb34-1" tabindex="-1"></a><span class="co">#para obter a média do rmse</span></span>
+<span id="cb34-2"><a href="interpolação-por-proximidade.html#cb34-2" tabindex="-1"></a><span class="fu">mean</span>(rmse)</span></code></pre></div>
+<pre><code>## [1] 281.7269</code></pre>
+<p>O desempenho do modelo é calculado dividindo-se a média do RMSE pelo rmse do “modelo nulo” da precipitação de cada estação comparada com a média de todas as estações. Subtraindo-se este valor de 1, tem-se o desempenho relativo.</p>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="interpolação-por-proximidade.html#cb36-1" tabindex="-1"></a><span class="co">#desempenho relativo do modelo</span></span>
+<span id="cb36-2"><a href="interpolação-por-proximidade.html#cb36-2" tabindex="-1"></a>desemp <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">-</span> (<span class="fu">mean</span>(rmse) <span class="sc">/</span> null)</span>
+<span id="cb36-3"><a href="interpolação-por-proximidade.html#cb36-3" tabindex="-1"></a></span>
+<span id="cb36-4"><a href="interpolação-por-proximidade.html#cb36-4" tabindex="-1"></a><span class="co">#para arredondar o resultado, definindo 3 casas decimais</span></span>
+<span id="cb36-5"><a href="interpolação-por-proximidade.html#cb36-5" tabindex="-1"></a><span class="fu">round</span>(desemp, </span>
+<span id="cb36-6"><a href="interpolação-por-proximidade.html#cb36-6" tabindex="-1"></a>      <span class="dv">3</span>)</span></code></pre></div>
+<pre><code>## [1] -0.25</code></pre>
+<p>Podemos ver que a média dos valores de RMSE pelos polígonos de Voronoi foi mais alta do que o RMSE do modelo nulo, resultando em um valor negativo.</p>
+</div>
+<div id="interpolação-por-vizinho-mais-próximo-nearest-neighbor" class="section level2 hasAnchor" number="11.2">
+<h2><span class="header-section-number">11.2</span> Interpolação por Vizinho mais Próximo (Nearest Neighbor)<a href="interpolação-por-proximidade.html#interpolação-por-vizinho-mais-próximo-nearest-neighbor" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>A ideia central por trás da Interpolação por Vizinho mais Próximo (<em>Nearest Neighbor Interpolation</em>, em inglês) é atribuir ao ponto não amostrado o valor do ponto de amostra mais próximo. Isso significa que não há ponderação pela distância ou outra consideração, apenas uma simples atribuição do valor do vizinho mais próximo.</p>
+<p>A Interpolação por Vizinho mais Próximo é frequentemente usada em casos em que a simplicidade é mais importante do que a precisão e em situações em que a variação nos dados é relativamente grande em comparação com a escala dos pontos amostrados.</p>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="interpolação-por-proximidade.html#cb38-1" tabindex="-1"></a><span class="co">#para carregar o pacote &#39;gstat&#39;</span></span>
+<span id="cb38-2"><a href="interpolação-por-proximidade.html#cb38-2" tabindex="-1"></a><span class="fu">library</span>(gstat)</span>
+<span id="cb38-3"><a href="interpolação-por-proximidade.html#cb38-3" tabindex="-1"></a></span>
+<span id="cb38-4"><a href="interpolação-por-proximidade.html#cb38-4" tabindex="-1"></a><span class="co">#para criar um dataframe chamado &#39;d&#39;</span></span>
+<span id="cb38-5"><a href="interpolação-por-proximidade.html#cb38-5" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="fu">geom</span>(veraoV)[,<span class="fu">c</span>(<span class="st">&quot;x&quot;</span>, <span class="st">&quot;y&quot;</span>)], </span>
+<span id="cb38-6"><a href="interpolação-por-proximidade.html#cb38-6" tabindex="-1"></a>                <span class="fu">as.data.frame</span>(veraoV))</span>
+<span id="cb38-7"><a href="interpolação-por-proximidade.html#cb38-7" tabindex="-1"></a></span>
+<span id="cb38-8"><a href="interpolação-por-proximidade.html#cb38-8" tabindex="-1"></a><span class="co">#para ver as primeiras linhas do objeto</span></span>
+<span id="cb38-9"><a href="interpolação-por-proximidade.html#cb38-9" tabindex="-1"></a><span class="fu">head</span>(d)</span></code></pre></div>
+<pre><code>##           x         y    estacao   prec
+## 1 -46.62800 -22.47500 350050101A 901.60
+## 2 -46.59300 -22.48200 350050102A 876.60
+## 3 -47.87462 -22.60101 350060001A   4.60
+## 4 -47.31487 -22.73563 350160801A 553.74
+## 5 -46.81800 -22.70400 350190501A 715.47
+## 6 -46.75368 -22.65991 350190502A 753.00</code></pre>
+<p>A função <code>gstat</code>permite gerar um objeto do tipo lista, definir a formula incluindo apenas uma variável (prec~1), as coordenadas geográficas dos pontos, o banco de dados (d), o número máximo de vizinhos e o ’idp (<em>inverse distance power</em>), no caso, igual a zero (idp = 0) para que todos os vizinhos tenham o mesmo peso.</p>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="interpolação-por-proximidade.html#cb40-1" tabindex="-1"></a><span class="co">#para criar um objeto gstat do tipo lista e definir as coordenadas e dados</span></span>
+<span id="cb40-2"><a href="interpolação-por-proximidade.html#cb40-2" tabindex="-1"></a>gs <span class="ot">&lt;-</span> <span class="fu">gstat</span>(<span class="at">formula=</span>prec<span class="sc">~</span><span class="dv">1</span>, </span>
+<span id="cb40-3"><a href="interpolação-por-proximidade.html#cb40-3" tabindex="-1"></a>            <span class="at">locations=</span><span class="sc">~</span>x<span class="sc">+</span>y, </span>
+<span id="cb40-4"><a href="interpolação-por-proximidade.html#cb40-4" tabindex="-1"></a>            <span class="at">data=</span>d, </span>
+<span id="cb40-5"><a href="interpolação-por-proximidade.html#cb40-5" tabindex="-1"></a>            <span class="at">nmax=</span><span class="dv">5</span>, </span>
+<span id="cb40-6"><a href="interpolação-por-proximidade.html#cb40-6" tabindex="-1"></a>            <span class="at">set=</span><span class="fu">list</span>(<span class="at">idp =</span> <span class="dv">0</span>))</span>
+<span id="cb40-7"><a href="interpolação-por-proximidade.html#cb40-7" tabindex="-1"></a></span>
+<span id="cb40-8"><a href="interpolação-por-proximidade.html#cb40-8" tabindex="-1"></a><span class="co">#para criar a interpolação por vizinho mais próximo</span></span>
+<span id="cb40-9"><a href="interpolação-por-proximidade.html#cb40-9" tabindex="-1"></a>nn <span class="ot">&lt;-</span> <span class="fu">interpolate</span>(r, </span>
+<span id="cb40-10"><a href="interpolação-por-proximidade.html#cb40-10" tabindex="-1"></a>                  gs, </span>
+<span id="cb40-11"><a href="interpolação-por-proximidade.html#cb40-11" tabindex="-1"></a>                  <span class="at">debug.level=</span><span class="dv">0</span>)</span>
+<span id="cb40-12"><a href="interpolação-por-proximidade.html#cb40-12" tabindex="-1"></a></span>
+<span id="cb40-13"><a href="interpolação-por-proximidade.html#cb40-13" tabindex="-1"></a><span class="co">#para recortar com a máscara</span></span>
+<span id="cb40-14"><a href="interpolação-por-proximidade.html#cb40-14" tabindex="-1"></a>nnmsk <span class="ot">&lt;-</span> <span class="fu">mask</span>(nn, </span>
+<span id="cb40-15"><a href="interpolação-por-proximidade.html#cb40-15" tabindex="-1"></a>              vr)</span>
+<span id="cb40-16"><a href="interpolação-por-proximidade.html#cb40-16" tabindex="-1"></a></span>
+<span id="cb40-17"><a href="interpolação-por-proximidade.html#cb40-17" tabindex="-1"></a><span class="co">#para carregar o pacote para definir paleta de cores</span></span>
+<span id="cb40-18"><a href="interpolação-por-proximidade.html#cb40-18" tabindex="-1"></a><span class="fu">library</span>(paletteer)</span></code></pre></div>
+<pre><code>## Warning: package &#39;paletteer&#39; was built under R version 4.3.1</code></pre>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="interpolação-por-proximidade.html#cb42-1" tabindex="-1"></a><span class="co">#para gerar paleta de cores</span></span>
+<span id="cb42-2"><a href="interpolação-por-proximidade.html#cb42-2" tabindex="-1"></a>pal <span class="ot">&lt;-</span> <span class="fu">paletteer_c</span>(<span class="st">&quot;ggthemes::Blue-Green Sequential&quot;</span>, </span>
+<span id="cb42-3"><a href="interpolação-por-proximidade.html#cb42-3" tabindex="-1"></a>                   <span class="dv">100</span>)</span>
+<span id="cb42-4"><a href="interpolação-por-proximidade.html#cb42-4" tabindex="-1"></a></span>
+<span id="cb42-5"><a href="interpolação-por-proximidade.html#cb42-5" tabindex="-1"></a><span class="co">#para plotar</span></span>
+<span id="cb42-6"><a href="interpolação-por-proximidade.html#cb42-6" tabindex="-1"></a><span class="fu">plot</span>(nnmsk, </span>
+<span id="cb42-7"><a href="interpolação-por-proximidade.html#cb42-7" tabindex="-1"></a>     <span class="dv">1</span>, </span>
+<span id="cb42-8"><a href="interpolação-por-proximidade.html#cb42-8" tabindex="-1"></a>     <span class="at">col =</span> pal)</span></code></pre></div>
+<p><img src="bookdownproj_files/figure-html/unnamed-chunk-27-1.png" width="672" />
+## Validação cruzada do modelo por Vizinho mais Próximo</p>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="interpolação-por-proximidade.html#cb43-1" tabindex="-1"></a>rmsenn <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="cn">NA</span>, k)</span>
+<span id="cb43-2"><a href="interpolação-por-proximidade.html#cb43-2" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>k) {</span>
+<span id="cb43-3"><a href="interpolação-por-proximidade.html#cb43-3" tabindex="-1"></a>  test <span class="ot">&lt;-</span> d[kf <span class="sc">==</span> i, ]</span>
+<span id="cb43-4"><a href="interpolação-por-proximidade.html#cb43-4" tabindex="-1"></a>  train <span class="ot">&lt;-</span> d[kf <span class="sc">!=</span> i, ]</span>
+<span id="cb43-5"><a href="interpolação-por-proximidade.html#cb43-5" tabindex="-1"></a>  gscv <span class="ot">&lt;-</span> <span class="fu">gstat</span>(<span class="at">formula=</span>prec<span class="sc">~</span><span class="dv">1</span>, <span class="at">locations=</span><span class="sc">~</span>x<span class="sc">+</span>y, <span class="at">data=</span>train, </span>
+<span id="cb43-6"><a href="interpolação-por-proximidade.html#cb43-6" tabindex="-1"></a>                <span class="at">nmax=</span><span class="dv">5</span>, <span class="at">set=</span><span class="fu">list</span>(<span class="at">idp =</span> <span class="dv">0</span>))</span>
+<span id="cb43-7"><a href="interpolação-por-proximidade.html#cb43-7" tabindex="-1"></a>  p <span class="ot">&lt;-</span> <span class="fu">predict</span>(gscv, test, <span class="at">debug.level=</span><span class="dv">0</span>)<span class="sc">$</span>var1.pred</span>
+<span id="cb43-8"><a href="interpolação-por-proximidade.html#cb43-8" tabindex="-1"></a>  rmsenn[i] <span class="ot">&lt;-</span> <span class="fu">RMSE</span>(test<span class="sc">$</span>prec, p)</span>
+<span id="cb43-9"><a href="interpolação-por-proximidade.html#cb43-9" tabindex="-1"></a>}</span>
+<span id="cb43-10"><a href="interpolação-por-proximidade.html#cb43-10" tabindex="-1"></a>rmsenn</span></code></pre></div>
+<pre><code>## [1] 232.8050 213.6954 234.8565 225.2061 209.8332</code></pre>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="interpolação-por-proximidade.html#cb45-1" tabindex="-1"></a><span class="fu">mean</span>(rmsenn)</span></code></pre></div>
+<pre><code>## [1] 223.2793</code></pre>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="interpolação-por-proximidade.html#cb47-1" tabindex="-1"></a><span class="dv">1</span> <span class="sc">-</span> (<span class="fu">mean</span>(rmsenn) <span class="sc">/</span> null)</span></code></pre></div>
+<pre><code>## [1] 0.008932294</code></pre>
+</div>
+<div id="interpolação-por-inverso-da-distância-ponderada-idw" class="section level2 hasAnchor" number="11.3">
+<h2><span class="header-section-number">11.3</span> Interpolação por Inverso da Distância Ponderada (IDW)<a href="interpolação-por-proximidade.html#interpolação-por-inverso-da-distância-ponderada-idw" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Nesta técnica, os valores em um local desconhecido são estimados com base na média ponderada dos valores conhecidos mais próximos, com os pesos atribuídos inversamente à distância entre os pontos de amostra e o local de estimativa. Em outras palavras, os pontos de amostra mais próximos têm um peso maior na estimativa, enquanto os pontos mais distantes têm um peso menor. Se a potência do inverso da distância (idp) for 2, corresponde ao modelo gravitacional. É possível fazer mapas diferentes variando o valor de ‘idp’ no código a seguir.</p>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="interpolação-por-proximidade.html#cb49-1" tabindex="-1"></a><span class="fu">library</span>(gstat)</span>
+<span id="cb49-2"><a href="interpolação-por-proximidade.html#cb49-2" tabindex="-1"></a></span>
+<span id="cb49-3"><a href="interpolação-por-proximidade.html#cb49-3" tabindex="-1"></a>gs <span class="ot">&lt;-</span> <span class="fu">gstat</span>(<span class="at">formula=</span>prec<span class="sc">~</span><span class="dv">1</span>, </span>
+<span id="cb49-4"><a href="interpolação-por-proximidade.html#cb49-4" tabindex="-1"></a>            <span class="at">locations=</span><span class="sc">~</span>x<span class="sc">+</span>y, </span>
+<span id="cb49-5"><a href="interpolação-por-proximidade.html#cb49-5" tabindex="-1"></a>            <span class="at">data=</span>d, </span>
+<span id="cb49-6"><a href="interpolação-por-proximidade.html#cb49-6" tabindex="-1"></a>            <span class="at">nmax=</span><span class="cn">Inf</span>, </span>
+<span id="cb49-7"><a href="interpolação-por-proximidade.html#cb49-7" tabindex="-1"></a>            <span class="at">set=</span><span class="fu">list</span>(<span class="at">idp=</span><span class="dv">2</span>))</span>
+<span id="cb49-8"><a href="interpolação-por-proximidade.html#cb49-8" tabindex="-1"></a></span>
+<span id="cb49-9"><a href="interpolação-por-proximidade.html#cb49-9" tabindex="-1"></a>idw <span class="ot">&lt;-</span> <span class="fu">interpolate</span>(r, gs, <span class="at">debug.level=</span><span class="dv">0</span>)</span>
+<span id="cb49-10"><a href="interpolação-por-proximidade.html#cb49-10" tabindex="-1"></a></span>
+<span id="cb49-11"><a href="interpolação-por-proximidade.html#cb49-11" tabindex="-1"></a>idwr <span class="ot">&lt;-</span> <span class="fu">mask</span>(idw, vr)</span>
+<span id="cb49-12"><a href="interpolação-por-proximidade.html#cb49-12" tabindex="-1"></a></span>
+<span id="cb49-13"><a href="interpolação-por-proximidade.html#cb49-13" tabindex="-1"></a><span class="fu">plot</span>(idwr, <span class="dv">1</span>, <span class="at">col =</span> pal)</span></code></pre></div>
+<p><img src="bookdownproj_files/figure-html/unnamed-chunk-31-1.png" width="672" /></p>
+</div>
+<div id="validação-cruzada-do-modelo-por-inverso-da-distância-ponderada" class="section level2 hasAnchor" number="11.4">
+<h2><span class="header-section-number">11.4</span> Validação cruzada do modelo por Inverso da Distância Ponderada<a href="interpolação-por-proximidade.html#validação-cruzada-do-modelo-por-inverso-da-distância-ponderada" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="interpolação-por-proximidade.html#cb50-1" tabindex="-1"></a>rmseidw <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="cn">NA</span>, k)</span>
+<span id="cb50-2"><a href="interpolação-por-proximidade.html#cb50-2" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>k) {</span>
+<span id="cb50-3"><a href="interpolação-por-proximidade.html#cb50-3" tabindex="-1"></a>  test <span class="ot">&lt;-</span> d[kf <span class="sc">==</span> i, ]</span>
+<span id="cb50-4"><a href="interpolação-por-proximidade.html#cb50-4" tabindex="-1"></a>  train <span class="ot">&lt;-</span> d[kf <span class="sc">!=</span> i, ]</span>
+<span id="cb50-5"><a href="interpolação-por-proximidade.html#cb50-5" tabindex="-1"></a>  gsidw <span class="ot">&lt;-</span> <span class="fu">gstat</span>(<span class="at">formula=</span>prec<span class="sc">~</span><span class="dv">1</span>, </span>
+<span id="cb50-6"><a href="interpolação-por-proximidade.html#cb50-6" tabindex="-1"></a>                 <span class="at">locations=</span><span class="sc">~</span>x<span class="sc">+</span>y, </span>
+<span id="cb50-7"><a href="interpolação-por-proximidade.html#cb50-7" tabindex="-1"></a>                 <span class="at">data=</span>train, </span>
+<span id="cb50-8"><a href="interpolação-por-proximidade.html#cb50-8" tabindex="-1"></a>                 <span class="at">nmax=</span><span class="dv">5</span>, </span>
+<span id="cb50-9"><a href="interpolação-por-proximidade.html#cb50-9" tabindex="-1"></a>                 <span class="at">set=</span><span class="fu">list</span>(<span class="at">idp =</span> <span class="dv">0</span>))</span>
+<span id="cb50-10"><a href="interpolação-por-proximidade.html#cb50-10" tabindex="-1"></a>  </span>
+<span id="cb50-11"><a href="interpolação-por-proximidade.html#cb50-11" tabindex="-1"></a>  p <span class="ot">&lt;-</span> <span class="fu">predict</span>(gscv, </span>
+<span id="cb50-12"><a href="interpolação-por-proximidade.html#cb50-12" tabindex="-1"></a>               test, </span>
+<span id="cb50-13"><a href="interpolação-por-proximidade.html#cb50-13" tabindex="-1"></a>               <span class="at">debug.level=</span><span class="dv">0</span>)<span class="sc">$</span>var1.pred</span>
+<span id="cb50-14"><a href="interpolação-por-proximidade.html#cb50-14" tabindex="-1"></a>  rmseidw[i] <span class="ot">&lt;-</span> <span class="fu">RMSE</span>(test<span class="sc">$</span>prec, p)</span>
+<span id="cb50-15"><a href="interpolação-por-proximidade.html#cb50-15" tabindex="-1"></a>}</span>
+<span id="cb50-16"><a href="interpolação-por-proximidade.html#cb50-16" tabindex="-1"></a>rmsenn</span></code></pre></div>
+<pre><code>## [1] 232.8050 213.6954 234.8565 225.2061 209.8332</code></pre>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="interpolação-por-proximidade.html#cb52-1" tabindex="-1"></a><span class="fu">mean</span>(rmseidw)</span></code></pre></div>
+<pre><code>## [1] 41.96665</code></pre>
+<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="interpolação-por-proximidade.html#cb54-1" tabindex="-1"></a><span class="dv">1</span> <span class="sc">-</span> (<span class="fu">mean</span>(rmseidw) <span class="sc">/</span> null)</span></code></pre></div>
+<pre><code>## [1] 0.813723</code></pre>
+</div>
+<div id="interpolação-global-por-superfície-de-tendência" class="section level2 hasAnchor" number="11.5">
+<h2><span class="header-section-number">11.5</span> Interpolação global por Superfície de Tendência<a href="interpolação-por-proximidade.html#interpolação-global-por-superfície-de-tendência" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>A interpolação de tendência se concentra em modelar tendências ou padrões globais nos dados espaciais. A interpolação de tendência assume que os dados espaciais estão relacionados a uma função matemática subjacente que descreve a tendência geral dos valores em uma área geográfica. Serve para termos uma ideia da tendência geral dos dados e observar a direção de seu gradiente.</p>
+<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="interpolação-por-proximidade.html#cb56-1" tabindex="-1"></a><span class="co">#para carregar o pacote &#39;gstat&#39;</span></span>
+<span id="cb56-2"><a href="interpolação-por-proximidade.html#cb56-2" tabindex="-1"></a><span class="fu">library</span>(gstat)</span>
+<span id="cb56-3"><a href="interpolação-por-proximidade.html#cb56-3" tabindex="-1"></a></span>
+<span id="cb56-4"><a href="interpolação-por-proximidade.html#cb56-4" tabindex="-1"></a><span class="co">#para gerar o objeto gstat </span></span>
+<span id="cb56-5"><a href="interpolação-por-proximidade.html#cb56-5" tabindex="-1"></a>gs_trend <span class="ot">&lt;-</span> <span class="fu">gstat</span>(<span class="at">formula=</span>prec<span class="sc">~</span><span class="dv">1</span>, </span>
+<span id="cb56-6"><a href="interpolação-por-proximidade.html#cb56-6" tabindex="-1"></a>                  <span class="at">locations=</span><span class="sc">~</span>x<span class="sc">+</span>y, </span>
+<span id="cb56-7"><a href="interpolação-por-proximidade.html#cb56-7" tabindex="-1"></a>                  <span class="at">degree=</span><span class="dv">1</span>, </span>
+<span id="cb56-8"><a href="interpolação-por-proximidade.html#cb56-8" tabindex="-1"></a>                  <span class="at">data=</span>d)</span>
+<span id="cb56-9"><a href="interpolação-por-proximidade.html#cb56-9" tabindex="-1"></a></span>
+<span id="cb56-10"><a href="interpolação-por-proximidade.html#cb56-10" tabindex="-1"></a><span class="co">#para interpolar os valores</span></span>
+<span id="cb56-11"><a href="interpolação-por-proximidade.html#cb56-11" tabindex="-1"></a>interp <span class="ot">&lt;-</span> <span class="fu">interpolate</span>(r, </span>
+<span id="cb56-12"><a href="interpolação-por-proximidade.html#cb56-12" tabindex="-1"></a>                      gs_trend, </span>
+<span id="cb56-13"><a href="interpolação-por-proximidade.html#cb56-13" tabindex="-1"></a>                      <span class="at">debug.level=</span><span class="dv">0</span>)</span>
+<span id="cb56-14"><a href="interpolação-por-proximidade.html#cb56-14" tabindex="-1"></a></span>
+<span id="cb56-15"><a href="interpolação-por-proximidade.html#cb56-15" tabindex="-1"></a><span class="co">#para recortar o objeto com a máscara de SP</span></span>
+<span id="cb56-16"><a href="interpolação-por-proximidade.html#cb56-16" tabindex="-1"></a>prec1 <span class="ot">&lt;-</span> <span class="fu">mask</span>(interp, </span>
+<span id="cb56-17"><a href="interpolação-por-proximidade.html#cb56-17" tabindex="-1"></a>              vr)</span>
+<span id="cb56-18"><a href="interpolação-por-proximidade.html#cb56-18" tabindex="-1"></a></span>
+<span id="cb56-19"><a href="interpolação-por-proximidade.html#cb56-19" tabindex="-1"></a><span class="co">#para plotar o mapa</span></span>
+<span id="cb56-20"><a href="interpolação-por-proximidade.html#cb56-20" tabindex="-1"></a><span class="fu">plot</span>(prec1, </span>
+<span id="cb56-21"><a href="interpolação-por-proximidade.html#cb56-21" tabindex="-1"></a>     <span class="at">col =</span> pal, </span>
+<span id="cb56-22"><a href="interpolação-por-proximidade.html#cb56-22" tabindex="-1"></a>     <span class="dv">1</span>)</span></code></pre></div>
+<p><img src="bookdownproj_files/figure-html/unnamed-chunk-35-1.png" width="672" /></p>
+<p>No caso da interpolação por Superfície de Tendência não faz sentido avaliar seu desempenho por validação cruzada dado o seu objetivo de observação geral da tendência dos dados.</p>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="quanti5.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="abordagens-estocásticas.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/ligiaviz/RCartoTematica/edit/main/11-isaritmico_certo.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": "https://github.com/ligiaviz/RCartoTematica/blob/main/11-isaritmico_certo.Rmd",
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

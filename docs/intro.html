@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title> 1 Introdução | Cartografia Temática em R para estudantes de Geografia</title>
   <meta name="description" content=" 1 Introdução | Cartografia Temática em R para estudantes de Geografia" />
-  <meta name="generator" content="bookdown 0.34 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.35 and GitBook 2.6.7" />
 
   <meta property="og:title" content=" 1 Introdução | Cartografia Temática em R para estudantes de Geografia" />
   <meta property="og:type" content="book" />
@@ -51,6 +51,14 @@
 <link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
 <link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
 <script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/htmlwidgets-1.6.2/htmlwidgets.js"></script>
+<link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-1.3.1/leaflet.js"></script>
+<link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
+<script src="libs/proj4-2.6.2/proj4.min.js"></script>
+<script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
+<link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-binding-2.1.2/leaflet.js"></script>
 
 
 <style type="text/css">
@@ -243,7 +251,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="12" data-path="quanti5.html"><a href="quanti5.html"><i class="fa fa-check"></i><b>12</b> Dados quantitativos a partir de amostras: mapa isarítmico</a>
 <ul>
-<li class="chapter" data-level="12.1" data-path="quanti5.html"><a href="quanti5.html#referências-sugeridas-4"><i class="fa fa-check"></i><b>12.1</b> Referências sugeridas</a></li>
+<li class="chapter" data-level="12.1" data-path="quanti5.html"><a href="quanti5.html#abordagens-de-interpolação-espacial"><i class="fa fa-check"></i><b>12.1</b> Abordagens de interpolação espacial</a>
+<ul>
+<li class="chapter" data-level="12.1.1" data-path="quanti5.html"><a href="quanti5.html#abordagens-determinísticas"><i class="fa fa-check"></i><b>12.1.1</b> Abordagens determinísticas</a></li>
+<li class="chapter" data-level="12.1.2" data-path="quanti5.html"><a href="quanti5.html#abordagens-estocásticas"><i class="fa fa-check"></i><b>12.1.2</b> Abordagens Estocásticas</a></li>
+</ul></li>
+<li class="chapter" data-level="12.2" data-path="quanti5.html"><a href="quanti5.html#referências-citadas-2"><i class="fa fa-check"></i><b>12.2</b> Referências citadas</a></li>
+<li class="chapter" data-level="12.3" data-path="quanti5.html"><a href="quanti5.html#sugestões-de-leitura"><i class="fa fa-check"></i><b>12.3</b> Sugestões de leitura</a></li>
 </ul></li>
 <li class="chapter" data-level="13" data-path="quanti6.html"><a href="quanti6.html"><i class="fa fa-check"></i><b>13</b> Mapa de fluxos: movimentos no espaço</a></li>
 <li class="chapter" data-level="14" data-path="osm.html"><a href="osm.html"><i class="fa fa-check"></i><b>14</b> Usando dados do Open Street Map</a></li>
@@ -272,7 +286,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h1><span class="header-section-number"> 1</span> Introdução<a href="intro.html#intro" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <div id="o-programa-r" class="section level2 hasAnchor" number="1.1">
 <h2><span class="header-section-number">1.1</span> O programa R<a href="intro.html#o-programa-r" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Na página do projeto <strong>R</strong> <a href="https://www.r-project.org/about.html" class="uri">https://www.r-project.org/about.html</a> você encontrará todos os detalhes sobre este programa incrível. O <strong>R</strong> pode ser definido como uma linguagem e ambiente para computação estatística e gráficos. O <strong>R</strong> teve origem na linguagem S desenvolvida nas décadas de 1970 e 1980 e inicialmente desenvolvido por Robert Gentleman e Ross Ihaka — também conhecido como “R &amp; R” - do Departamento de Estatística da Universidade de Auckland, Austrália. A versão atual é resultado de esforço colaborativo com contribuição de pesquisadores de todo o mundo. Desde a metade de 1997 existe um grupo central, o <strong>R Core Team</strong>, com acesso à gravação da fonte <strong>R</strong>.</p>
+<p>Na página do projeto <strong>R</strong> <a href="https://www.r-project.org/about.html" class="uri">https://www.r-project.org/about.html</a> você encontrará todos os detalhes sobre este programa incrível. O <strong>R</strong> pode ser definido como uma linguagem e ambiente para computação estatística e gráficos. O <strong>R</strong> teve origem na linguagem S desenvolvida nas décadas de 1970 e 1980 e inicialmente desenvolvido por Robert Gentleman e Ross Ihaka — também conhecido como “R &amp; R” - do Departamento de Estatística da Universidade de Auckland, Nova Zelândia. A versão atual é resultado de esforço colaborativo com contribuição de pesquisadores de todo o mundo. Desde a metade de 1997 existe um grupo central, o <strong>R Core Team</strong>, com acesso à gravação da fonte <strong>R</strong>.</p>
 <p>O <strong>R</strong> disponibiliza grande variedade de técnicas gráficas, de análise estatística (modelagem linear e não linear, clássicos testes estatísticos, análise de séries temporais, classificação, agrupamento etc.) e de análise espacial.</p>
 <p>Você deve estar se perguntando por quê um geógrafo precisa aprender <strong>R</strong> para fazer mapas se domina Sistemas de Informações Geográficas (SIGs) como QGIS e ArcGIS, entre outros. Uma das respostas seria a possibilidade de reprodutibilidade por meio de códigos facilmente aplicáveis por outros pesquisadores. Outra resposta seria a crescente necessidade de trabalhar com a paulatina disponibilidade de grandes quantidades de dados. Imagine se você quisesse reproduzir o mesmo mapa de precipitação para dados de cada um dos 30 dias de um mês. Seria muito mais fácil com algumas linhas de comando. Ainda, a possibilidade de fazer a ponte com programas SIGs como GRASS, QGIS, SAGA e gvSIG a partir do terminal do sistema por meio de <em>command-line interface (CLI)</em> (interface por linha de comando, em português). De acordo com o criador do QGIS, Gary Sherman, muitos usuários do QGIS perdem as vantagens da linha de comando por não saberem <strong>R</strong>.</p>
 <p>Além disso, deve-se destacar que o <strong>R</strong> é fantástico para análise espacial e permite a elaboração de mapas interativos para visualização na Web usando os pacotes <strong>Leaflet</strong> e <strong>Shiny</strong>.</p>

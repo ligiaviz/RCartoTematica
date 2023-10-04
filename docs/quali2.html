@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title> 7 Dados qualitativos: mapa corocromático ordinal | Cartografia Temática em R para estudantes de Geografia</title>
   <meta name="description" content=" 7 Dados qualitativos: mapa corocromático ordinal | Cartografia Temática em R para estudantes de Geografia" />
-  <meta name="generator" content="bookdown 0.34 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.35 and GitBook 2.6.7" />
 
   <meta property="og:title" content=" 7 Dados qualitativos: mapa corocromático ordinal | Cartografia Temática em R para estudantes de Geografia" />
   <meta property="og:type" content="book" />
@@ -51,6 +51,14 @@
 <link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
 <link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
 <script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/htmlwidgets-1.6.2/htmlwidgets.js"></script>
+<link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-1.3.1/leaflet.js"></script>
+<link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
+<script src="libs/proj4-2.6.2/proj4.min.js"></script>
+<script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
+<link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-binding-2.1.2/leaflet.js"></script>
 
 
 <style type="text/css">
@@ -243,7 +251,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="12" data-path="quanti5.html"><a href="quanti5.html"><i class="fa fa-check"></i><b>12</b> Dados quantitativos a partir de amostras: mapa isarítmico</a>
 <ul>
-<li class="chapter" data-level="12.1" data-path="quanti5.html"><a href="quanti5.html#referências-sugeridas-4"><i class="fa fa-check"></i><b>12.1</b> Referências sugeridas</a></li>
+<li class="chapter" data-level="12.1" data-path="quanti5.html"><a href="quanti5.html#abordagens-de-interpolação-espacial"><i class="fa fa-check"></i><b>12.1</b> Abordagens de interpolação espacial</a>
+<ul>
+<li class="chapter" data-level="12.1.1" data-path="quanti5.html"><a href="quanti5.html#abordagens-determinísticas"><i class="fa fa-check"></i><b>12.1.1</b> Abordagens determinísticas</a></li>
+<li class="chapter" data-level="12.1.2" data-path="quanti5.html"><a href="quanti5.html#abordagens-estocásticas"><i class="fa fa-check"></i><b>12.1.2</b> Abordagens Estocásticas</a></li>
+</ul></li>
+<li class="chapter" data-level="12.2" data-path="quanti5.html"><a href="quanti5.html#referências-citadas-2"><i class="fa fa-check"></i><b>12.2</b> Referências citadas</a></li>
+<li class="chapter" data-level="12.3" data-path="quanti5.html"><a href="quanti5.html#sugestões-de-leitura"><i class="fa fa-check"></i><b>12.3</b> Sugestões de leitura</a></li>
 </ul></li>
 <li class="chapter" data-level="13" data-path="quanti6.html"><a href="quanti6.html"><i class="fa fa-check"></i><b>13</b> Mapa de fluxos: movimentos no espaço</a></li>
 <li class="chapter" data-level="14" data-path="osm.html"><a href="osm.html"><i class="fa fa-check"></i><b>14</b> Usando dados do Open Street Map</a></li>
@@ -277,138 +291,116 @@ Aqui, <strong>Fator</strong> é a causa predominante que explica o potencial de 
 <div id="banco-de-dados" class="section level2 hasAnchor" number="7.1">
 <h2><span class="header-section-number">7.1</span> Banco de dados<a href="quali2.html#banco-de-dados" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Iniciamos limpando a memória.</p>
-<div class="sourceCode" id="cb242"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb242-1"><a href="quali2.html#cb242-1" tabindex="-1"></a><span class="co">#para limpar a memória</span></span>
-<span id="cb242-2"><a href="quali2.html#cb242-2" tabindex="-1"></a><span class="fu">rm</span>(<span class="at">list=</span><span class="fu">ls</span>())</span></code></pre></div>
+<div class="sourceCode" id="cb228"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb228-1"><a href="quali2.html#cb228-1" tabindex="-1"></a><span class="co">#para limpar a memória</span></span>
+<span id="cb228-2"><a href="quali2.html#cb228-2" tabindex="-1"></a><span class="fu">rm</span>(<span class="at">list=</span><span class="fu">ls</span>())</span></code></pre></div>
 <p>Definimos o diretório de trabalho.</p>
-<div class="sourceCode" id="cb243"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb243-1"><a href="quali2.html#cb243-1" tabindex="-1"></a><span class="co">#para verificar o diretório</span></span>
-<span id="cb243-2"><a href="quali2.html#cb243-2" tabindex="-1"></a><span class="fu">getwd</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb229"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb229-1"><a href="quali2.html#cb229-1" tabindex="-1"></a><span class="co">#para verificar o diretório</span></span>
+<span id="cb229-2"><a href="quali2.html#cb229-2" tabindex="-1"></a><span class="fu">getwd</span>()</span></code></pre></div>
 <p>Carregamos os pacotes que serão utilizados.</p>
-<div class="sourceCode" id="cb244"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb244-1"><a href="quali2.html#cb244-1" tabindex="-1"></a><span class="co">#para carregar os pacotes que serao usados</span></span>
-<span id="cb244-2"><a href="quali2.html#cb244-2" tabindex="-1"></a><span class="fu">library</span>(geobr)</span>
-<span id="cb244-3"><a href="quali2.html#cb244-3" tabindex="-1"></a><span class="fu">library</span>(sf)</span>
-<span id="cb244-4"><a href="quali2.html#cb244-4" tabindex="-1"></a><span class="fu">library</span>(rgdal)</span>
-<span id="cb244-5"><a href="quali2.html#cb244-5" tabindex="-1"></a><span class="fu">library</span>(ggplot2,<span class="at">warn.conflicts=</span><span class="cn">FALSE</span>)</span>
-<span id="cb244-6"><a href="quali2.html#cb244-6" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb244-7"><a href="quali2.html#cb244-7" tabindex="-1"></a><span class="fu">library</span>(ggsn)</span>
-<span id="cb244-8"><a href="quali2.html#cb244-8" tabindex="-1"></a><span class="fu">library</span>(cowplot)</span>
-<span id="cb244-9"><a href="quali2.html#cb244-9" tabindex="-1"></a><span class="fu">library</span>(ggspatial)</span>
-<span id="cb244-10"><a href="quali2.html#cb244-10" tabindex="-1"></a><span class="fu">library</span>(broom)</span>
-<span id="cb244-11"><a href="quali2.html#cb244-11" tabindex="-1"></a><span class="fu">library</span>(rnaturalearth)</span>
-<span id="cb244-12"><a href="quali2.html#cb244-12" tabindex="-1"></a><span class="fu">library</span>(rnaturalearthdata)</span></code></pre></div>
+<div class="sourceCode" id="cb230"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb230-1"><a href="quali2.html#cb230-1" tabindex="-1"></a><span class="co">#para carregar os pacotes que serao usados</span></span>
+<span id="cb230-2"><a href="quali2.html#cb230-2" tabindex="-1"></a><span class="fu">library</span>(geobr)</span>
+<span id="cb230-3"><a href="quali2.html#cb230-3" tabindex="-1"></a><span class="fu">library</span>(sf)</span>
+<span id="cb230-4"><a href="quali2.html#cb230-4" tabindex="-1"></a><span class="fu">library</span>(rgdal)</span>
+<span id="cb230-5"><a href="quali2.html#cb230-5" tabindex="-1"></a><span class="fu">library</span>(ggplot2,<span class="at">warn.conflicts=</span><span class="cn">FALSE</span>)</span>
+<span id="cb230-6"><a href="quali2.html#cb230-6" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb230-7"><a href="quali2.html#cb230-7" tabindex="-1"></a><span class="fu">library</span>(ggsn)</span>
+<span id="cb230-8"><a href="quali2.html#cb230-8" tabindex="-1"></a><span class="fu">library</span>(cowplot)</span>
+<span id="cb230-9"><a href="quali2.html#cb230-9" tabindex="-1"></a><span class="fu">library</span>(ggspatial)</span>
+<span id="cb230-10"><a href="quali2.html#cb230-10" tabindex="-1"></a><span class="fu">library</span>(broom)</span>
+<span id="cb230-11"><a href="quali2.html#cb230-11" tabindex="-1"></a><span class="fu">library</span>(rnaturalearth)</span>
+<span id="cb230-12"><a href="quali2.html#cb230-12" tabindex="-1"></a><span class="fu">library</span>(rnaturalearthdata)</span></code></pre></div>
 <p>Vamos criar o objeto <strong>mundo</strong> usando a função <code>ne_countries</code> do pacote <em>rnaturalearth</em>.</p>
-<div class="sourceCode" id="cb245"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb245-1"><a href="quali2.html#cb245-1" tabindex="-1"></a>mundo <span class="ot">&lt;-</span> <span class="fu">ne_countries</span>(<span class="at">scale =</span> <span class="st">&quot;medium&quot;</span>, <span class="at">returnclass =</span> <span class="st">&quot;sf&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb231"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb231-1"><a href="quali2.html#cb231-1" tabindex="-1"></a>mundo <span class="ot">&lt;-</span> <span class="fu">ne_countries</span>(<span class="at">scale =</span> <span class="st">&quot;medium&quot;</span>, <span class="at">returnclass =</span> <span class="st">&quot;sf&quot;</span>)</span></code></pre></div>
 <p>Vamos examinar o objeto gerado.</p>
-<div class="sourceCode" id="cb246"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb246-1"><a href="quali2.html#cb246-1" tabindex="-1"></a><span class="fu">head</span>(mundo)</span></code></pre></div>
+<div class="sourceCode" id="cb232"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb232-1"><a href="quali2.html#cb232-1" tabindex="-1"></a><span class="fu">head</span>(mundo)</span></code></pre></div>
 <pre><code>## Simple feature collection with 6 features and 63 fields
 ## Geometry type: MULTIPOLYGON
 ## Dimension:     XY
 ## Bounding box:  xmin: -70.06611 ymin: -18.01973 xmax: 74.89131 ymax: 60.40581
 ## Geodetic CRS:  +proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0
-##   scalerank      featurecla labelrank     sovereignt sov_a3 adm0_dif
-## 0         3 Admin-0 country         5    Netherlands    NL1        1
-## 1         1 Admin-0 country         3    Afghanistan    AFG        0
-## 2         1 Admin-0 country         3         Angola    AGO        0
-## 3         1 Admin-0 country         6 United Kingdom    GB1        1
-## 4         1 Admin-0 country         6        Albania    ALB        0
-## 5         3 Admin-0 country         6        Finland    FI1        1
-##   level              type       admin adm0_a3 geou_dif     geounit
-## 0     2           Country       Aruba     ABW        0       Aruba
-## 1     2 Sovereign country Afghanistan     AFG        0 Afghanistan
-## 2     2 Sovereign country      Angola     AGO        0      Angola
-## 3     2        Dependency    Anguilla     AIA        0    Anguilla
-## 4     2 Sovereign country     Albania     ALB        0     Albania
-## 5     2           Country       Aland     ALD        0       Aland
-##   gu_a3 su_dif     subunit su_a3 brk_diff        name     name_long
-## 0   ABW      0       Aruba   ABW        0       Aruba         Aruba
-## 1   AFG      0 Afghanistan   AFG        0 Afghanistan   Afghanistan
-## 2   AGO      0      Angola   AGO        0      Angola        Angola
-## 3   AIA      0    Anguilla   AIA        0    Anguilla      Anguilla
-## 4   ALB      0     Albania   ALB        0     Albania       Albania
-## 5   ALD      0       Aland   ALD        0       Aland Aland Islands
-##   brk_a3    brk_name brk_group abbrev postal
-## 0    ABW       Aruba      &lt;NA&gt;  Aruba     AW
-## 1    AFG Afghanistan      &lt;NA&gt;   Afg.     AF
-## 2    AGO      Angola      &lt;NA&gt;   Ang.     AO
-## 3    AIA    Anguilla      &lt;NA&gt;   Ang.     AI
-## 4    ALB     Albania      &lt;NA&gt;   Alb.     AL
-## 5    ALD       Aland      &lt;NA&gt;  Aland     AI
-##                      formal_en formal_fr note_adm0 note_brk
-## 0                        Aruba      &lt;NA&gt;     Neth.     &lt;NA&gt;
-## 1 Islamic State of Afghanistan      &lt;NA&gt;      &lt;NA&gt;     &lt;NA&gt;
-## 2  People&#39;s Republic of Angola      &lt;NA&gt;      &lt;NA&gt;     &lt;NA&gt;
-## 3                         &lt;NA&gt;      &lt;NA&gt;      U.K.     &lt;NA&gt;
-## 4          Republic of Albania      &lt;NA&gt;      &lt;NA&gt;     &lt;NA&gt;
-## 5                Åland Islands      &lt;NA&gt;      Fin.     &lt;NA&gt;
-##     name_sort name_alt mapcolor7 mapcolor8 mapcolor9 mapcolor13
-## 0       Aruba     &lt;NA&gt;         4         2         2          9
-## 1 Afghanistan     &lt;NA&gt;         5         6         8          7
-## 2      Angola     &lt;NA&gt;         3         2         6          1
-## 3    Anguilla     &lt;NA&gt;         6         6         6          3
-## 4     Albania     &lt;NA&gt;         1         4         1          6
-## 5       Aland     &lt;NA&gt;         4         1         4          6
-##    pop_est gdp_md_est pop_year lastcensus gdp_year
-## 0   103065     2258.0       NA       2010       NA
-## 1 28400000    22270.0       NA       1979       NA
-## 2 12799293   110300.0       NA       1970       NA
-## 3    14436      108.9       NA         NA       NA
-## 4  3639453    21810.0       NA       2001       NA
-## 5    27153     1563.0       NA         NA       NA
-##                      economy              income_grp wikipedia fips_10
-## 0       6. Developing region 2. High income: nonOECD        NA    &lt;NA&gt;
-## 1  7. Least developed region           5. Low income        NA    &lt;NA&gt;
-## 2  7. Least developed region  3. Upper middle income        NA    &lt;NA&gt;
-## 3       6. Developing region  3. Upper middle income        NA    &lt;NA&gt;
-## 4       6. Developing region  4. Lower middle income        NA    &lt;NA&gt;
-## 5 2. Developed region: nonG7    1. High income: OECD        NA    &lt;NA&gt;
-##   iso_a2 iso_a3 iso_n3 un_a3 wb_a2 wb_a3 woe_id adm0_a3_is adm0_a3_us
-## 0     AW    ABW    533   533    AW   ABW     NA        ABW        ABW
-## 1     AF    AFG    004   004    AF   AFG     NA        AFG        AFG
-## 2     AO    AGO    024   024    AO   AGO     NA        AGO        AGO
-## 3     AI    AIA    660   660  &lt;NA&gt;  &lt;NA&gt;     NA        AIA        AIA
-## 4     AL    ALB    008   008    AL   ALB     NA        ALB        ALB
-## 5     AX    ALA    248   248  &lt;NA&gt;  &lt;NA&gt;     NA        ALA        ALD
-##   adm0_a3_un adm0_a3_wb     continent region_un       subregion
-## 0         NA         NA North America  Americas       Caribbean
-## 1         NA         NA          Asia      Asia   Southern Asia
-## 2         NA         NA        Africa    Africa   Middle Africa
-## 3         NA         NA North America  Americas       Caribbean
-## 4         NA         NA        Europe    Europe Southern Europe
-## 5         NA         NA        Europe    Europe Northern Europe
-##                   region_wb name_len long_len abbrev_len tiny homepart
-## 0 Latin America &amp; Caribbean        5        5          5    4       NA
-## 1                South Asia       11       11          4   NA        1
-## 2        Sub-Saharan Africa        6        6          4   NA        1
-## 3 Latin America &amp; Caribbean        8        8          4   NA       NA
-## 4     Europe &amp; Central Asia        7        7          4   NA        1
-## 5     Europe &amp; Central Asia        5       13          5    5       NA
-##                         geometry
-## 0 MULTIPOLYGON (((-69.89912 1...
-## 1 MULTIPOLYGON (((74.89131 37...
-## 2 MULTIPOLYGON (((14.19082 -5...
-## 3 MULTIPOLYGON (((-63.00122 1...
-## 4 MULTIPOLYGON (((20.06396 42...
-## 5 MULTIPOLYGON (((20.61133 60...</code></pre>
+##   scalerank      featurecla labelrank     sovereignt sov_a3 adm0_dif level
+## 0         3 Admin-0 country         5    Netherlands    NL1        1     2
+## 1         1 Admin-0 country         3    Afghanistan    AFG        0     2
+## 2         1 Admin-0 country         3         Angola    AGO        0     2
+## 3         1 Admin-0 country         6 United Kingdom    GB1        1     2
+## 4         1 Admin-0 country         6        Albania    ALB        0     2
+## 5         3 Admin-0 country         6        Finland    FI1        1     2
+##                type       admin adm0_a3 geou_dif     geounit gu_a3 su_dif     subunit su_a3
+## 0           Country       Aruba     ABW        0       Aruba   ABW      0       Aruba   ABW
+## 1 Sovereign country Afghanistan     AFG        0 Afghanistan   AFG      0 Afghanistan   AFG
+## 2 Sovereign country      Angola     AGO        0      Angola   AGO      0      Angola   AGO
+## 3        Dependency    Anguilla     AIA        0    Anguilla   AIA      0    Anguilla   AIA
+## 4 Sovereign country     Albania     ALB        0     Albania   ALB      0     Albania   ALB
+## 5           Country       Aland     ALD        0       Aland   ALD      0       Aland   ALD
+##   brk_diff        name     name_long brk_a3    brk_name brk_group abbrev postal
+## 0        0       Aruba         Aruba    ABW       Aruba      &lt;NA&gt;  Aruba     AW
+## 1        0 Afghanistan   Afghanistan    AFG Afghanistan      &lt;NA&gt;   Afg.     AF
+## 2        0      Angola        Angola    AGO      Angola      &lt;NA&gt;   Ang.     AO
+## 3        0    Anguilla      Anguilla    AIA    Anguilla      &lt;NA&gt;   Ang.     AI
+## 4        0     Albania       Albania    ALB     Albania      &lt;NA&gt;   Alb.     AL
+## 5        0       Aland Aland Islands    ALD       Aland      &lt;NA&gt;  Aland     AI
+##                      formal_en formal_fr note_adm0 note_brk   name_sort name_alt mapcolor7
+## 0                        Aruba      &lt;NA&gt;     Neth.     &lt;NA&gt;       Aruba     &lt;NA&gt;         4
+## 1 Islamic State of Afghanistan      &lt;NA&gt;      &lt;NA&gt;     &lt;NA&gt; Afghanistan     &lt;NA&gt;         5
+## 2  People&#39;s Republic of Angola      &lt;NA&gt;      &lt;NA&gt;     &lt;NA&gt;      Angola     &lt;NA&gt;         3
+## 3                         &lt;NA&gt;      &lt;NA&gt;      U.K.     &lt;NA&gt;    Anguilla     &lt;NA&gt;         6
+## 4          Republic of Albania      &lt;NA&gt;      &lt;NA&gt;     &lt;NA&gt;     Albania     &lt;NA&gt;         1
+## 5                Åland Islands      &lt;NA&gt;      Fin.     &lt;NA&gt;       Aland     &lt;NA&gt;         4
+##   mapcolor8 mapcolor9 mapcolor13  pop_est gdp_md_est pop_year lastcensus gdp_year
+## 0         2         2          9   103065     2258.0       NA       2010       NA
+## 1         6         8          7 28400000    22270.0       NA       1979       NA
+## 2         2         6          1 12799293   110300.0       NA       1970       NA
+## 3         6         6          3    14436      108.9       NA         NA       NA
+## 4         4         1          6  3639453    21810.0       NA       2001       NA
+## 5         1         4          6    27153     1563.0       NA         NA       NA
+##                      economy              income_grp wikipedia fips_10 iso_a2 iso_a3 iso_n3
+## 0       6. Developing region 2. High income: nonOECD        NA    &lt;NA&gt;     AW    ABW    533
+## 1  7. Least developed region           5. Low income        NA    &lt;NA&gt;     AF    AFG    004
+## 2  7. Least developed region  3. Upper middle income        NA    &lt;NA&gt;     AO    AGO    024
+## 3       6. Developing region  3. Upper middle income        NA    &lt;NA&gt;     AI    AIA    660
+## 4       6. Developing region  4. Lower middle income        NA    &lt;NA&gt;     AL    ALB    008
+## 5 2. Developed region: nonG7    1. High income: OECD        NA    &lt;NA&gt;     AX    ALA    248
+##   un_a3 wb_a2 wb_a3 woe_id adm0_a3_is adm0_a3_us adm0_a3_un adm0_a3_wb     continent
+## 0   533    AW   ABW     NA        ABW        ABW         NA         NA North America
+## 1   004    AF   AFG     NA        AFG        AFG         NA         NA          Asia
+## 2   024    AO   AGO     NA        AGO        AGO         NA         NA        Africa
+## 3   660  &lt;NA&gt;  &lt;NA&gt;     NA        AIA        AIA         NA         NA North America
+## 4   008    AL   ALB     NA        ALB        ALB         NA         NA        Europe
+## 5   248  &lt;NA&gt;  &lt;NA&gt;     NA        ALA        ALD         NA         NA        Europe
+##   region_un       subregion                 region_wb name_len long_len abbrev_len tiny
+## 0  Americas       Caribbean Latin America &amp; Caribbean        5        5          5    4
+## 1      Asia   Southern Asia                South Asia       11       11          4   NA
+## 2    Africa   Middle Africa        Sub-Saharan Africa        6        6          4   NA
+## 3  Americas       Caribbean Latin America &amp; Caribbean        8        8          4   NA
+## 4    Europe Southern Europe     Europe &amp; Central Asia        7        7          4   NA
+## 5    Europe Northern Europe     Europe &amp; Central Asia        5       13          5    5
+##   homepart                       geometry
+## 0       NA MULTIPOLYGON (((-69.89912 1...
+## 1        1 MULTIPOLYGON (((74.89131 37...
+## 2        1 MULTIPOLYGON (((14.19082 -5...
+## 3       NA MULTIPOLYGON (((-63.00122 1...
+## 4        1 MULTIPOLYGON (((20.06396 42...
+## 5       NA MULTIPOLYGON (((20.61133 60...</code></pre>
 <p>Observe que o CRS de <strong>mundo</strong> é WGS84.
 Na sequência, baixamos o arquivo “BR_UF_2020.zip” que contém o shapefile dos limites estaduais do Brasil, do site do IBGE.</p>
-<div class="sourceCode" id="cb248"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb248-1"><a href="quali2.html#cb248-1" tabindex="-1"></a><span class="co">#para identificar o url, faca o download do arquivo shapefile e clique em Ctrl+J</span></span>
-<span id="cb248-2"><a href="quali2.html#cb248-2" tabindex="-1"></a><span class="fu">download.file</span>(<span class="at">url =</span> <span class="st">&quot;https://geoftp.ibge.gov.br/organizacao_do_territorio/malhas_territoriais/malhas_municipais/municipio_2020/Brasil/BR/BR_UF_2020.zip&quot;</span>,        <span class="at">destfile =</span> <span class="st">&quot;BR_UF_2020.zip&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb234"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb234-1"><a href="quali2.html#cb234-1" tabindex="-1"></a><span class="co">#para identificar o url, faca o download do arquivo shapefile e clique em Ctrl+J</span></span>
+<span id="cb234-2"><a href="quali2.html#cb234-2" tabindex="-1"></a><span class="fu">download.file</span>(<span class="at">url =</span> <span class="st">&quot;https://geoftp.ibge.gov.br/organizacao_do_territorio/malhas_territoriais/malhas_municipais/municipio_2020/Brasil/BR/BR_UF_2020.zip&quot;</span>,        <span class="at">destfile =</span> <span class="st">&quot;BR_UF_2020.zip&quot;</span>)</span></code></pre></div>
 <p>Precisamos descompactar o arquivo tipo zip.</p>
-<div class="sourceCode" id="cb249"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb249-1"><a href="quali2.html#cb249-1" tabindex="-1"></a><span class="co">#para abrir o arquivo zip</span></span>
-<span id="cb249-2"><a href="quali2.html#cb249-2" tabindex="-1"></a><span class="fu">unzip</span>(<span class="at">zipfile =</span> <span class="st">&quot;BR_UF_2020.zip&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb235"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb235-1"><a href="quali2.html#cb235-1" tabindex="-1"></a><span class="co">#para abrir o arquivo zip</span></span>
+<span id="cb235-2"><a href="quali2.html#cb235-2" tabindex="-1"></a><span class="fu">unzip</span>(<span class="at">zipfile =</span> <span class="st">&quot;BR_UF_2020.zip&quot;</span>)</span></code></pre></div>
 <p>Fazemos a leitura do arquivo shapefile no <strong>R</strong>. O arquivo receberá o nome de UFBR.</p>
-<div class="sourceCode" id="cb250"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb250-1"><a href="quali2.html#cb250-1" tabindex="-1"></a><span class="co">#para abrir o arquivo shapefile dos estados</span></span>
-<span id="cb250-2"><a href="quali2.html#cb250-2" tabindex="-1"></a>UFBR <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">&quot;./BR_UF_2020.shp&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb236"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb236-1"><a href="quali2.html#cb236-1" tabindex="-1"></a><span class="co">#para abrir o arquivo shapefile dos estados</span></span>
+<span id="cb236-2"><a href="quali2.html#cb236-2" tabindex="-1"></a>UFBR <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">&quot;./BR_UF_2020.shp&quot;</span>)</span></code></pre></div>
 <pre><code>## Reading layer `BR_UF_2020&#39; from data source 
-##   `C:\Users\l_viz\Documents\RCartoTematica\BR_UF_2020.shp&#39; 
-##   using driver `ESRI Shapefile&#39;
+##   `C:\Users\l_viz\Documents\RCartoTematica\BR_UF_2020.shp&#39; using driver `ESRI Shapefile&#39;
 ## Simple feature collection with 27 features and 4 fields
 ## Geometry type: MULTIPOLYGON
 ## Dimension:     XY
 ## Bounding box:  xmin: -73.99045 ymin: -33.75118 xmax: -28.84764 ymax: 5.271841
 ## Geodetic CRS:  SIRGAS 2000</code></pre>
 <p>A função <strong>head</strong> fornece uma série de informações, tais como os limites e o CRS.</p>
-<div class="sourceCode" id="cb252"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb252-1"><a href="quali2.html#cb252-1" tabindex="-1"></a><span class="co">#para ver informações do objeto</span></span>
-<span id="cb252-2"><a href="quali2.html#cb252-2" tabindex="-1"></a><span class="fu">head</span>(UFBR)</span></code></pre></div>
+<div class="sourceCode" id="cb238"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb238-1"><a href="quali2.html#cb238-1" tabindex="-1"></a><span class="co">#para ver informações do objeto</span></span>
+<span id="cb238-2"><a href="quali2.html#cb238-2" tabindex="-1"></a><span class="fu">head</span>(UFBR)</span></code></pre></div>
 <pre><code>## Simple feature collection with 6 features and 4 fields
 ## Geometry type: MULTIPOLYGON
 ## Dimension:     XY
@@ -423,38 +415,36 @@ Na sequência, baixamos o arquivo “BR_UF_2020.zip” que contém o shapefile d
 ## 6    16    Amapá       AP     Norte MULTIPOLYGON (((-50.45011 2...</code></pre>
 <p>Observe que o CRS é SIRGAS 2000.
 Para ver a unidade de medida do arquivo UFBR.</p>
-<div class="sourceCode" id="cb254"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb254-1"><a href="quali2.html#cb254-1" tabindex="-1"></a><span class="fu">st_crs</span>(UFBR)<span class="sc">$</span>units_gdal</span></code></pre></div>
+<div class="sourceCode" id="cb240"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb240-1"><a href="quali2.html#cb240-1" tabindex="-1"></a><span class="fu">st_crs</span>(UFBR)<span class="sc">$</span>units_gdal</span></code></pre></div>
 <pre><code>## [1] &quot;degree&quot;</code></pre>
 <p>Vamos solicitar a visualização das colunas de UFBR.</p>
-<div class="sourceCode" id="cb256"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb256-1"><a href="quali2.html#cb256-1" tabindex="-1"></a><span class="co">#para visualizar os mapas de UFBR</span></span>
-<span id="cb256-2"><a href="quali2.html#cb256-2" tabindex="-1"></a><span class="fu">plot</span>(UFBR)</span></code></pre></div>
+<div class="sourceCode" id="cb242"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb242-1"><a href="quali2.html#cb242-1" tabindex="-1"></a><span class="co">#para visualizar os mapas de UFBR</span></span>
+<span id="cb242-2"><a href="quali2.html#cb242-2" tabindex="-1"></a><span class="fu">plot</span>(UFBR)</span></code></pre></div>
 <p><img src="bookdownproj_files/figure-html/unnamed-chunk-105-1.png" width="672" /></p>
 <p>Para saber o tipo de dados de UFBR, usamos a função <strong>class</strong>.</p>
-<div class="sourceCode" id="cb257"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb257-1"><a href="quali2.html#cb257-1" tabindex="-1"></a><span class="fu">class</span>(UFBR)</span></code></pre></div>
+<div class="sourceCode" id="cb243"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb243-1"><a href="quali2.html#cb243-1" tabindex="-1"></a><span class="fu">class</span>(UFBR)</span></code></pre></div>
 <pre><code>## [1] &quot;sf&quot;         &quot;data.frame&quot;</code></pre>
 <p>A segunda camada shapefile que precisamos é a de potencial de agressividade climática na Amazônia, que se encontra no site do IBGE.</p>
-<div class="sourceCode" id="cb259"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb259-1"><a href="quali2.html#cb259-1" tabindex="-1"></a><span class="co">#para fazer o download do arquivo da Amazônia</span></span>
-<span id="cb259-2"><a href="quali2.html#cb259-2" tabindex="-1"></a><span class="fu">download.file</span>(<span class="at">url =</span> <span class="st">&quot;https://geoftp.ibge.gov.br/informacoes_ambientais/climatologia/vetores/regionais/shapes_potencial_agressividade_climatica.zip&quot;</span>,</span>
-<span id="cb259-3"><a href="quali2.html#cb259-3" tabindex="-1"></a>              <span class="at">destfile =</span> <span class="st">&quot;shapes_potencial_agressividade_climatica.zip&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb245"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb245-1"><a href="quali2.html#cb245-1" tabindex="-1"></a><span class="co">#para fazer o download do arquivo da Amazônia</span></span>
+<span id="cb245-2"><a href="quali2.html#cb245-2" tabindex="-1"></a><span class="fu">download.file</span>(<span class="at">url =</span> <span class="st">&quot;https://geoftp.ibge.gov.br/informacoes_ambientais/climatologia/vetores/regionais/shapes_potencial_agressividade_climatica.zip&quot;</span>,</span>
+<span id="cb245-3"><a href="quali2.html#cb245-3" tabindex="-1"></a>              <span class="at">destfile =</span> <span class="st">&quot;shapes_potencial_agressividade_climatica.zip&quot;</span>)</span></code></pre></div>
 <p>Usamos a função já conhecida para descompactar o arquivo.</p>
-<div class="sourceCode" id="cb260"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb260-1"><a href="quali2.html#cb260-1" tabindex="-1"></a><span class="co">#para abrir o arquivo zip</span></span>
-<span id="cb260-2"><a href="quali2.html#cb260-2" tabindex="-1"></a><span class="fu">unzip</span>(<span class="at">zipfile =</span> <span class="st">&quot;shapes_potencial_agressividade_climatica.zip&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb246"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb246-1"><a href="quali2.html#cb246-1" tabindex="-1"></a><span class="co">#para abrir o arquivo zip</span></span>
+<span id="cb246-2"><a href="quali2.html#cb246-2" tabindex="-1"></a><span class="fu">unzip</span>(<span class="at">zipfile =</span> <span class="st">&quot;shapes_potencial_agressividade_climatica.zip&quot;</span>)</span></code></pre></div>
 <p>E fazemos a leitura do shapefile no <strong>R</strong>, já atribuindo a projeção SIRGAS 2000 (CRS = 4674).</p>
-<div class="sourceCode" id="cb261"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb261-1"><a href="quali2.html#cb261-1" tabindex="-1"></a><span class="co">#para abrir o arquivo shapefile da Amazonia</span></span>
-<span id="cb261-2"><a href="quali2.html#cb261-2" tabindex="-1"></a>amazonia <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">&quot;./VetoresIntegrados.shp&quot;</span>, <span class="at">crs =</span> <span class="dv">4674</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb247"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb247-1"><a href="quali2.html#cb247-1" tabindex="-1"></a><span class="co">#para abrir o arquivo shapefile da Amazonia</span></span>
+<span id="cb247-2"><a href="quali2.html#cb247-2" tabindex="-1"></a>amazonia <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">&quot;./VetoresIntegrados.shp&quot;</span>, <span class="at">crs =</span> <span class="dv">4674</span>)</span></code></pre></div>
 <pre><code>## Reading layer `VetoresIntegrados&#39; from data source 
-##   `C:\Users\l_viz\Documents\RCartoTematica\VetoresIntegrados.shp&#39; 
-##   using driver `ESRI Shapefile&#39;</code></pre>
-<pre><code>## Warning: st_crs&lt;- : replacing crs does not reproject data; use
-## st_transform for that</code></pre>
+##   `C:\Users\l_viz\Documents\RCartoTematica\VetoresIntegrados.shp&#39; using driver `ESRI Shapefile&#39;</code></pre>
+<pre><code>## Warning: st_crs&lt;- : replacing crs does not reproject data; use st_transform for that</code></pre>
 <pre><code>## Simple feature collection with 454 features and 2 fields
 ## Geometry type: POLYGON
 ## Dimension:     XY
 ## Bounding box:  xmin: -73.99853 ymin: -18.04267 xmax: -43.98264 ymax: 5.277829
 ## Geodetic CRS:  SIRGAS 2000</code></pre>
 <p>Damos uma olhada nos limites, colunas e projeção do arquivo.</p>
-<div class="sourceCode" id="cb265"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb265-1"><a href="quali2.html#cb265-1" tabindex="-1"></a><span class="co">#para ver as 6 primeiras linhas do arquivo</span></span>
-<span id="cb265-2"><a href="quali2.html#cb265-2" tabindex="-1"></a><span class="fu">head</span>(amazonia)</span></code></pre></div>
+<div class="sourceCode" id="cb251"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb251-1"><a href="quali2.html#cb251-1" tabindex="-1"></a><span class="co">#para ver as 6 primeiras linhas do arquivo</span></span>
+<span id="cb251-2"><a href="quali2.html#cb251-2" tabindex="-1"></a><span class="fu">head</span>(amazonia)</span></code></pre></div>
 <pre><code>## Simple feature collection with 6 features and 2 fields
 ## Geometry type: POLYGON
 ## Dimension:     XY
@@ -468,8 +458,8 @@ Para ver a unidade de medida do arquivo UFBR.</p>
 ## 5  0     M2 POLYGON ((-50.22443 -9.8380...
 ## 6  0     B2 POLYGON ((-50.37933 -9.8277...</code></pre>
 <p>Podemos visualizar o shapefile “amazonia” (Figura <a href="quali2.html#fig:plot-amazon">7.1</a>).</p>
-<div class="sourceCode" id="cb267"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb267-1"><a href="quali2.html#cb267-1" tabindex="-1"></a><span class="co">#para visualizar o arquivo amazonia</span></span>
-<span id="cb267-2"><a href="quali2.html#cb267-2" tabindex="-1"></a><span class="fu">plot</span>(amazonia)</span></code></pre></div>
+<div class="sourceCode" id="cb253"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb253-1"><a href="quali2.html#cb253-1" tabindex="-1"></a><span class="co">#para visualizar o arquivo amazonia</span></span>
+<span id="cb253-2"><a href="quali2.html#cb253-2" tabindex="-1"></a><span class="fu">plot</span>(amazonia)</span></code></pre></div>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:plot-amazon"></span>
 <img src="bookdownproj_files/figure-html/plot-amazon-1.png" alt="Mapa para cada coluna da tabela de dados" width="672" />
 <p class="caption">
@@ -482,8 +472,8 @@ Figure 7.1: Mapa para cada coluna da tabela de dados
 <h2><span class="header-section-number">7.2</span> Potencial de agressividade climática na Amazônia Legal do Brasil<a href="quali2.html#potencial-de-agressividade-climática-na-amazônia-legal-do-brasil" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Vamos iniciar a elaboração do mapa usando o <strong>ggplot2</strong>.
 A primeira camada a ser mapeada será <strong>mundo</strong>. Como um objeto de classe <em>sf</em>, usaremos a função <strong>geom_sf</strong>, indicando a cor do contorno (“white”, branco) e do preenchimento (“grey90”, cinza claro) (Figura <a href="quali2.html#fig:plot-mundo1">7.2</a>).</p>
-<div class="sourceCode" id="cb268"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb268-1"><a href="quali2.html#cb268-1" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
-<span id="cb268-2"><a href="quali2.html#cb268-2" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> mundo, <span class="at">colour =</span> <span class="st">&quot;white&quot;</span>, <span class="at">fill =</span> <span class="st">&quot;grey90&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb254"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb254-1"><a href="quali2.html#cb254-1" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb254-2"><a href="quali2.html#cb254-2" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> mundo, <span class="at">colour =</span> <span class="st">&quot;white&quot;</span>, <span class="at">fill =</span> <span class="st">&quot;grey90&quot;</span>)</span></code></pre></div>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:plot-mundo1"></span>
 <img src="bookdownproj_files/figure-html/plot-mundo1-1.png" alt="Mapa-mundi" width="672" />
 <p class="caption">
@@ -491,9 +481,9 @@ Figure 7.2: Mapa-mundi
 </p>
 </div>
 <p>A segunda camada será a dos limites dos estados brasileiros (UFBR), com contorno em cinza médio (grey50) e preenchimento em cinza mais claro do que o contorno (grey85) e leve transparência (alpha = 0.2) (Figura <a href="quali2.html#fig:plot-mundoUF">7.3</a>).</p>
-<div class="sourceCode" id="cb269"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb269-1"><a href="quali2.html#cb269-1" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
-<span id="cb269-2"><a href="quali2.html#cb269-2" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> mundo, <span class="at">colour =</span> <span class="st">&quot;white&quot;</span>, <span class="at">fill =</span> <span class="st">&quot;grey90&quot;</span>)<span class="sc">+</span></span>
-<span id="cb269-3"><a href="quali2.html#cb269-3" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> UFBR, <span class="at">colour =</span> <span class="st">&quot;grey50&quot;</span>, <span class="at">fill =</span> <span class="st">&quot;grey85&quot;</span>, <span class="at">alpha =</span> <span class="fl">0.2</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb255"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb255-1"><a href="quali2.html#cb255-1" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb255-2"><a href="quali2.html#cb255-2" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> mundo, <span class="at">colour =</span> <span class="st">&quot;white&quot;</span>, <span class="at">fill =</span> <span class="st">&quot;grey90&quot;</span>)<span class="sc">+</span></span>
+<span id="cb255-3"><a href="quali2.html#cb255-3" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> UFBR, <span class="at">colour =</span> <span class="st">&quot;grey50&quot;</span>, <span class="at">fill =</span> <span class="st">&quot;grey85&quot;</span>, <span class="at">alpha =</span> <span class="fl">0.2</span>)</span></code></pre></div>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:plot-mundoUF"></span>
 <img src="bookdownproj_files/figure-html/plot-mundoUF-1.png" alt="Mapa-mundi com UFs do Brasil" width="672" />
 <p class="caption">
@@ -501,18 +491,18 @@ Figure 7.3: Mapa-mundi com UFs do Brasil
 </p>
 </div>
 <p>A terceira camada corresponde à “amazonia”, com o preenchimento da coluna “Classe”, sem contorno dos polígonos (colour = NA). As cores do potencial de agressividade (“Classe”) são preenchidas manualmente com o comando <strong>scale_fill_manual</strong> (Figura <a href="quali2.html#fig:plot-mundoUF-amazon">7.4</a>). Vamos seguir a ordem das cores como em <a href="http://geoftp.ibge.gov.br/cartas_e_mapas/mapas_regionais/sociedade_e_economia/integrado_zee_amazonia_legal/Potencial_de_Agressividade_Climatica.pdf" class="uri">http://geoftp.ibge.gov.br/cartas_e_mapas/mapas_regionais/sociedade_e_economia/integrado_zee_amazonia_legal/Potencial_de_Agressividade_Climatica.pdf</a>.</p>
-<div class="sourceCode" id="cb270"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb270-1"><a href="quali2.html#cb270-1" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
-<span id="cb270-2"><a href="quali2.html#cb270-2" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> mundo, <span class="at">colour =</span> <span class="st">&quot;white&quot;</span>, <span class="at">fill =</span> <span class="st">&quot;grey90&quot;</span>)<span class="sc">+</span></span>
-<span id="cb270-3"><a href="quali2.html#cb270-3" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> UFBR, <span class="at">colour =</span> <span class="st">&quot;grey50&quot;</span>, <span class="at">fill =</span> <span class="st">&quot;grey85&quot;</span>, <span class="at">alpha =</span> <span class="fl">0.2</span>)<span class="sc">+</span></span>
-<span id="cb270-4"><a href="quali2.html#cb270-4" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> amazonia, <span class="fu">aes</span>(<span class="at">fill =</span> Classe), <span class="at">colour =</span> <span class="cn">NA</span>)<span class="sc">+</span></span>
-<span id="cb270-5"><a href="quali2.html#cb270-5" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values=</span> <span class="fu">c</span>(<span class="st">&quot;A1&quot;</span> <span class="ot">=</span> <span class="st">&quot;red3&quot;</span>,</span>
-<span id="cb270-6"><a href="quali2.html#cb270-6" tabindex="-1"></a>                              <span class="st">&quot;A2&quot;</span> <span class="ot">=</span> <span class="st">&quot;red1&quot;</span>,</span>
-<span id="cb270-7"><a href="quali2.html#cb270-7" tabindex="-1"></a>                              <span class="st">&quot;M1&quot;</span> <span class="ot">=</span> <span class="st">&quot;darkorange3&quot;</span>,</span>
-<span id="cb270-8"><a href="quali2.html#cb270-8" tabindex="-1"></a>                              <span class="st">&quot;M2&quot;</span> <span class="ot">=</span> <span class="st">&quot;darkorange&quot;</span>,</span>
-<span id="cb270-9"><a href="quali2.html#cb270-9" tabindex="-1"></a>                              <span class="st">&quot;M3&quot;</span> <span class="ot">=</span> <span class="st">&quot;goldenrod1&quot;</span>,</span>
-<span id="cb270-10"><a href="quali2.html#cb270-10" tabindex="-1"></a>                              <span class="st">&quot;B1&quot;</span> <span class="ot">=</span> <span class="st">&quot;chartreuse4&quot;</span>,</span>
-<span id="cb270-11"><a href="quali2.html#cb270-11" tabindex="-1"></a>                              <span class="st">&quot;B2&quot;</span> <span class="ot">=</span> <span class="st">&quot;chartreuse3&quot;</span>,</span>
-<span id="cb270-12"><a href="quali2.html#cb270-12" tabindex="-1"></a>                              <span class="st">&quot;B3&quot;</span> <span class="ot">=</span> <span class="st">&quot;chartreuse1&quot;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb256"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb256-1"><a href="quali2.html#cb256-1" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb256-2"><a href="quali2.html#cb256-2" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> mundo, <span class="at">colour =</span> <span class="st">&quot;white&quot;</span>, <span class="at">fill =</span> <span class="st">&quot;grey90&quot;</span>)<span class="sc">+</span></span>
+<span id="cb256-3"><a href="quali2.html#cb256-3" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> UFBR, <span class="at">colour =</span> <span class="st">&quot;grey50&quot;</span>, <span class="at">fill =</span> <span class="st">&quot;grey85&quot;</span>, <span class="at">alpha =</span> <span class="fl">0.2</span>)<span class="sc">+</span></span>
+<span id="cb256-4"><a href="quali2.html#cb256-4" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> amazonia, <span class="fu">aes</span>(<span class="at">fill =</span> Classe), <span class="at">colour =</span> <span class="cn">NA</span>)<span class="sc">+</span></span>
+<span id="cb256-5"><a href="quali2.html#cb256-5" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values=</span> <span class="fu">c</span>(<span class="st">&quot;A1&quot;</span> <span class="ot">=</span> <span class="st">&quot;red3&quot;</span>,</span>
+<span id="cb256-6"><a href="quali2.html#cb256-6" tabindex="-1"></a>                              <span class="st">&quot;A2&quot;</span> <span class="ot">=</span> <span class="st">&quot;red1&quot;</span>,</span>
+<span id="cb256-7"><a href="quali2.html#cb256-7" tabindex="-1"></a>                              <span class="st">&quot;M1&quot;</span> <span class="ot">=</span> <span class="st">&quot;darkorange3&quot;</span>,</span>
+<span id="cb256-8"><a href="quali2.html#cb256-8" tabindex="-1"></a>                              <span class="st">&quot;M2&quot;</span> <span class="ot">=</span> <span class="st">&quot;darkorange&quot;</span>,</span>
+<span id="cb256-9"><a href="quali2.html#cb256-9" tabindex="-1"></a>                              <span class="st">&quot;M3&quot;</span> <span class="ot">=</span> <span class="st">&quot;goldenrod1&quot;</span>,</span>
+<span id="cb256-10"><a href="quali2.html#cb256-10" tabindex="-1"></a>                              <span class="st">&quot;B1&quot;</span> <span class="ot">=</span> <span class="st">&quot;chartreuse4&quot;</span>,</span>
+<span id="cb256-11"><a href="quali2.html#cb256-11" tabindex="-1"></a>                              <span class="st">&quot;B2&quot;</span> <span class="ot">=</span> <span class="st">&quot;chartreuse3&quot;</span>,</span>
+<span id="cb256-12"><a href="quali2.html#cb256-12" tabindex="-1"></a>                              <span class="st">&quot;B3&quot;</span> <span class="ot">=</span> <span class="st">&quot;chartreuse1&quot;</span>))</span></code></pre></div>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:plot-mundoUF-amazon"></span>
 <img src="bookdownproj_files/figure-html/plot-mundoUF-amazon-1.png" alt="Mapa-mundi com UFs do Brasil e classes de agressividade climática da Amazônia" width="672" />
 <p class="caption">
@@ -520,33 +510,33 @@ Figure 7.4: Mapa-mundi com UFs do Brasil e classes de agressividade climática d
 </p>
 </div>
 <p>Observamos que o mapa resultante apresenta ordem alfabética das categorias na legenda, apesar de ter sido indicada outra ordem no código. Isso acontece porque para entender que as categorias são ordenadas, o tipo de dado deve ser <strong>factor</strong> e deve ser <strong>ordenado</strong>. Vamos verificar a classe atual da coluna ‘Classe’.</p>
-<div class="sourceCode" id="cb271"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb271-1"><a href="quali2.html#cb271-1" tabindex="-1"></a><span class="fu">class</span>(amazonia<span class="sc">$</span>Classe)</span></code></pre></div>
+<div class="sourceCode" id="cb257"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb257-1"><a href="quali2.html#cb257-1" tabindex="-1"></a><span class="fu">class</span>(amazonia<span class="sc">$</span>Classe)</span></code></pre></div>
 <pre><code>## [1] &quot;character&quot;</code></pre>
 <p>A classe ‘character’ precisa ser convertida para ‘ordened factor’. Vamos convertê-la.</p>
-<div class="sourceCode" id="cb273"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb273-1"><a href="quali2.html#cb273-1" tabindex="-1"></a><span class="co">#para converter em &#39;factor&#39; ordenado</span></span>
-<span id="cb273-2"><a href="quali2.html#cb273-2" tabindex="-1"></a>amazonia<span class="sc">$</span>Classe <span class="ot">&lt;-</span> <span class="fu">as.ordered</span>(amazonia<span class="sc">$</span>Classe)</span>
-<span id="cb273-3"><a href="quali2.html#cb273-3" tabindex="-1"></a></span>
-<span id="cb273-4"><a href="quali2.html#cb273-4" tabindex="-1"></a><span class="co">#para estabelecer a ordem entre os níveis</span></span>
-<span id="cb273-5"><a href="quali2.html#cb273-5" tabindex="-1"></a>amazonia<span class="sc">$</span>Classe <span class="ot">&lt;-</span> <span class="fu">ordered</span>(amazonia<span class="sc">$</span>Classe, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">&quot;B3&quot;</span>, <span class="st">&quot;B2&quot;</span>, <span class="st">&quot;B1&quot;</span>, <span class="st">&quot;M3&quot;</span>, <span class="st">&quot;M2&quot;</span>, <span class="st">&quot;M1&quot;</span>, <span class="st">&quot;A2&quot;</span>, <span class="st">&quot;A1&quot;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb259"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb259-1"><a href="quali2.html#cb259-1" tabindex="-1"></a><span class="co">#para converter em &#39;factor&#39; ordenado</span></span>
+<span id="cb259-2"><a href="quali2.html#cb259-2" tabindex="-1"></a>amazonia<span class="sc">$</span>Classe <span class="ot">&lt;-</span> <span class="fu">as.ordered</span>(amazonia<span class="sc">$</span>Classe)</span>
+<span id="cb259-3"><a href="quali2.html#cb259-3" tabindex="-1"></a></span>
+<span id="cb259-4"><a href="quali2.html#cb259-4" tabindex="-1"></a><span class="co">#para estabelecer a ordem entre os níveis</span></span>
+<span id="cb259-5"><a href="quali2.html#cb259-5" tabindex="-1"></a>amazonia<span class="sc">$</span>Classe <span class="ot">&lt;-</span> <span class="fu">ordered</span>(amazonia<span class="sc">$</span>Classe, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">&quot;B3&quot;</span>, <span class="st">&quot;B2&quot;</span>, <span class="st">&quot;B1&quot;</span>, <span class="st">&quot;M3&quot;</span>, <span class="st">&quot;M2&quot;</span>, <span class="st">&quot;M1&quot;</span>, <span class="st">&quot;A2&quot;</span>, <span class="st">&quot;A1&quot;</span>))</span></code></pre></div>
 <p>Podemos adicionar o título do mapa, ajustar o tamanho da fonte do título, a cor do fundo, borda do mapa, título da legenda e informações adicionais como a fonte dos dados e os créditos da elaboração do mapa (Figura <a href="quali2.html#fig:plot-creditos">7.5</a>).</p>
-<div class="sourceCode" id="cb274"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb274-1"><a href="quali2.html#cb274-1" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
-<span id="cb274-2"><a href="quali2.html#cb274-2" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> mundo, <span class="at">colour =</span> <span class="st">&quot;white&quot;</span>, <span class="at">fill =</span> <span class="st">&quot;grey90&quot;</span>)<span class="sc">+</span></span>
-<span id="cb274-3"><a href="quali2.html#cb274-3" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> UFBR, <span class="at">colour =</span> <span class="st">&quot;grey50&quot;</span>, <span class="at">fill =</span> <span class="st">&quot;grey85&quot;</span>, <span class="at">alpha =</span> <span class="fl">0.2</span>)<span class="sc">+</span></span>
-<span id="cb274-4"><a href="quali2.html#cb274-4" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> amazonia, <span class="fu">aes</span>(<span class="at">fill =</span> Classe), <span class="at">colour =</span> <span class="cn">NA</span>)<span class="sc">+</span></span>
-<span id="cb274-5"><a href="quali2.html#cb274-5" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values=</span> <span class="fu">c</span>(<span class="st">&quot;A1&quot;</span> <span class="ot">=</span> <span class="st">&quot;red3&quot;</span>,</span>
-<span id="cb274-6"><a href="quali2.html#cb274-6" tabindex="-1"></a>                              <span class="st">&quot;A2&quot;</span> <span class="ot">=</span> <span class="st">&quot;red1&quot;</span>,</span>
-<span id="cb274-7"><a href="quali2.html#cb274-7" tabindex="-1"></a>                              <span class="st">&quot;M1&quot;</span> <span class="ot">=</span> <span class="st">&quot;darkorange3&quot;</span>,</span>
-<span id="cb274-8"><a href="quali2.html#cb274-8" tabindex="-1"></a>                              <span class="st">&quot;M2&quot;</span> <span class="ot">=</span> <span class="st">&quot;darkorange&quot;</span>,</span>
-<span id="cb274-9"><a href="quali2.html#cb274-9" tabindex="-1"></a>                              <span class="st">&quot;M3&quot;</span> <span class="ot">=</span> <span class="st">&quot;goldenrod1&quot;</span>,</span>
-<span id="cb274-10"><a href="quali2.html#cb274-10" tabindex="-1"></a>                              <span class="st">&quot;B1&quot;</span> <span class="ot">=</span> <span class="st">&quot;chartreuse4&quot;</span>,</span>
-<span id="cb274-11"><a href="quali2.html#cb274-11" tabindex="-1"></a>                              <span class="st">&quot;B2&quot;</span> <span class="ot">=</span> <span class="st">&quot;chartreuse3&quot;</span>,</span>
-<span id="cb274-12"><a href="quali2.html#cb274-12" tabindex="-1"></a>                              <span class="st">&quot;B3&quot;</span> <span class="ot">=</span> <span class="st">&quot;chartreuse1&quot;</span>))<span class="sc">+</span></span>
-<span id="cb274-13"><a href="quali2.html#cb274-13" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">&quot;Potencial de agressividade climática na Amazônia Legal&quot;</span>)<span class="sc">+</span></span>
-<span id="cb274-14"><a href="quali2.html#cb274-14" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">panel.background =</span> <span class="fu">element_rect</span>(<span class="at">fill =</span> <span class="st">&quot;aliceblue&quot;</span>),</span>
-<span id="cb274-15"><a href="quali2.html#cb274-15" tabindex="-1"></a>        <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">11</span>, <span class="at">hjust =</span> <span class="dv">1</span>, <span class="at">vjust =</span> <span class="sc">-</span><span class="dv">10</span>),</span>
-<span id="cb274-16"><a href="quali2.html#cb274-16" tabindex="-1"></a>        <span class="at">panel.border =</span> <span class="fu">element_rect</span>(<span class="at">color =</span> <span class="st">&quot;black&quot;</span>,<span class="at">linewidth =</span> .<span class="dv">1</span>,<span class="at">fill =</span> <span class="cn">NA</span>))<span class="sc">+</span></span>
-<span id="cb274-17"><a href="quali2.html#cb274-17" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">fill =</span> <span class="st">&quot;Potencial&quot;</span>, <span class="at">caption =</span> <span class="st">&quot;Fonte: IBGE (2019) </span><span class="sc">\n</span></span>
-<span id="cb274-18"><a href="quali2.html#cb274-18" tabindex="-1"></a><span class="st">       Elaborado por: @Ligiaviz&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb260"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb260-1"><a href="quali2.html#cb260-1" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb260-2"><a href="quali2.html#cb260-2" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> mundo, <span class="at">colour =</span> <span class="st">&quot;white&quot;</span>, <span class="at">fill =</span> <span class="st">&quot;grey90&quot;</span>)<span class="sc">+</span></span>
+<span id="cb260-3"><a href="quali2.html#cb260-3" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> UFBR, <span class="at">colour =</span> <span class="st">&quot;grey50&quot;</span>, <span class="at">fill =</span> <span class="st">&quot;grey85&quot;</span>, <span class="at">alpha =</span> <span class="fl">0.2</span>)<span class="sc">+</span></span>
+<span id="cb260-4"><a href="quali2.html#cb260-4" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> amazonia, <span class="fu">aes</span>(<span class="at">fill =</span> Classe), <span class="at">colour =</span> <span class="cn">NA</span>)<span class="sc">+</span></span>
+<span id="cb260-5"><a href="quali2.html#cb260-5" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values=</span> <span class="fu">c</span>(<span class="st">&quot;A1&quot;</span> <span class="ot">=</span> <span class="st">&quot;red3&quot;</span>,</span>
+<span id="cb260-6"><a href="quali2.html#cb260-6" tabindex="-1"></a>                              <span class="st">&quot;A2&quot;</span> <span class="ot">=</span> <span class="st">&quot;red1&quot;</span>,</span>
+<span id="cb260-7"><a href="quali2.html#cb260-7" tabindex="-1"></a>                              <span class="st">&quot;M1&quot;</span> <span class="ot">=</span> <span class="st">&quot;darkorange3&quot;</span>,</span>
+<span id="cb260-8"><a href="quali2.html#cb260-8" tabindex="-1"></a>                              <span class="st">&quot;M2&quot;</span> <span class="ot">=</span> <span class="st">&quot;darkorange&quot;</span>,</span>
+<span id="cb260-9"><a href="quali2.html#cb260-9" tabindex="-1"></a>                              <span class="st">&quot;M3&quot;</span> <span class="ot">=</span> <span class="st">&quot;goldenrod1&quot;</span>,</span>
+<span id="cb260-10"><a href="quali2.html#cb260-10" tabindex="-1"></a>                              <span class="st">&quot;B1&quot;</span> <span class="ot">=</span> <span class="st">&quot;chartreuse4&quot;</span>,</span>
+<span id="cb260-11"><a href="quali2.html#cb260-11" tabindex="-1"></a>                              <span class="st">&quot;B2&quot;</span> <span class="ot">=</span> <span class="st">&quot;chartreuse3&quot;</span>,</span>
+<span id="cb260-12"><a href="quali2.html#cb260-12" tabindex="-1"></a>                              <span class="st">&quot;B3&quot;</span> <span class="ot">=</span> <span class="st">&quot;chartreuse1&quot;</span>))<span class="sc">+</span></span>
+<span id="cb260-13"><a href="quali2.html#cb260-13" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">&quot;Potencial de agressividade climática na Amazônia Legal&quot;</span>)<span class="sc">+</span></span>
+<span id="cb260-14"><a href="quali2.html#cb260-14" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">panel.background =</span> <span class="fu">element_rect</span>(<span class="at">fill =</span> <span class="st">&quot;aliceblue&quot;</span>),</span>
+<span id="cb260-15"><a href="quali2.html#cb260-15" tabindex="-1"></a>        <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">11</span>, <span class="at">hjust =</span> <span class="dv">1</span>, <span class="at">vjust =</span> <span class="sc">-</span><span class="dv">10</span>),</span>
+<span id="cb260-16"><a href="quali2.html#cb260-16" tabindex="-1"></a>        <span class="at">panel.border =</span> <span class="fu">element_rect</span>(<span class="at">color =</span> <span class="st">&quot;black&quot;</span>,<span class="at">linewidth =</span> .<span class="dv">1</span>,<span class="at">fill =</span> <span class="cn">NA</span>))<span class="sc">+</span></span>
+<span id="cb260-17"><a href="quali2.html#cb260-17" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">fill =</span> <span class="st">&quot;Potencial&quot;</span>, <span class="at">caption =</span> <span class="st">&quot;Fonte: IBGE (2019) </span><span class="sc">\n</span></span>
+<span id="cb260-18"><a href="quali2.html#cb260-18" tabindex="-1"></a><span class="st">       Elaborado por: @Ligiaviz&quot;</span>)</span></code></pre></div>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:plot-creditos"></span>
 <img src="bookdownproj_files/figure-html/plot-creditos-1.png" alt="Adicionando fonte dos dados e créditos" width="672" />
 <p class="caption">
@@ -555,47 +545,46 @@ Figure 7.5: Adicionando fonte dos dados e créditos
 </div>
 <p>Observe que agora a legenda segue a ordem estabelecida e não mais a ordem alfabética.
 Podemos também, alterar a forma como o nome da categoria aparece na legenda. No lugar de “B3” podemos nomeá-la “Baixa 3”.</p>
-<div class="sourceCode" id="cb275"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb275-1"><a href="quali2.html#cb275-1" tabindex="-1"></a><span class="co">#para recodificar as categorias</span></span>
-<span id="cb275-2"><a href="quali2.html#cb275-2" tabindex="-1"></a>amazonia <span class="ot">&lt;-</span> amazonia <span class="sc">%&gt;%</span> </span>
-<span id="cb275-3"><a href="quali2.html#cb275-3" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Classe =</span> <span class="fu">recode</span>(Classe,</span>
-<span id="cb275-4"><a href="quali2.html#cb275-4" tabindex="-1"></a>                          <span class="co"># como referência: categoria antiga  = categoria nova</span></span>
-<span id="cb275-5"><a href="quali2.html#cb275-5" tabindex="-1"></a>                          <span class="st">&quot;B3&quot;</span> <span class="ot">=</span> <span class="st">&quot;Baixa 3&quot;</span>,</span>
-<span id="cb275-6"><a href="quali2.html#cb275-6" tabindex="-1"></a>                          <span class="st">&quot;B2&quot;</span>  <span class="ot">=</span> <span class="st">&quot;Baixa 2&quot;</span>,</span>
-<span id="cb275-7"><a href="quali2.html#cb275-7" tabindex="-1"></a>                          <span class="st">&quot;B1&quot;</span> <span class="ot">=</span> <span class="st">&quot;Baixa 1&quot;</span>,</span>
-<span id="cb275-8"><a href="quali2.html#cb275-8" tabindex="-1"></a>                          <span class="st">&quot;M3&quot;</span> <span class="ot">=</span>    <span class="st">&quot;Média 3&quot;</span>,</span>
-<span id="cb275-9"><a href="quali2.html#cb275-9" tabindex="-1"></a>                          <span class="st">&quot;M2&quot;</span> <span class="ot">=</span>    <span class="st">&quot;Média 2&quot;</span>,</span>
-<span id="cb275-10"><a href="quali2.html#cb275-10" tabindex="-1"></a>                          <span class="st">&quot;M1&quot;</span> <span class="ot">=</span> <span class="st">&quot;Média 1&quot;</span>,</span>
-<span id="cb275-11"><a href="quali2.html#cb275-11" tabindex="-1"></a>                         <span class="st">&quot;A2&quot;</span> <span class="ot">=</span> <span class="st">&quot;Alta 2&quot;</span>,</span>
-<span id="cb275-12"><a href="quali2.html#cb275-12" tabindex="-1"></a>                         <span class="st">&quot;A1&quot;</span> <span class="ot">=</span> <span class="st">&quot;Alta 1&quot;</span></span>
-<span id="cb275-13"><a href="quali2.html#cb275-13" tabindex="-1"></a>))</span>
-<span id="cb275-14"><a href="quali2.html#cb275-14" tabindex="-1"></a><span class="fu">unique</span>(amazonia<span class="sc">$</span>Classe)</span></code></pre></div>
-<pre><code>## [1] Alta 2  Média 2 Baixa 2 Baixa 3 Média 1 Baixa 1 &lt;NA&gt;    Média 3
-## [9] Alta 1 
-## 8 Levels: Baixa 3 &lt; Baixa 2 &lt; Baixa 1 &lt; Média 3 &lt; ... &lt; Alta 1</code></pre>
+<div class="sourceCode" id="cb261"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb261-1"><a href="quali2.html#cb261-1" tabindex="-1"></a><span class="co">#para recodificar as categorias</span></span>
+<span id="cb261-2"><a href="quali2.html#cb261-2" tabindex="-1"></a>amazonia <span class="ot">&lt;-</span> amazonia <span class="sc">%&gt;%</span> </span>
+<span id="cb261-3"><a href="quali2.html#cb261-3" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Classe =</span> <span class="fu">recode</span>(Classe,</span>
+<span id="cb261-4"><a href="quali2.html#cb261-4" tabindex="-1"></a>                          <span class="co"># como referência: categoria antiga  = categoria nova</span></span>
+<span id="cb261-5"><a href="quali2.html#cb261-5" tabindex="-1"></a>                          <span class="st">&quot;B3&quot;</span> <span class="ot">=</span> <span class="st">&quot;Baixa 3&quot;</span>,</span>
+<span id="cb261-6"><a href="quali2.html#cb261-6" tabindex="-1"></a>                          <span class="st">&quot;B2&quot;</span>  <span class="ot">=</span> <span class="st">&quot;Baixa 2&quot;</span>,</span>
+<span id="cb261-7"><a href="quali2.html#cb261-7" tabindex="-1"></a>                          <span class="st">&quot;B1&quot;</span> <span class="ot">=</span> <span class="st">&quot;Baixa 1&quot;</span>,</span>
+<span id="cb261-8"><a href="quali2.html#cb261-8" tabindex="-1"></a>                          <span class="st">&quot;M3&quot;</span> <span class="ot">=</span>    <span class="st">&quot;Média 3&quot;</span>,</span>
+<span id="cb261-9"><a href="quali2.html#cb261-9" tabindex="-1"></a>                          <span class="st">&quot;M2&quot;</span> <span class="ot">=</span>    <span class="st">&quot;Média 2&quot;</span>,</span>
+<span id="cb261-10"><a href="quali2.html#cb261-10" tabindex="-1"></a>                          <span class="st">&quot;M1&quot;</span> <span class="ot">=</span> <span class="st">&quot;Média 1&quot;</span>,</span>
+<span id="cb261-11"><a href="quali2.html#cb261-11" tabindex="-1"></a>                         <span class="st">&quot;A2&quot;</span> <span class="ot">=</span> <span class="st">&quot;Alta 2&quot;</span>,</span>
+<span id="cb261-12"><a href="quali2.html#cb261-12" tabindex="-1"></a>                         <span class="st">&quot;A1&quot;</span> <span class="ot">=</span> <span class="st">&quot;Alta 1&quot;</span></span>
+<span id="cb261-13"><a href="quali2.html#cb261-13" tabindex="-1"></a>))</span>
+<span id="cb261-14"><a href="quali2.html#cb261-14" tabindex="-1"></a><span class="fu">unique</span>(amazonia<span class="sc">$</span>Classe)</span></code></pre></div>
+<pre><code>## [1] Alta 2  Média 2 Baixa 2 Baixa 3 Média 1 Baixa 1 &lt;NA&gt;    Média 3 Alta 1 
+## 8 Levels: Baixa 3 &lt; Baixa 2 &lt; Baixa 1 &lt; Média 3 &lt; Média 2 &lt; Média 1 &lt; ... &lt; Alta 1</code></pre>
 <p>Ainda precisamos de outra camada dos limites das Unidades da Federação para termos ideia da distribuição do potencial de agressividade climática na Amazônia. Aproveitamos também para configurar a legenda, acertando a posição dela no mapa e a cor do fundo, assim como já deixar sem o título do eixo <strong>y</strong>.</p>
-<div class="sourceCode" id="cb277"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb277-1"><a href="quali2.html#cb277-1" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
-<span id="cb277-2"><a href="quali2.html#cb277-2" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> mundo, <span class="at">colour =</span> <span class="st">&quot;white&quot;</span>, <span class="at">fill =</span> <span class="st">&quot;grey90&quot;</span>)<span class="sc">+</span></span>
-<span id="cb277-3"><a href="quali2.html#cb277-3" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> UFBR, <span class="at">colour =</span> <span class="st">&quot;grey50&quot;</span>, <span class="at">fill =</span> <span class="st">&quot;grey85&quot;</span>, <span class="at">alpha =</span> <span class="fl">0.2</span>)<span class="sc">+</span></span>
-<span id="cb277-4"><a href="quali2.html#cb277-4" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> amazonia, <span class="fu">aes</span>(<span class="at">fill =</span> Classe), <span class="at">colour =</span> <span class="cn">NA</span>)<span class="sc">+</span></span>
-<span id="cb277-5"><a href="quali2.html#cb277-5" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values=</span> <span class="fu">c</span>(<span class="st">&quot;Alta 1&quot;</span> <span class="ot">=</span> <span class="st">&quot;red3&quot;</span>,</span>
-<span id="cb277-6"><a href="quali2.html#cb277-6" tabindex="-1"></a>                              <span class="st">&quot;Alta 2&quot;</span> <span class="ot">=</span> <span class="st">&quot;red1&quot;</span>,</span>
-<span id="cb277-7"><a href="quali2.html#cb277-7" tabindex="-1"></a>                              <span class="st">&quot;Média 1&quot;</span> <span class="ot">=</span> <span class="st">&quot;darkorange3&quot;</span>,</span>
-<span id="cb277-8"><a href="quali2.html#cb277-8" tabindex="-1"></a>                              <span class="st">&quot;Média 2&quot;</span> <span class="ot">=</span> <span class="st">&quot;darkorange&quot;</span>,</span>
-<span id="cb277-9"><a href="quali2.html#cb277-9" tabindex="-1"></a>                              <span class="st">&quot;Média 3&quot;</span> <span class="ot">=</span> <span class="st">&quot;goldenrod1&quot;</span>,</span>
-<span id="cb277-10"><a href="quali2.html#cb277-10" tabindex="-1"></a>                              <span class="st">&quot;Baixa 1&quot;</span> <span class="ot">=</span> <span class="st">&quot;chartreuse4&quot;</span>,</span>
-<span id="cb277-11"><a href="quali2.html#cb277-11" tabindex="-1"></a>                              <span class="st">&quot;Baixa 2&quot;</span> <span class="ot">=</span> <span class="st">&quot;chartreuse3&quot;</span>,</span>
-<span id="cb277-12"><a href="quali2.html#cb277-12" tabindex="-1"></a>                              <span class="st">&quot;Baixa 3&quot;</span> <span class="ot">=</span> <span class="st">&quot;chartreuse1&quot;</span>))<span class="sc">+</span></span>
-<span id="cb277-13"><a href="quali2.html#cb277-13" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">&quot;Potencial de agressividade climática na Amazônia Legal&quot;</span>)<span class="sc">+</span></span>
-<span id="cb277-14"><a href="quali2.html#cb277-14" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">panel.background =</span> <span class="fu">element_rect</span>(<span class="at">fill =</span> <span class="st">&quot;aliceblue&quot;</span>),</span>
-<span id="cb277-15"><a href="quali2.html#cb277-15" tabindex="-1"></a>        <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">11</span>, <span class="at">hjust =</span> <span class="dv">1</span>, <span class="at">vjust =</span> <span class="sc">-</span><span class="dv">10</span>),</span>
-<span id="cb277-16"><a href="quali2.html#cb277-16" tabindex="-1"></a>        <span class="at">panel.border =</span> <span class="fu">element_rect</span>(<span class="at">color =</span> <span class="st">&quot;black&quot;</span>,<span class="at">size =</span> .<span class="dv">1</span>,<span class="at">fill =</span> <span class="cn">NA</span>))<span class="sc">+</span></span>
-<span id="cb277-17"><a href="quali2.html#cb277-17" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">fill =</span> <span class="st">&quot;Potencial&quot;</span>, <span class="at">caption =</span> <span class="st">&quot;Fonte: IBGE (2019) </span><span class="sc">\n</span></span>
-<span id="cb277-18"><a href="quali2.html#cb277-18" tabindex="-1"></a><span class="st">       Elaborado por: @Ligiaviz&quot;</span>)<span class="sc">+</span></span>
-<span id="cb277-19"><a href="quali2.html#cb277-19" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> UFBR, <span class="at">colour =</span> <span class="st">&quot;grey50&quot;</span>, <span class="at">fill =</span> <span class="cn">NA</span>, <span class="at">alpha =</span> <span class="dv">0</span>)<span class="sc">+</span></span>
-<span id="cb277-20"><a href="quali2.html#cb277-20" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="fu">c</span>(<span class="fl">0.9</span>, <span class="fl">0.2</span>), </span>
-<span id="cb277-21"><a href="quali2.html#cb277-21" tabindex="-1"></a>        <span class="at">legend.justification =</span> <span class="fu">c</span>(<span class="fl">0.9</span>, <span class="fl">0.2</span>),</span>
-<span id="cb277-22"><a href="quali2.html#cb277-22" tabindex="-1"></a>        <span class="at">legend.background =</span> <span class="fu">element_rect</span>(<span class="at">colour =</span> <span class="cn">NA</span>, <span class="at">fill =</span> <span class="st">&quot;aliceblue&quot;</span>),</span>
-<span id="cb277-23"><a href="quali2.html#cb277-23" tabindex="-1"></a>        <span class="at">axis.title.y =</span> <span class="fu">element_blank</span>())</span></code></pre></div>
+<div class="sourceCode" id="cb263"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb263-1"><a href="quali2.html#cb263-1" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb263-2"><a href="quali2.html#cb263-2" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> mundo, <span class="at">colour =</span> <span class="st">&quot;white&quot;</span>, <span class="at">fill =</span> <span class="st">&quot;grey90&quot;</span>)<span class="sc">+</span></span>
+<span id="cb263-3"><a href="quali2.html#cb263-3" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> UFBR, <span class="at">colour =</span> <span class="st">&quot;grey50&quot;</span>, <span class="at">fill =</span> <span class="st">&quot;grey85&quot;</span>, <span class="at">alpha =</span> <span class="fl">0.2</span>)<span class="sc">+</span></span>
+<span id="cb263-4"><a href="quali2.html#cb263-4" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> amazonia, <span class="fu">aes</span>(<span class="at">fill =</span> Classe), <span class="at">colour =</span> <span class="cn">NA</span>)<span class="sc">+</span></span>
+<span id="cb263-5"><a href="quali2.html#cb263-5" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values=</span> <span class="fu">c</span>(<span class="st">&quot;Alta 1&quot;</span> <span class="ot">=</span> <span class="st">&quot;red3&quot;</span>,</span>
+<span id="cb263-6"><a href="quali2.html#cb263-6" tabindex="-1"></a>                              <span class="st">&quot;Alta 2&quot;</span> <span class="ot">=</span> <span class="st">&quot;red1&quot;</span>,</span>
+<span id="cb263-7"><a href="quali2.html#cb263-7" tabindex="-1"></a>                              <span class="st">&quot;Média 1&quot;</span> <span class="ot">=</span> <span class="st">&quot;darkorange3&quot;</span>,</span>
+<span id="cb263-8"><a href="quali2.html#cb263-8" tabindex="-1"></a>                              <span class="st">&quot;Média 2&quot;</span> <span class="ot">=</span> <span class="st">&quot;darkorange&quot;</span>,</span>
+<span id="cb263-9"><a href="quali2.html#cb263-9" tabindex="-1"></a>                              <span class="st">&quot;Média 3&quot;</span> <span class="ot">=</span> <span class="st">&quot;goldenrod1&quot;</span>,</span>
+<span id="cb263-10"><a href="quali2.html#cb263-10" tabindex="-1"></a>                              <span class="st">&quot;Baixa 1&quot;</span> <span class="ot">=</span> <span class="st">&quot;chartreuse4&quot;</span>,</span>
+<span id="cb263-11"><a href="quali2.html#cb263-11" tabindex="-1"></a>                              <span class="st">&quot;Baixa 2&quot;</span> <span class="ot">=</span> <span class="st">&quot;chartreuse3&quot;</span>,</span>
+<span id="cb263-12"><a href="quali2.html#cb263-12" tabindex="-1"></a>                              <span class="st">&quot;Baixa 3&quot;</span> <span class="ot">=</span> <span class="st">&quot;chartreuse1&quot;</span>))<span class="sc">+</span></span>
+<span id="cb263-13"><a href="quali2.html#cb263-13" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">&quot;Potencial de agressividade climática na Amazônia Legal&quot;</span>)<span class="sc">+</span></span>
+<span id="cb263-14"><a href="quali2.html#cb263-14" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">panel.background =</span> <span class="fu">element_rect</span>(<span class="at">fill =</span> <span class="st">&quot;aliceblue&quot;</span>),</span>
+<span id="cb263-15"><a href="quali2.html#cb263-15" tabindex="-1"></a>        <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">11</span>, <span class="at">hjust =</span> <span class="dv">1</span>, <span class="at">vjust =</span> <span class="sc">-</span><span class="dv">10</span>),</span>
+<span id="cb263-16"><a href="quali2.html#cb263-16" tabindex="-1"></a>        <span class="at">panel.border =</span> <span class="fu">element_rect</span>(<span class="at">color =</span> <span class="st">&quot;black&quot;</span>,<span class="at">size =</span> .<span class="dv">1</span>,<span class="at">fill =</span> <span class="cn">NA</span>))<span class="sc">+</span></span>
+<span id="cb263-17"><a href="quali2.html#cb263-17" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">fill =</span> <span class="st">&quot;Potencial&quot;</span>, <span class="at">caption =</span> <span class="st">&quot;Fonte: IBGE (2019) </span><span class="sc">\n</span></span>
+<span id="cb263-18"><a href="quali2.html#cb263-18" tabindex="-1"></a><span class="st">       Elaborado por: @Ligiaviz&quot;</span>)<span class="sc">+</span></span>
+<span id="cb263-19"><a href="quali2.html#cb263-19" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> UFBR, <span class="at">colour =</span> <span class="st">&quot;grey50&quot;</span>, <span class="at">fill =</span> <span class="cn">NA</span>, <span class="at">alpha =</span> <span class="dv">0</span>)<span class="sc">+</span></span>
+<span id="cb263-20"><a href="quali2.html#cb263-20" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="fu">c</span>(<span class="fl">0.9</span>, <span class="fl">0.2</span>), </span>
+<span id="cb263-21"><a href="quali2.html#cb263-21" tabindex="-1"></a>        <span class="at">legend.justification =</span> <span class="fu">c</span>(<span class="fl">0.9</span>, <span class="fl">0.2</span>),</span>
+<span id="cb263-22"><a href="quali2.html#cb263-22" tabindex="-1"></a>        <span class="at">legend.background =</span> <span class="fu">element_rect</span>(<span class="at">colour =</span> <span class="cn">NA</span>, <span class="at">fill =</span> <span class="st">&quot;aliceblue&quot;</span>),</span>
+<span id="cb263-23"><a href="quali2.html#cb263-23" tabindex="-1"></a>        <span class="at">axis.title.y =</span> <span class="fu">element_blank</span>())</span></code></pre></div>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:plot-uf-legenda"></span>
 <img src="bookdownproj_files/figure-html/plot-uf-legenda-1.png" alt="Mapa com correção da legenda e limites das UFs" width="672" />
 <p class="caption">
@@ -603,32 +592,32 @@ Figure 7.6: Mapa com correção da legenda e limites das UFs
 </p>
 </div>
 <p>A delimitação da área do mapa e outros elementos como a linha do Equador também podem ser definidos agora. A última linha do código define a escala gráfica (Figura <a href="quali2.html#fig:plot-final">7.7</a>).</p>
-<div class="sourceCode" id="cb278"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb278-1"><a href="quali2.html#cb278-1" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
-<span id="cb278-2"><a href="quali2.html#cb278-2" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> mundo, <span class="at">colour =</span> <span class="st">&quot;white&quot;</span>, <span class="at">fill =</span> <span class="st">&quot;grey90&quot;</span>)<span class="sc">+</span></span>
-<span id="cb278-3"><a href="quali2.html#cb278-3" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> UFBR, <span class="at">colour =</span> <span class="st">&quot;grey50&quot;</span>, <span class="at">fill =</span> <span class="st">&quot;grey85&quot;</span>, <span class="at">alpha =</span> <span class="fl">0.2</span>)<span class="sc">+</span></span>
-<span id="cb278-4"><a href="quali2.html#cb278-4" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> amazonia, <span class="fu">aes</span>(<span class="at">fill =</span> Classe), <span class="at">colour =</span> <span class="cn">NA</span>)<span class="sc">+</span></span>
-<span id="cb278-5"><a href="quali2.html#cb278-5" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values=</span> <span class="fu">c</span>(<span class="st">&quot;Alta 1&quot;</span> <span class="ot">=</span> <span class="st">&quot;red3&quot;</span>,</span>
-<span id="cb278-6"><a href="quali2.html#cb278-6" tabindex="-1"></a>                              <span class="st">&quot;Alta 2&quot;</span> <span class="ot">=</span> <span class="st">&quot;red1&quot;</span>,</span>
-<span id="cb278-7"><a href="quali2.html#cb278-7" tabindex="-1"></a>                              <span class="st">&quot;Média 1&quot;</span> <span class="ot">=</span> <span class="st">&quot;darkorange3&quot;</span>,</span>
-<span id="cb278-8"><a href="quali2.html#cb278-8" tabindex="-1"></a>                              <span class="st">&quot;Média 2&quot;</span> <span class="ot">=</span> <span class="st">&quot;darkorange&quot;</span>,</span>
-<span id="cb278-9"><a href="quali2.html#cb278-9" tabindex="-1"></a>                              <span class="st">&quot;Média 3&quot;</span> <span class="ot">=</span> <span class="st">&quot;goldenrod1&quot;</span>,</span>
-<span id="cb278-10"><a href="quali2.html#cb278-10" tabindex="-1"></a>                              <span class="st">&quot;Baixa 1&quot;</span> <span class="ot">=</span> <span class="st">&quot;chartreuse4&quot;</span>,</span>
-<span id="cb278-11"><a href="quali2.html#cb278-11" tabindex="-1"></a>                              <span class="st">&quot;Baixa 2&quot;</span> <span class="ot">=</span> <span class="st">&quot;chartreuse3&quot;</span>,</span>
-<span id="cb278-12"><a href="quali2.html#cb278-12" tabindex="-1"></a>                              <span class="st">&quot;Baixa 3&quot;</span> <span class="ot">=</span> <span class="st">&quot;chartreuse1&quot;</span>))<span class="sc">+</span></span>
-<span id="cb278-13"><a href="quali2.html#cb278-13" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">&quot;Potencial de agressividade climática na Amazônia Legal&quot;</span>)<span class="sc">+</span></span>
-<span id="cb278-14"><a href="quali2.html#cb278-14" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">panel.background =</span> <span class="fu">element_rect</span>(<span class="at">fill =</span> <span class="st">&quot;aliceblue&quot;</span>),</span>
-<span id="cb278-15"><a href="quali2.html#cb278-15" tabindex="-1"></a>        <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">11</span>, <span class="at">hjust =</span> <span class="dv">1</span>, <span class="at">vjust =</span> <span class="sc">-</span><span class="dv">10</span>),</span>
-<span id="cb278-16"><a href="quali2.html#cb278-16" tabindex="-1"></a>        <span class="at">panel.border =</span> <span class="fu">element_rect</span>(<span class="at">color =</span> <span class="st">&quot;black&quot;</span>,<span class="at">size =</span> .<span class="dv">1</span>,<span class="at">fill =</span> <span class="cn">NA</span>))<span class="sc">+</span></span>
-<span id="cb278-17"><a href="quali2.html#cb278-17" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">fill =</span> <span class="st">&quot;Potencial&quot;</span>, <span class="at">caption =</span> <span class="st">&quot;Fonte: IBGE (2019) </span><span class="sc">\n</span></span>
-<span id="cb278-18"><a href="quali2.html#cb278-18" tabindex="-1"></a><span class="st">       Elaborado por: @Ligiaviz&quot;</span>)<span class="sc">+</span></span>
-<span id="cb278-19"><a href="quali2.html#cb278-19" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> UFBR, <span class="at">colour =</span> <span class="st">&quot;grey50&quot;</span>, <span class="at">fill =</span> <span class="cn">NA</span>, <span class="at">alpha =</span> <span class="dv">0</span>)<span class="sc">+</span></span>
-<span id="cb278-20"><a href="quali2.html#cb278-20" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="fu">c</span>(<span class="fl">0.9</span>, <span class="fl">0.2</span>), </span>
-<span id="cb278-21"><a href="quali2.html#cb278-21" tabindex="-1"></a>        <span class="at">legend.justification =</span> <span class="fu">c</span>(<span class="fl">0.9</span>, <span class="fl">0.2</span>),</span>
-<span id="cb278-22"><a href="quali2.html#cb278-22" tabindex="-1"></a>        <span class="at">legend.background =</span> <span class="fu">element_rect</span>(<span class="at">colour =</span> <span class="cn">NA</span>, <span class="at">fill =</span> <span class="st">&quot;aliceblue&quot;</span>),</span>
-<span id="cb278-23"><a href="quali2.html#cb278-23" tabindex="-1"></a>        <span class="at">axis.title.y =</span> <span class="fu">element_blank</span>())<span class="sc">+</span></span>
-<span id="cb278-24"><a href="quali2.html#cb278-24" tabindex="-1"></a>  <span class="fu">coord_sf</span>(<span class="at">xlim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">77</span>, <span class="sc">-</span><span class="dv">24</span>), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">20</span>, <span class="dv">7</span>), <span class="at">expand =</span> <span class="cn">FALSE</span>)<span class="sc">+</span></span>
-<span id="cb278-25"><a href="quali2.html#cb278-25" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>, <span class="at">linetype =</span> <span class="st">&quot;dashed&quot;</span>)<span class="sc">+</span></span>
-<span id="cb278-26"><a href="quali2.html#cb278-26" tabindex="-1"></a>  ggspatial<span class="sc">::</span><span class="fu">annotation_scale</span>(<span class="at">location =</span> <span class="st">&quot;bl&quot;</span>, <span class="at">width_hint =</span> <span class="fl">0.3</span>, <span class="at">line_width =</span> <span class="fl">0.5</span>, <span class="at">height =</span> <span class="fu">unit</span>(<span class="fl">0.1</span>,<span class="st">&quot;cm&quot;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb264"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb264-1"><a href="quali2.html#cb264-1" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb264-2"><a href="quali2.html#cb264-2" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> mundo, <span class="at">colour =</span> <span class="st">&quot;white&quot;</span>, <span class="at">fill =</span> <span class="st">&quot;grey90&quot;</span>)<span class="sc">+</span></span>
+<span id="cb264-3"><a href="quali2.html#cb264-3" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> UFBR, <span class="at">colour =</span> <span class="st">&quot;grey50&quot;</span>, <span class="at">fill =</span> <span class="st">&quot;grey85&quot;</span>, <span class="at">alpha =</span> <span class="fl">0.2</span>)<span class="sc">+</span></span>
+<span id="cb264-4"><a href="quali2.html#cb264-4" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> amazonia, <span class="fu">aes</span>(<span class="at">fill =</span> Classe), <span class="at">colour =</span> <span class="cn">NA</span>)<span class="sc">+</span></span>
+<span id="cb264-5"><a href="quali2.html#cb264-5" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values=</span> <span class="fu">c</span>(<span class="st">&quot;Alta 1&quot;</span> <span class="ot">=</span> <span class="st">&quot;red3&quot;</span>,</span>
+<span id="cb264-6"><a href="quali2.html#cb264-6" tabindex="-1"></a>                              <span class="st">&quot;Alta 2&quot;</span> <span class="ot">=</span> <span class="st">&quot;red1&quot;</span>,</span>
+<span id="cb264-7"><a href="quali2.html#cb264-7" tabindex="-1"></a>                              <span class="st">&quot;Média 1&quot;</span> <span class="ot">=</span> <span class="st">&quot;darkorange3&quot;</span>,</span>
+<span id="cb264-8"><a href="quali2.html#cb264-8" tabindex="-1"></a>                              <span class="st">&quot;Média 2&quot;</span> <span class="ot">=</span> <span class="st">&quot;darkorange&quot;</span>,</span>
+<span id="cb264-9"><a href="quali2.html#cb264-9" tabindex="-1"></a>                              <span class="st">&quot;Média 3&quot;</span> <span class="ot">=</span> <span class="st">&quot;goldenrod1&quot;</span>,</span>
+<span id="cb264-10"><a href="quali2.html#cb264-10" tabindex="-1"></a>                              <span class="st">&quot;Baixa 1&quot;</span> <span class="ot">=</span> <span class="st">&quot;chartreuse4&quot;</span>,</span>
+<span id="cb264-11"><a href="quali2.html#cb264-11" tabindex="-1"></a>                              <span class="st">&quot;Baixa 2&quot;</span> <span class="ot">=</span> <span class="st">&quot;chartreuse3&quot;</span>,</span>
+<span id="cb264-12"><a href="quali2.html#cb264-12" tabindex="-1"></a>                              <span class="st">&quot;Baixa 3&quot;</span> <span class="ot">=</span> <span class="st">&quot;chartreuse1&quot;</span>))<span class="sc">+</span></span>
+<span id="cb264-13"><a href="quali2.html#cb264-13" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">&quot;Potencial de agressividade climática na Amazônia Legal&quot;</span>)<span class="sc">+</span></span>
+<span id="cb264-14"><a href="quali2.html#cb264-14" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">panel.background =</span> <span class="fu">element_rect</span>(<span class="at">fill =</span> <span class="st">&quot;aliceblue&quot;</span>),</span>
+<span id="cb264-15"><a href="quali2.html#cb264-15" tabindex="-1"></a>        <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">11</span>, <span class="at">hjust =</span> <span class="dv">1</span>, <span class="at">vjust =</span> <span class="sc">-</span><span class="dv">10</span>),</span>
+<span id="cb264-16"><a href="quali2.html#cb264-16" tabindex="-1"></a>        <span class="at">panel.border =</span> <span class="fu">element_rect</span>(<span class="at">color =</span> <span class="st">&quot;black&quot;</span>,<span class="at">size =</span> .<span class="dv">1</span>,<span class="at">fill =</span> <span class="cn">NA</span>))<span class="sc">+</span></span>
+<span id="cb264-17"><a href="quali2.html#cb264-17" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">fill =</span> <span class="st">&quot;Potencial&quot;</span>, <span class="at">caption =</span> <span class="st">&quot;Fonte: IBGE (2019) </span><span class="sc">\n</span></span>
+<span id="cb264-18"><a href="quali2.html#cb264-18" tabindex="-1"></a><span class="st">       Elaborado por: @Ligiaviz&quot;</span>)<span class="sc">+</span></span>
+<span id="cb264-19"><a href="quali2.html#cb264-19" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> UFBR, <span class="at">colour =</span> <span class="st">&quot;grey50&quot;</span>, <span class="at">fill =</span> <span class="cn">NA</span>, <span class="at">alpha =</span> <span class="dv">0</span>)<span class="sc">+</span></span>
+<span id="cb264-20"><a href="quali2.html#cb264-20" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="fu">c</span>(<span class="fl">0.9</span>, <span class="fl">0.2</span>), </span>
+<span id="cb264-21"><a href="quali2.html#cb264-21" tabindex="-1"></a>        <span class="at">legend.justification =</span> <span class="fu">c</span>(<span class="fl">0.9</span>, <span class="fl">0.2</span>),</span>
+<span id="cb264-22"><a href="quali2.html#cb264-22" tabindex="-1"></a>        <span class="at">legend.background =</span> <span class="fu">element_rect</span>(<span class="at">colour =</span> <span class="cn">NA</span>, <span class="at">fill =</span> <span class="st">&quot;aliceblue&quot;</span>),</span>
+<span id="cb264-23"><a href="quali2.html#cb264-23" tabindex="-1"></a>        <span class="at">axis.title.y =</span> <span class="fu">element_blank</span>())<span class="sc">+</span></span>
+<span id="cb264-24"><a href="quali2.html#cb264-24" tabindex="-1"></a>  <span class="fu">coord_sf</span>(<span class="at">xlim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">77</span>, <span class="sc">-</span><span class="dv">24</span>), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">20</span>, <span class="dv">7</span>), <span class="at">expand =</span> <span class="cn">FALSE</span>)<span class="sc">+</span></span>
+<span id="cb264-25"><a href="quali2.html#cb264-25" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>, <span class="at">linetype =</span> <span class="st">&quot;dashed&quot;</span>)<span class="sc">+</span></span>
+<span id="cb264-26"><a href="quali2.html#cb264-26" tabindex="-1"></a>  ggspatial<span class="sc">::</span><span class="fu">annotation_scale</span>(<span class="at">location =</span> <span class="st">&quot;bl&quot;</span>, <span class="at">width_hint =</span> <span class="fl">0.3</span>, <span class="at">line_width =</span> <span class="fl">0.5</span>, <span class="at">height =</span> <span class="fu">unit</span>(<span class="fl">0.1</span>,<span class="st">&quot;cm&quot;</span>))</span></code></pre></div>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:plot-final"></span>
 <img src="bookdownproj_files/figure-html/plot-final-1.png" alt="Mapa completo: recorte da área de interesse, escala gráfica e linha do Equador" width="672" />
 <p class="caption">
@@ -636,8 +625,8 @@ Figure 7.7: Mapa completo: recorte da área de interesse, escala gráfica e linh
 </p>
 </div>
 <p>Para exportar como arquivo de extensão <strong>png</strong>, usa-se o comando a seguir.</p>
-<div class="sourceCode" id="cb279"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb279-1"><a href="quali2.html#cb279-1" tabindex="-1"></a><span class="co">#para salvar o arquivo com extensao .png</span></span>
-<span id="cb279-2"><a href="quali2.html#cb279-2" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="st">&quot;agressividade.png&quot;</span>, <span class="at">width =</span> <span class="dv">8</span>, <span class="at">height =</span> <span class="dv">8</span>, <span class="at">dpi =</span> <span class="dv">300</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb265"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb265-1"><a href="quali2.html#cb265-1" tabindex="-1"></a><span class="co">#para salvar o arquivo com extensao .png</span></span>
+<span id="cb265-2"><a href="quali2.html#cb265-2" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="st">&quot;agressividade.png&quot;</span>, <span class="at">width =</span> <span class="dv">8</span>, <span class="at">height =</span> <span class="dv">8</span>, <span class="at">dpi =</span> <span class="dv">300</span>)</span></code></pre></div>
 
 </div>
 </div>

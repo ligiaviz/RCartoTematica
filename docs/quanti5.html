@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title> 12 Dados quantitativos a partir de amostras: mapa isarítmico | Cartografia Temática em R para estudantes de Geografia</title>
   <meta name="description" content=" 12 Dados quantitativos a partir de amostras: mapa isarítmico | Cartografia Temática em R para estudantes de Geografia" />
-  <meta name="generator" content="bookdown 0.34 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.35 and GitBook 2.6.7" />
 
   <meta property="og:title" content=" 12 Dados quantitativos a partir de amostras: mapa isarítmico | Cartografia Temática em R para estudantes de Geografia" />
   <meta property="og:type" content="book" />
@@ -51,6 +51,14 @@
 <link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
 <link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
 <script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/htmlwidgets-1.6.2/htmlwidgets.js"></script>
+<link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-1.3.1/leaflet.js"></script>
+<link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
+<script src="libs/proj4-2.6.2/proj4.min.js"></script>
+<script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
+<link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-binding-2.1.2/leaflet.js"></script>
 
 
 <style type="text/css">
@@ -243,7 +251,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="12" data-path="quanti5.html"><a href="quanti5.html"><i class="fa fa-check"></i><b>12</b> Dados quantitativos a partir de amostras: mapa isarítmico</a>
 <ul>
-<li class="chapter" data-level="12.1" data-path="quanti5.html"><a href="quanti5.html#referências-sugeridas-4"><i class="fa fa-check"></i><b>12.1</b> Referências sugeridas</a></li>
+<li class="chapter" data-level="12.1" data-path="quanti5.html"><a href="quanti5.html#abordagens-de-interpolação-espacial"><i class="fa fa-check"></i><b>12.1</b> Abordagens de interpolação espacial</a>
+<ul>
+<li class="chapter" data-level="12.1.1" data-path="quanti5.html"><a href="quanti5.html#abordagens-determinísticas"><i class="fa fa-check"></i><b>12.1.1</b> Abordagens determinísticas</a></li>
+<li class="chapter" data-level="12.1.2" data-path="quanti5.html"><a href="quanti5.html#abordagens-estocásticas"><i class="fa fa-check"></i><b>12.1.2</b> Abordagens Estocásticas</a></li>
+</ul></li>
+<li class="chapter" data-level="12.2" data-path="quanti5.html"><a href="quanti5.html#referências-citadas-2"><i class="fa fa-check"></i><b>12.2</b> Referências citadas</a></li>
+<li class="chapter" data-level="12.3" data-path="quanti5.html"><a href="quanti5.html#sugestões-de-leitura"><i class="fa fa-check"></i><b>12.3</b> Sugestões de leitura</a></li>
 </ul></li>
 <li class="chapter" data-level="13" data-path="quanti6.html"><a href="quanti6.html"><i class="fa fa-check"></i><b>13</b> Mapa de fluxos: movimentos no espaço</a></li>
 <li class="chapter" data-level="14" data-path="osm.html"><a href="osm.html"><i class="fa fa-check"></i><b>14</b> Usando dados do Open Street Map</a></li>
@@ -270,10 +284,875 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="quanti5" class="section level1 hasAnchor" number="12">
 <h1><span class="header-section-number"> 12</span> Dados quantitativos a partir de amostras: mapa isarítmico<a href="quanti5.html#quanti5" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<p>Algumas informações com referência espacial são obtidas a partir de amostras distribuídas no espaço. Tais amostras podem ser pontuais e até mesmo lineares, tais como curvas de nível com valores de altitude ou batimetria. As amostras de pontos são mais comuns e incluem medidas de variáveis atmosféricas, de poluição do ar, amostras de solo, entre outras. Muitas vezes temos interesse em visualizar os valores em área não amostrada, sendo possível recorrermos a modelos matemáticos para gerar interpolações dos valores entre os pontos amostrados, resultando em uma superfície contínua. O mapa resultante é do tipo isarítmico.</p>
-<p><strong>Capítulo em elaboração</strong></p>
-<div id="referências-sugeridas-4" class="section level2 hasAnchor" number="12.1">
-<h2><span class="header-section-number">12.1</span> Referências sugeridas<a href="quanti5.html#referências-sugeridas-4" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Algumas informações com referência espacial são obtidas a partir de amostras distribuídas no espaço. Tais amostras podem ser pontuais e até mesmo lineares, tais como curvas de nível com valores de altitude ou batimetria. As amostras de pontos são mais comuns e incluem medidas de variáveis atmosféricas, de poluição do ar, amostras de solo, entre outras. Muitas vezes temos interesse em visualizar os valores em área não amostrada, sendo possível recorrermos a modelos matemáticos para gerar interpolações dos valores entre os pontos amostrados, resultando em uma superfície contínua. O mapa resultante é do tipo <strong>isarítmico</strong>.</p>
+<p>A interpolação de dados pode envolver abordagens determinísticas e/ou estocásticas, como veremos mais adiante. Muitas vezes é necessário recorrer à <strong>Geoestatística</strong> para esta finalidade. A Geoestatística é um ramo da Estatística Aplicada que lida especificamente com dados espaciais e georreferenciados. Ela fornece ferramentas e métodos estatísticos para analisar padrões espaciais, modelar dependências espaciais e realizar previsões ou interpolações em locais não amostrados. Em sua essência, a Geoestatística é mais associada a abordagens estocásticas do que determinísticas. Ela se desenvolveu originalmente para lidar com a variabilidade espacial que muitas vezes não pode ser totalmente capturada por métodos puramente determinísticos. No entanto, é importante destacar que a Geoestatística não é exclusivamente estocástica. Há situações em que abordagens determinísticas podem ser aplicadas (e.g., Superfície de Tendência), dependendo da natureza dos dados, dos objetivos da análise e do contexto específico do problema espacial em questão. Muitas vezes, a escolha entre abordagens determinísticas e estocásticas dependerá das características dos dados e das questões específicas que se deseja abordar. A Geoestatística requer conhecimento aprofundado, o que não será o objetivo deste item. Aqui, em termos de Geoestatística apenas veremos uma técnica mais comumente aplicada, a Krigagem Ordinária. Existem inúmeros livros e cursos sobre Geoestatística que apresentam aprofundamento deste tema. Cito algumas referências interessantes como sugestões de leitura ao final do capítulo.</p>
+<p>Para ilustrar a aplicação de algumas técnicas de interpolação espacial, vamos tomar os dados de precipitação durante o verão de 2022 no estado de São Paulo, com 604 estações pluviométricas. Os dados são do CEMADEN (<a href="http://www2.cemaden.gov.br/mapainterativo/#" class="uri">http://www2.cemaden.gov.br/mapainterativo/#</a>) e compreendem o período de 21 de dezembro de 2021 a 20 de março de 2022.</p>
+<p>As técnicas de interpolação apresentadas aqui foram baseadas nas propostas por Davis (2023), Fushita &amp; Vasconcelos (2020) e Gimond (2023).</p>
+<p>Para darmos início, vamos limpar a memória, verificar e definir o diretório de trabalho.</p>
+<div class="sourceCode" id="cb443"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb443-1"><a href="quanti5.html#cb443-1" tabindex="-1"></a><span class="co">#para limpar a memoria</span></span>
+<span id="cb443-2"><a href="quanti5.html#cb443-2" tabindex="-1"></a><span class="fu">rm</span>(<span class="at">list=</span> <span class="fu">ls</span>())</span></code></pre></div>
+<div class="sourceCode" id="cb444"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb444-1"><a href="quanti5.html#cb444-1" tabindex="-1"></a><span class="co">#para verificar o diretório de trabalho</span></span>
+<span id="cb444-2"><a href="quanti5.html#cb444-2" tabindex="-1"></a><span class="fu">getwd</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb445"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb445-1"><a href="quanti5.html#cb445-1" tabindex="-1"></a><span class="co">#para desativar a notação científica</span></span>
+<span id="cb445-2"><a href="quanti5.html#cb445-2" tabindex="-1"></a><span class="fu">options</span>(<span class="at">scipen =</span> <span class="dv">999</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb446"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb446-1"><a href="quanti5.html#cb446-1" tabindex="-1"></a><span class="co">#para carregar o pacote &#39;pacman&#39;</span></span>
+<span id="cb446-2"><a href="quanti5.html#cb446-2" tabindex="-1"></a><span class="fu">library</span>(pacman)</span>
+<span id="cb446-3"><a href="quanti5.html#cb446-3" tabindex="-1"></a></span>
+<span id="cb446-4"><a href="quanti5.html#cb446-4" tabindex="-1"></a><span class="co">#para carregar os pacotes necessários</span></span>
+<span id="cb446-5"><a href="quanti5.html#cb446-5" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(</span>
+<span id="cb446-6"><a href="quanti5.html#cb446-6" tabindex="-1"></a>  tidyverse,</span>
+<span id="cb446-7"><a href="quanti5.html#cb446-7" tabindex="-1"></a>  sp,</span>
+<span id="cb446-8"><a href="quanti5.html#cb446-8" tabindex="-1"></a>  sf,</span>
+<span id="cb446-9"><a href="quanti5.html#cb446-9" tabindex="-1"></a>  exactextractr,</span>
+<span id="cb446-10"><a href="quanti5.html#cb446-10" tabindex="-1"></a>  ggplot2,</span>
+<span id="cb446-11"><a href="quanti5.html#cb446-11" tabindex="-1"></a>  gstat,</span>
+<span id="cb446-12"><a href="quanti5.html#cb446-12" tabindex="-1"></a>  terra,</span>
+<span id="cb446-13"><a href="quanti5.html#cb446-13" tabindex="-1"></a>  RColorBrewer)</span></code></pre></div>
+<p>Vamos abrir o arquivo do tipo csv com os dados dos pontos com as informações de latitude, longitude e precipitação total do período de dezembro de 2021 a março de 2022.</p>
+<div class="sourceCode" id="cb447"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb447-1"><a href="quanti5.html#cb447-1" tabindex="-1"></a><span class="co">#para fazer download dos dados</span></span>
+<span id="cb447-2"><a href="quanti5.html#cb447-2" tabindex="-1"></a><span class="fu">download.file</span>(<span class="at">url =</span><span class="st">&quot;https://github.com/ligiaviz/ufsp_prec_verao2022.csv&quot;</span>, </span>
+<span id="cb447-3"><a href="quanti5.html#cb447-3" tabindex="-1"></a>              <span class="at">destfile =</span> <span class="st">&quot;ufsp_prec_verao2022.csv&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb448"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb448-1"><a href="quanti5.html#cb448-1" tabindex="-1"></a><span class="co">#para gerar um objeto &#39;verao&#39; com os dados</span></span>
+<span id="cb448-2"><a href="quanti5.html#cb448-2" tabindex="-1"></a>verao <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&quot;./ufsp_prec_verao2022.csv&quot;</span>, </span>
+<span id="cb448-3"><a href="quanti5.html#cb448-3" tabindex="-1"></a>                  <span class="at">show_col_types =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb449"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb449-1"><a href="quanti5.html#cb449-1" tabindex="-1"></a><span class="co">#para ver a classe do objeto</span></span>
+<span id="cb449-2"><a href="quanti5.html#cb449-2" tabindex="-1"></a><span class="fu">class</span>(verao)</span></code></pre></div>
+<pre><code>## [1] &quot;spec_tbl_df&quot; &quot;tbl_df&quot;      &quot;tbl&quot;         &quot;data.frame&quot;</code></pre>
+<p>Para tornar o arquivo de pontos em um objeto do tipo ‘sf’, vamos usar a função <code>st_as_sf</code>do pacote ‘sf’.</p>
+<div class="sourceCode" id="cb451"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb451-1"><a href="quanti5.html#cb451-1" tabindex="-1"></a><span class="co">#para transformar em um objeto &#39;sf&#39;</span></span>
+<span id="cb451-2"><a href="quanti5.html#cb451-2" tabindex="-1"></a>verao_sf <span class="ot">&lt;-</span> <span class="fu">st_as_sf</span>(verao, </span>
+<span id="cb451-3"><a href="quanti5.html#cb451-3" tabindex="-1"></a>                     <span class="at">coords =</span> <span class="fu">c</span>(<span class="st">&quot;long&quot;</span>,<span class="st">&quot;lat&quot;</span>))</span>
+<span id="cb451-4"><a href="quanti5.html#cb451-4" tabindex="-1"></a></span>
+<span id="cb451-5"><a href="quanti5.html#cb451-5" tabindex="-1"></a><span class="co">#para ver as primeiras linhas dos dados</span></span>
+<span id="cb451-6"><a href="quanti5.html#cb451-6" tabindex="-1"></a><span class="fu">head</span>(verao_sf)</span></code></pre></div>
+<pre><code>## Simple feature collection with 6 features and 2 fields
+## Geometry type: POINT
+## Dimension:     XY
+## Bounding box:  xmin: -47.87462 ymin: -22.73563 xmax: -46.593 ymax: -22.475
+## CRS:           NA
+## # A tibble: 6 × 3
+##   estacao     prec              geometry
+##   &lt;chr&gt;      &lt;dbl&gt;               &lt;POINT&gt;
+## 1 350050101A 902.      (-46.628 -22.475)
+## 2 350050102A 877.      (-46.593 -22.482)
+## 3 350060001A   4.6 (-47.87462 -22.60101)
+## 4 350160801A 554.  (-47.31487 -22.73563)
+## 5 350190501A 715.      (-46.818 -22.704)
+## 6 350190502A 753   (-46.75368 -22.65991)</code></pre>
+<p>Como visto, o objeto criado tem CRS indefinido. Vamos definir o CRS da projeção cartográfica de onde os dados foram extraídos - WGS 84 (CRS = 4326).</p>
+<div class="sourceCode" id="cb453"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb453-1"><a href="quanti5.html#cb453-1" tabindex="-1"></a><span class="co">#para definir a projeção cartográfica (crs=4326) dos dados como disponibilizados pelo CEMADEN</span></span>
+<span id="cb453-2"><a href="quanti5.html#cb453-2" tabindex="-1"></a>verao_sf <span class="ot">&lt;-</span> <span class="fu">st_set_crs</span>(verao_sf, </span>
+<span id="cb453-3"><a href="quanti5.html#cb453-3" tabindex="-1"></a>                       <span class="dv">4326</span>)</span></code></pre></div>
+<p>Agora vamos converter o CRS 4326 para 4674 (Sirgas 2000) para ficar compatível com a base do Estado de São Paulo que vamos utilizar.</p>
+<div class="sourceCode" id="cb454"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb454-1"><a href="quanti5.html#cb454-1" tabindex="-1"></a><span class="co">#para transformar para a projeção SIRGAS 2000 (crs=4674) para ficar compatível com o arquivo do estado de SP que será usado</span></span>
+<span id="cb454-2"><a href="quanti5.html#cb454-2" tabindex="-1"></a>verao_sirgas <span class="ot">&lt;-</span> <span class="fu">st_transform</span>(verao_sf, </span>
+<span id="cb454-3"><a href="quanti5.html#cb454-3" tabindex="-1"></a>                             <span class="at">crs=</span> <span class="dv">4674</span>)</span></code></pre></div>
+<p>Vamos precisar do shapefile do estado de São Paulo, já usado no item {#quanti1}.</p>
+<div class="sourceCode" id="cb455"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb455-1"><a href="quanti5.html#cb455-1" tabindex="-1"></a><span class="co">#para identificar o url, faca o download do arquivo shapefile e clique em Ctrl+J</span></span>
+<span id="cb455-2"><a href="quanti5.html#cb455-2" tabindex="-1"></a><span class="fu">download.file</span>(<span class="at">url =</span> <span class="st">&quot;https://repositorio.seade.gov.br/dataset/9bb4f8ef-f1a4-4734-92a2-814cfc8d0974/resource/09ba3695-a6a1-44ab-9916-fd1a8aa1c980/download/populacao.zip&quot;</span>, </span>
+<span id="cb455-3"><a href="quanti5.html#cb455-3" tabindex="-1"></a>              <span class="at">destfile =</span> <span class="st">&quot;Populacao.zip&quot;</span>)</span></code></pre></div>
+<p>Vamos abrir o arquivo do tipo zip.</p>
+<div class="sourceCode" id="cb456"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb456-1"><a href="quanti5.html#cb456-1" tabindex="-1"></a><span class="co">#para abrir o arquivo zip</span></span>
+<span id="cb456-2"><a href="quanti5.html#cb456-2" tabindex="-1"></a><span class="fu">unzip</span>(<span class="at">zipfile =</span> <span class="st">&quot;Populacao.zip&quot;</span>)</span></code></pre></div>
+<p>Na sequência, criamos o objeto ‘ufsp’ usando a função para leitura de arquivo do tipo shapefile. Este arquivo traz a projeção SIRGAS 2000 (crs = 4674).</p>
+<div class="sourceCode" id="cb457"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb457-1"><a href="quanti5.html#cb457-1" tabindex="-1"></a><span class="co">#para abrir o arquivo shapefile do estado de São Paulo </span></span>
+<span id="cb457-2"><a href="quanti5.html#cb457-2" tabindex="-1"></a>ufsp <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">&quot;C:/Users/l_viz/Documents/RCartoTematica/Populacao.shp&quot;</span>)</span></code></pre></div>
+<pre><code>## Reading layer `Populacao&#39; from data source 
+##   `C:\Users\l_viz\Documents\RCartoTematica\Populacao.shp&#39; using driver `ESRI Shapefile&#39;
+## Simple feature collection with 645 features and 12 fields
+## Geometry type: MULTIPOLYGON
+## Dimension:     XY
+## Bounding box:  xmin: -53.10487 ymin: -25.30835 xmax: -44.1634 ymax: -19.78045
+## Geodetic CRS:  SIRGAS 2000</code></pre>
+<p>Com os objetos do tipo ‘sf’ compatíveis (ufsp e verao_sirgas), vamos plotá-los usando o pacote <strong>ggplot2</strong>. Os pontos terão o tamanho 0.4 (Figura <a href="quanti5.html#fig:plot-prec-ufsp">12.1</a>).</p>
+<div class="sourceCode" id="cb459"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb459-1"><a href="quanti5.html#cb459-1" tabindex="-1"></a><span class="co">#para plotar o mapa</span></span>
+<span id="cb459-2"><a href="quanti5.html#cb459-2" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span> </span>
+<span id="cb459-3"><a href="quanti5.html#cb459-3" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> ufsp) <span class="sc">+</span> </span>
+<span id="cb459-4"><a href="quanti5.html#cb459-4" tabindex="-1"></a>    <span class="fu">geom_sf</span>(<span class="at">data =</span> verao_sirgas, </span>
+<span id="cb459-5"><a href="quanti5.html#cb459-5" tabindex="-1"></a>            <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">col =</span> prec), </span>
+<span id="cb459-6"><a href="quanti5.html#cb459-6" tabindex="-1"></a>            <span class="at">size=</span><span class="fl">0.4</span>)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:plot-prec-ufsp"></span>
+<img src="bookdownproj_files/figure-html/plot-prec-ufsp-1.png" alt="Distribuição dos postos climatológicos e valores de precipitação (mm) no Estado de São Paulo" width="672" />
+<p class="caption">
+Figure 12.1: Distribuição dos postos climatológicos e valores de precipitação (mm) no Estado de São Paulo
+</p>
+</div>
+<p>Para comparar o desempenho dos modelos que usaremos, vamos inicialmente calcular a Raiz do Erro Quadrático Médio (RMSE - <em>Root Mean Squared Error</em>, em inglês), que é uma medida frequentemente usada da diferença entre valores preditos por um modelo ou estimador e os valores observados (da amostra ou da população). Quanto menor o valor do RMSE, mais próximos são os valores previstos e observados. O RMSE é dado por:</p>
+<p><span class="math display">\[
+RMSE = \sqrt{\sum_{i = 1}^{n}{({z_i} - \bar{z})^2}}{/n}
+\]</span>
+onde,</p>
+<p><em>z</em> = valor da variável em questão (precipitação, neste caso),</p>
+<p><em>n</em> = tamanho da população (número de estações pluviométricas).</p>
+<p>Para o cálculo do RMSE, vamos usar a função desenvolvida por Davis(2023). Vamos também calcular um “modelo nulo” da precipitação de cada estação comparada com a média de todas as estações. Posteriormente, este resultado será usado para comparar o desempenho das interpolações.</p>
+<div class="sourceCode" id="cb460"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb460-1"><a href="quanti5.html#cb460-1" tabindex="-1"></a><span class="co">#função para cálculo do RMSE</span></span>
+<span id="cb460-2"><a href="quanti5.html#cb460-2" tabindex="-1"></a>RMSE <span class="ot">&lt;-</span> <span class="cf">function</span>(obs, pred) {</span>
+<span id="cb460-3"><a href="quanti5.html#cb460-3" tabindex="-1"></a>  <span class="fu">sqrt</span>(<span class="fu">mean</span>((pred <span class="sc">-</span> obs)<span class="sc">^</span><span class="dv">2</span>, </span>
+<span id="cb460-4"><a href="quanti5.html#cb460-4" tabindex="-1"></a>            <span class="at">na.rm=</span><span class="cn">TRUE</span>))</span>
+<span id="cb460-5"><a href="quanti5.html#cb460-5" tabindex="-1"></a>}</span>
+<span id="cb460-6"><a href="quanti5.html#cb460-6" tabindex="-1"></a></span>
+<span id="cb460-7"><a href="quanti5.html#cb460-7" tabindex="-1"></a><span class="co">#para gerar um modelo nulo dos dados originais</span></span>
+<span id="cb460-8"><a href="quanti5.html#cb460-8" tabindex="-1"></a>null <span class="ot">&lt;-</span> <span class="fu">RMSE</span>(<span class="fu">mean</span>(verao_sirgas<span class="sc">$</span>prec), </span>
+<span id="cb460-9"><a href="quanti5.html#cb460-9" tabindex="-1"></a>             verao_sirgas<span class="sc">$</span>prec)</span>
+<span id="cb460-10"><a href="quanti5.html#cb460-10" tabindex="-1"></a></span>
+<span id="cb460-11"><a href="quanti5.html#cb460-11" tabindex="-1"></a><span class="co">#para visualização do resultado</span></span>
+<span id="cb460-12"><a href="quanti5.html#cb460-12" tabindex="-1"></a>null</span></code></pre></div>
+<pre><code>## [1] 225.2916</code></pre>
+<div id="abordagens-de-interpolação-espacial" class="section level2 hasAnchor" number="12.1">
+<h2><span class="header-section-number">12.1</span> Abordagens de interpolação espacial<a href="quanti5.html#abordagens-de-interpolação-espacial" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Interpolar significa estimar valores para locais não amostrados em uma área de estudo, a partir dos valores amostrados. Seguindo a definição de autocorrelação espacial, se os pontos amostrados apresentarem valores semelhantes com a proximidade, seria possível estimar valores para áreas não amostradas a partir da relação entre as distâncias entre os pontos e os valores amostrados.</p>
+<p>Essa estimação pode ser feita por métodos determinísticos ou probabilísticos (estocásticos).</p>
+<p>Por <strong>métodos determinísticos</strong> entendemos que são abordagens matemáticas e estatísticas que produzem resultados específicos e previsíveis, sem incorporar aleatoriedade ou incerteza em seus modelos. São interpoladores exatos pois retornam um valor idêntico ao valor medido nos pontos amostrais. As principais características dos métodos determinísticos envolvem:</p>
+<ul>
+<li><p><strong>Previsibilidade</strong>: Os métodos determinísticos produzem resultados consistentes e previsíveis, dado um conjunto de entradas ou condições iniciais. Isso significa que, se você tiver as mesmas entradas, obterá os mesmos resultados sempre;</p></li>
+<li><p><strong>Ausência de Aleatoriedade</strong>: Esses métodos não incorporam elementos aleatórios ou estocásticos em seus modelos. As relações entre as variáveis são consideradas fixas e não sujeitas a variações aleatórias;</p></li>
+<li><p><strong>Equações Matemáticas</strong>: Os métodos determinísticos frequentemente se baseiam em equações matemáticas ou modelos matemáticos que descrevem as relações entre as variáveis de interesse;</p></li>
+<li><p><strong>Precisão</strong>: Quando as condições do modelo são atendidas, os métodos determinísticos são precisos e ideais para situações em que a exatidão é fundamental;</p></li>
+<li><p><strong>Aplicabilidade</strong>: Eles são amplamente aplicados em áreas onde as relações entre as variáveis são bem compreendidas e podem ser descritas com precisão por meio de equações matemáticas, como física, engenharia civil, modelagem climática, análise estrutural, entre outras.</p></li>
+</ul>
+<p>No entanto, é importante observar que muitos sistemas do mundo real podem ser afetados por incerteza e variabilidade que não podem ser totalmente capturados por métodos determinísticos. Nessas situações, métodos probabilísticos ou estocásticos, que incorporam elementos aleatórios, podem ser mais apropriados para modelar a incerteza e a variabilidade.</p>
+<div id="abordagens-determinísticas" class="section level3 hasAnchor" number="12.1.1">
+<h3><span class="header-section-number">12.1.1</span> Abordagens determinísticas<a href="quanti5.html#abordagens-determinísticas" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Existem inúmeros métodos determinísticos para interpolação. Alguns são globais e outros, locais. As técnicas globais consideram todo o conjunto de dados na análise para a predição da área como um todo (e.g., Superfície de Tendência, Tendência Global - Regressão Linear, entre outros), enquanto as técnicas locais calculam os valores estimados a partir dos pontos e seus vizinhos (e.g., Interpolação por Proximidade: Polígonos de Thiessen, Polígonos de Voronoi; Ponderação pelo Inverso da Distância - IDW; Interpolação Radial; Método da Média Ponderada; Método de Spline, entre outros).</p>
+<p>Vamos utilizar algumas técnicas determinísticas de interpolação espacial neste exercício: Interpolação por Proximidade, Interpolação por Vizinho Mais Próximo, Interpolação pela Ponderação pelo Inverso da Distância e Interpolação Global por Superfície de Tendência.</p>
+<div class="sourceCode" id="cb462"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb462-1"><a href="quanti5.html#cb462-1" tabindex="-1"></a><span class="co">#para identificar o url, faca o download do arquivo shapefile e clique em Ctrl+J</span></span>
+<span id="cb462-2"><a href="quanti5.html#cb462-2" tabindex="-1"></a><span class="fu">download.file</span>(<span class="at">url =</span> <span class="st">&quot;https://geoftp.ibge.gov.br/organizacao_do_territorio/malhas_territoriais/malhas_municipais/municipio_2020/Brasil/BR/BR_UF_2020.zip&quot;</span>, </span>
+<span id="cb462-3"><a href="quanti5.html#cb462-3" tabindex="-1"></a>              <span class="at">destfile =</span> <span class="st">&quot;BR_UF_2020.zip&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb463"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb463-1"><a href="quanti5.html#cb463-1" tabindex="-1"></a><span class="co">#para abrir o arquivo zip</span></span>
+<span id="cb463-2"><a href="quanti5.html#cb463-2" tabindex="-1"></a><span class="fu">unzip</span>(<span class="at">zipfile =</span> <span class="st">&quot;BR_UF_2020.zip&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb464"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb464-1"><a href="quanti5.html#cb464-1" tabindex="-1"></a><span class="co">#para abrir o arquivo shapefile dos estados</span></span>
+<span id="cb464-2"><a href="quanti5.html#cb464-2" tabindex="-1"></a>UFBR <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">&quot;./BR_UF_2020.shp&quot;</span>)</span></code></pre></div>
+<pre><code>## Reading layer `BR_UF_2020&#39; from data source 
+##   `C:\Users\l_viz\Documents\RCartoTematica\BR_UF_2020.shp&#39; using driver `ESRI Shapefile&#39;
+## Simple feature collection with 27 features and 4 fields
+## Geometry type: MULTIPOLYGON
+## Dimension:     XY
+## Bounding box:  xmin: -73.99045 ymin: -33.75118 xmax: -28.84764 ymax: 5.271841
+## Geodetic CRS:  SIRGAS 2000</code></pre>
+<div class="sourceCode" id="cb466"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb466-1"><a href="quanti5.html#cb466-1" tabindex="-1"></a><span class="co">#para transformar a projeção de &#39;UFBR&#39; para WGS84</span></span>
+<span id="cb466-2"><a href="quanti5.html#cb466-2" tabindex="-1"></a>UFBRwgs84<span class="ot">&lt;-</span> <span class="fu">st_transform</span>(UFBR, </span>
+<span id="cb466-3"><a href="quanti5.html#cb466-3" tabindex="-1"></a>                         <span class="at">crs=</span> <span class="dv">4326</span>)</span></code></pre></div>
+<p>Vamos ver a distribuição dos postos climatológicos de forma interativa usando o pacote ‘leaflet’(Figura <a href="quanti5.html#fig:plot-prec-interativo">12.2</a>).</p>
+<div class="sourceCode" id="cb467"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb467-1"><a href="quanti5.html#cb467-1" tabindex="-1"></a><span class="co">#para carregar o pacote</span></span>
+<span id="cb467-2"><a href="quanti5.html#cb467-2" tabindex="-1"></a><span class="fu">library</span>(leaflet)</span>
+<span id="cb467-3"><a href="quanti5.html#cb467-3" tabindex="-1"></a></span>
+<span id="cb467-4"><a href="quanti5.html#cb467-4" tabindex="-1"></a><span class="co">#para elaborar o mapa</span></span>
+<span id="cb467-5"><a href="quanti5.html#cb467-5" tabindex="-1"></a><span class="fu">leaflet</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb467-6"><a href="quanti5.html#cb467-6" tabindex="-1"></a>  <span class="fu">addTiles</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb467-7"><a href="quanti5.html#cb467-7" tabindex="-1"></a>  <span class="fu">addCircleMarkers</span>(</span>
+<span id="cb467-8"><a href="quanti5.html#cb467-8" tabindex="-1"></a>    <span class="at">data =</span> verao_sf, <span class="co"># objeto do tipo &#39;sf&#39; com os postos e valores</span></span>
+<span id="cb467-9"><a href="quanti5.html#cb467-9" tabindex="-1"></a>    <span class="at">radius =</span> <span class="fl">0.3</span>,  <span class="co"># para ajustar o tamanho dos pontos</span></span>
+<span id="cb467-10"><a href="quanti5.html#cb467-10" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">&quot;orange&quot;</span>, <span class="co">#para definir a cor laranja do círculo</span></span>
+<span id="cb467-11"><a href="quanti5.html#cb467-11" tabindex="-1"></a>    <span class="at">fillColor =</span> <span class="st">&quot;black&quot;</span>, <span class="co">#para definir a cor preta dos pontos</span></span>
+<span id="cb467-12"><a href="quanti5.html#cb467-12" tabindex="-1"></a>    <span class="at">fillOpacity =</span> <span class="fl">0.5</span> <span class="co">#para definir a transparência do círculo</span></span>
+<span id="cb467-13"><a href="quanti5.html#cb467-13" tabindex="-1"></a>  )</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:plot-prec-interativo"></span>
+<div class="leaflet html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-00887f55e9e204558fcb" style="width:672px;height:480px;"></div>
+<script type="application/json" data-for="htmlwidget-00887f55e9e204558fcb">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"https://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addCircleMarkers","args":[[-22.475,-22.482,-22.60101,-22.73563,-22.704,-22.659908,-22.722,-22.86,-22.8333,-22.8681,-22.839,-24.507622,-24.54994,-24.49242,-23.4381,-23.50509,-22.6746,-21.805,-21.782,-21.768,-22.374879,-22.57941,-22.567,-22.581,-23.3919,-23.1068,-23.13319,-23.21842,-23.14871,-23.0434,-23.16773,-23.077,-23.101,-23.111,-23.117,-22.679,-24.472,-24.757,-23.481,-23.486,-23.499,-22.328,-22.357,-22.334,-22.236,-22.2962,-23.773,-23.847,-23.58773,-23.28891,-23.136,-24.319,-22.9468,-22.94213,-22.948083,-23.307,-23.244,-23.354,-23.11058,-22.66165,-22.674205,-22.674,-21.803,-23.33,-23.395,-23.34621,-23.405,-23.329,-23.31435,-23.364,-24.725,-24.777,-22.831,-22.935702,-22.979,-22.95334,-22.893,-22.888,-23.202,-23.201,-23.217,-22.742,-22.73986,-22.75348,-22.739586,-22.75251,-22.73858611,-22.731,-22.743815,-22.749,-22.74833,-22.7501,-22.7439,-25.001,-22.7025,-23.47379,-23.005,-23.003429,-23.708,-23.571,-23.607,-23.629,-23.618,-23.612,-23.583,-23.597,-23.637,-23.661,-23.698,-23.602,-23.616,-23.579,-23.56132,-23.51665,-23.1588,-23.22516,-22.3366,-23.01852,-22.48143,-22.22107,-22.63053,-23.641,-23.602,-23.5801,-23.585,-23.65,-22.577,-23.893,-23.88,-23.890958,-23.929,-23.921,-23.083,-23.079422,-23.705481,-23.723,-23.702,-23.697,-23.66592,-23.685,-23.68,-24.565,-23.04407,-23.658,-23.642,-23.838,-23.82065,-23.848,-23.88,-22.488,-22.19947,-22.19567,-20.285,-23.553,-23.53247,-23.29199,-23.27571,-23.268,-23.286,-23.26192,-23.28834,-23.33164,-23.3,-23.305,-23.321,-23.41782,-23.3384,-22.819,-22.804,-22.7867,-23.97884,-23.968,-23.95973,-24.0069,-23.977,-23.864,-23.97,-23.93715,-23.907,-24.024,-24.004,-23.983,-23.982,-23.456,-23.4421,-23.406,-23.4,-23.423,-22.63395,-23.6656,-23.20738,-24.709,-23.78042,-23.884,-23.822,-24.737,-23.08602,-22.43577,-24.585,-22.57856,-24.161,-24.168,-24.186,-24.241,-24.638,-23.721,-23.699,-23.588,-23.58935,-23.63,-23.482,-23.704,-23.595,-23.553,-23.53016,-22.44152,-24.491,-23.4639,-23.4372,-23.4808,-23.437,-23.451,-23.481,-24.29,-22.98472,-23.28,-23.387,-23.277,-23.269,-23.214,-23.185,-23.311,-24.699,-22.7036,-23.25436,-23.55,-23.528,-23.10009,-22.294,-22.26658,-22.316,-22.932,-22.931,-23.08845,-23.192,-23.163,-23.247,-23.172,-23.143,-23.93,-23.929,-23.05236,-22.571,-22.1875,-22.619,-22.56,-22.536,-22.611,-22.534,-22.73684,-22.751897,-22.735031,-23.09357,-23.55121,-23.427,-23.524,-23.37046,-22.23,-22.25,-22.196,-22.228,-23.659976,-23.657,-23.651953,-23.656,-23.660552,-23.654,-23.658534,-23.688,-23.649337,-23.699,-23.646938,-23.687,-23.646,-23.648,-24.28939,-24.28,-23.482764,-23.48567,-23.55061,-23.57501,-22.34456,-22.424585,-22.926747,-24.128,-24.083,-24.101,-24.113,-22.9564,-22.905,-23.012,-22.952,-22.872,-23.377916,-23.18456,-22.773,-23.532,-23.561,-23.507,-23.524,-23.475,-23.547223,-23.38902,-24.714,-22.736,-22.791333,-22.72616,-22.74153,-24.275,-24.275,-23.07392,-24.324,-24.268,-23.71786,-22.93113,-22.785,-22.612,-23.01,-22.737049,-23.524,-23.17647,-23.21141,-22.83238,-24.07856,-23.98791,-24.082475,-24.000018,-23.29928,-22.53786,-23.01328,-23.28365,-24.49,-24.494,-24.656,-24.096,-23.678,-23.684461,-23.677,-23.7504,-23.658,-23.694,-23.692,-23.713,-21.225,-21.123,-21.264,-21.113,-21.145,-21.206,-21.190218,-22.429,-22.378,-22.393,-22.84778,-23.731636,-23.729,-23.737,-22.89862,-23.57502,-22.84681,-23.19986,-23.65638,-22.75722,-22.756263,-23.39705,-22.45537,-22.56722,-23.417,-23.48705,-23.479,-23.43198,-23.408,-23.438,-23.659,-23.771,-23.686,-23.744829,-23.648,-23.67747,-23.778459,-23.637,-23.685466,-23.647,-23.629,-23.738,-23.68,-23.664,-23.698,-23.778,-23.683,-23.71,-23.724,-23.691,-23.636,-22.61,-22.83151,-23.938947,-23.939142,-23.946121,-23.942,-23.931,-23.952057,-23.935317,-23.981,-23.939934,-23.891,-23.960236,-23.967,-23.9304,-23.947,-23.935,-23.881,-23.937,-22.689192,-23.75268,-23.744,-23.737,-23.709393,-23.844,-23.733104,-23.72266,-23.708,-23.705,-23.755,-23.772,-23.726,-23.721,-23.756,-23.734,-23.744,-23.716,-23.701,-23.745,-23.667,-23.717,-23.609,-23.644,-23.616,-22.647353,-20.785,-20.818,-20.795,-20.844,-23.256,-23.14,-23.187,-23.087,-23.109,-23.158108,-23.158054,-23.158075,-23.84764,-23.88297,-23.224308,-23.547,-23.569,-23.622,-23.571,-23.816,-23.599,-23.667,-23.513,-23.457,-23.647,-23.448,-23.522,-23.603,-23.595,-23.644,-23.5351,-23.547,-23.424,-23.668,-23.55196,-23.622,-23.650398,-23.602743,-23.745,-23.436,-23.767,-23.711,-23.589,-23.5,-23.62034,-23.48,-23.72,-23.462,-23.64412,-23.541,-23.73573,-23.569,-23.705,-23.674,-23.668,-23.829,-23.532,-23.584,-23.587,-23.476,-23.407,-23.622,-23.5,-23.522,-23.494,-23.647,-23.545,-23.499,-23.686,-23.623,-23.638,-23.6,-23.55,-23.47888,-23.649,-22.5606,-23.53694,-23.758,-23.723,-23.776,-23.76,-23.813,-23.768,-23.759,-23.797,-23.814,-23.777,-23.793,-23.793,-23.732,-23.961,-23.976,-23.972864,-23.97899,-23.965185,-23.959427,-22.63337,-24.391,-24.38004,-22.6714,-22.59743,-23.508,-23.51027,-23.51807,-23.436,-23.4553,-23.42682,-23.478,-22.808,-22.795,-23.64494,-23.58781,-23.54812,-23.5206,-23.6212,-23.6263,-23.604,-23.35854,-23.03827,-23.11,-23.24712,-22.96296,-22.81457,-23.465,-23.494,-23.427,-23.452,-23.517,-23.347,-23.425,-23.401,-23.398,-23.376,-23.434,-23.4305,-23.439,-23.54,-23.541,-23.364,-23.44,-23.485,-22.964,-22.898,-22.86,-21.82982,-21.83569,-23.602,-23.211,-23.19278,-23.02933,-23.545,-22.273017,-22.674132,-22.67408,-22.67403],[-46.628,-46.593,-47.87462,-47.31487,-46.818,-46.753684,-46.838,-45.225,-45.2164,-45.2603,-45.231,-48.848371,-48.83706,-48.84586,-47.0637,-47.61925,-44.44577,-48.178,-48.155,-48.181,-47.386852,-44.69773,-47.154,-47.18,-46.3108,-46.50581,-46.656569,-46.54781,-46.54675,-46.48799,-46.62687,-48.925,-48.92,-48.932,-48.909,-44.317,-49.025,-48.505,-46.88,-46.805,-46.905,-49.102,-49.094,-49.057,-49.218,-49.0723,-45.954,-46.142,-46.04429,-47.67549,-46.466,-49.142,-46.5412,-46.53107,-46.542944,-47.133,-47.06,-47.082,-45.71035,-45.00388,-44.995874,-44.995534,-49.61,-46.748,-46.715,-46.76283,-46.673,-46.918,-46.86301,-46.872,-48.114,-48.2,-47.081,-47.137816,-47.133,-47.09081,-47.06,-46.939,-46.717,-46.795,-46.759,-45.595,-45.5985,-45.61511,-45.595992,-45.61481,-45.59288611,-45.577,-45.589568,-45.614,-45.58384,-45.6038,-45.5549,-47.933,-45.05077,-47.73533,-47.513,-47.501019,-45.468,-45.274,-45.38,-45.437,-45.39,-45.423,-45.33,-45.43,-45.426,-45.518,-45.438,-45.37,-45.379,-45.338,-46.84739,-46.83589,-47.74168,-47.95167,-47.17383,-48.00968,-47.45988,-47.62652,-47.19185,-47,-46.931,-46.9176,-46.817,-46.956,-44.958,-46.473,-46.417,-46.474026,-46.413,-46.424,-44.96,-44.946102,-46.617147,-46.613,-46.622,-46.596,-46.61972,-46.613,-46.625,-48.152,-47.36676,-46.857,-46.897,-46.811,-46.78993,-46.819,-46.794,-47.213,-46.73814,-46.760945,-50.247,-46.388,-46.39277,-46.73439,-46.72153,-46.748,-46.759,-46.73635,-46.71155,-46.68594,-46.711,-46.734,-46.762,-46.03012,-46.13111,-45.187,-45.228,-45.1814,-46.239214,-46.26,-46.28419,-46.27559,-46.222,-46.146,-46.191,-46.18666,-46.164,-46.284,-46.299,-46.266,-46.247,-46.458,-46.4009,-46.399,-46.443,-46.521,-47.05556,-47.2264,-46.15531,-47.558,-45.35774,-45.448,-45.367,-47.532,-47.20264,-47.71991,-48.594,-47.52177,-46.759,-46.841,-46.789,-46.893,-48.84,-46.889,-46.851,-48.043,-48.04417,-48.036,-47.957,-48.106,-48.317,-46.962,-46.92795,-46.83129,-49.226,-46.3039,-46.2783,-46.3467,-46.308,-46.335,-46.37,-47.174,-46.82669,-47.289,-47.34,-47.229,-47.29,-47.078,-47.105,-45.985,-48.003,-46.98556,-45.69322,-46.9003,-46.902,-46.72597,-48.579,-48.545497,-48.548,-46.169,-46.272,-47.78094,-46.852,-46.896,-46.855,-46.965,-46.818,-47.07,-47.005,-47.83761,-44.902,-47.39004,-47.365,-47.451,-47.394,-47.412,-46.651,-45.1237,-45.092557,-45.106828,-46.97175,-47.18601,-47.242,-47.167,-46.61099,-49.922,-49.932,-49.929,-49.967,-46.45184,-46.425,-46.437139,-46.464,-46.440634,-46.49,-46.423761,-46.465,-46.443649,-46.484,-46.4232,-46.447,-46.454,-46.444,-47.45806,-47.451,-46.085967,-46.13232,-46.24632,-46.22121,-46.93068,-46.947802,-47.566127,-46.691,-46.717,-46.635,-46.662,-45.8379,-47.343,-47.306,-47.31,-46.791,-45.445904,-46.40096,-47.292,-46.777,-46.784,-46.776,-46.811,-46.779,-46.773881,-45.66407,-47.881,-47.175,-46.440736,-46.90086,-46.9242,-47.232,-47.24,-47.97733,-47.016,-46.961,-47.40705,-45.44793,-46.592,-45.183,-46.367,-47.647408,-46.347,-48.12137,-47.52234,-45.25754,-46.59728,-46.40595,-46.604711,-46.404179,-48.0526,-44.77291,-47.53084,-45.53335,-47.842,-47.854,-49.008,-48.365,-46.351,-46.416597,-46.39,-46.439,-46.373,-46.398,-46.429,-46.42,-47.763,-47.738,-47.823,-47.795,-47.784,-47.843,-47.797662,-47.552,-47.588,-47.564,-47.60787,-46.397504,-46.392,-46.358,-45.30337,-45.97222,-47.67809,-47.28743,-47.5742,-47.36496,-47.408254,-45.88567,-47.52874,-48.15796,-46.957,-46.99519,-46.857,-46.85841,-46.869,-46.91,-46.533,-46.463,-46.512,-46.497286,-46.514,-46.48747,-46.298918,-46.516,-46.48404,-46.495,-46.538,-46.499,-46.534,-46.553,-46.493,-46.303,-46.5,-46.507,-46.48,-46.499,-46.506,-46.926,-45.66007,-46.349035,-46.327726,-46.346574,-46.331,-46.36,-46.354409,-46.341736,-46.3,-46.331055,-46.189,-46.358779,-46.305,-46.3449,-46.356,-46.341,-46.314,-46.377,-45.733925,-46.532324,-46.612,-46.537,-46.526037,-46.598,-46.535489,-46.53876,-46.52,-46.572,-46.531,-46.59,-46.524,-46.592,-46.578,-46.579,-46.565,-46.555,-46.534,-46.528,-46.567,-46.526,-46.573,-46.572,-46.556,-44.575537,-49.36,-49.411,-49.41,-49.386,-45.941,-45.903,-45.869,-45.931,-45.933,-45.793474,-45.793503,-45.793411,-46.95083,-46.9757,-45.314255,-46.439,-46.411,-46.583,-46.482,-46.736,-46.65,-46.728,-46.389,-46.584,-46.744,-46.688,-46.457,-46.449,-46.406,-46.655,-46.73533,-46.596,-46.59,-46.635,-46.608613,-46.617,-46.708183,-46.649511,-46.66,-46.751,-46.68,-46.704,-46.738,-46.451,-46.45687,-46.762,-46.702,-46.712,-46.60851,-46.629,-46.78054,-46.504,-46.644,-46.77,-46.674,-46.724,-46.447,-46.561,-46.602,-46.665,-46.753,-46.501,-46.473,-46.695,-46.417,-46.757,-46.401,-46.496,-46.794,-46.727,-46.78,-46.789,-46.743,-46.38121,-46.786,-47.9067,-47.13303,-45.764,-45.43,-45.653,-45.418,-45.414,-45.685,-45.722,-45.541,-45.531,-45.612,-45.403,-45.566,-45.403,-46.412,-46.477,-46.388699,-46.3838,-46.36284,-46.361482,-46.72753,-47.926,-47.93158,-44.85211,-46.51566,-47.486,-47.36154,-47.41729,-47.506,-47.4428,-47.36295,-47.422,-47.223,-47.279,-46.32195,-46.30472,-46.30472,-46.2999,-46.7782,-46.8045,-46.762,-47.851,-45.573,-47.717,-48.19583,-45.54883,-46.69565,-45.06,-45.173,-45.122,-45.079,-45.196,-44.94,-45.106,-45.119,-45.004,-44.838,-45.077,-45.0852,-45.103,-45.255,-45.237,-44.887,-45.082,-45.105,-47.003,-46.38,-46.373,-46.89509,-46.896239,-47.021,-46.832,-46.81684,-46.982518,-47.447,-46.966627,-44.995534,-44.99575,-44.99584],0.3,null,null,{"interactive":true,"className":"","stroke":true,"color":"orange","weight":5,"opacity":0.5,"fill":true,"fillColor":"black","fillOpacity":0.5},null,null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[-25.001,-20.285],"lng":[-50.247,-44.317]}},"evals":[],"jsHooks":[]}</script>
+<p class="caption">
+Figure 12.2: Distribuição dos postos climatológicos no Estado de São Paulo, de forma interativa
+</p>
+</div>
+<div id="interpolação-por-proximidade" class="section level4 hasAnchor" number="12.1.1.1">
+<h4><span class="header-section-number">12.1.1.1</span> Interpolação por Proximidade<a href="quanti5.html#interpolação-por-proximidade" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Uma das interpolações mais simples. Pode ser gerada a partir de polígonos de Thiessen ou por Polígonos de Voronoi. As duas técnicas dividem o espaço com base na proximidade dos pontos de dados. A diferença principal está na maneira como as células são delimitadas: os <strong>polígonos de Voronoi</strong> têm bordas equidistantes entre pontos de dados mais próximos, enquanto os <strong>polígonos de Thiessen</strong> incluem todos os pontos mais próximos a um ponto de dados específico.</p>
+<p>Vamos calcular o Diagrama de Voronoi. Cada ponto em um polígono de Voronoi é mais próximo do ponto associado a esse polígono do que de qualquer outro ponto de amostra. Isso cria uma tesselação do espaço onde cada ponto dentro de um polígono de Voronoi é atribuído ao valor do ponto associado a esse polígono.</p>
+<p>Este método de interpolação é eficaz quando a distribuição dos pontos de amostra é representativa da variação espacial dos dados. No entanto, pode não ser ideal quando a densidade dos pontos é muito alta ou muito baixa. Além disso, a Interpolação por Polígonos de Voronoi pode produzir resultados descontínuos em locais onde os polígonos se encontram, resultando em superfícies interpoladas com bordas nítidas.</p>
+<p>Vamos seguir o roteiro de Davis (2023) para a elaboração de um mapa com base nos polígonos de Voronoi e sua validação. O primeiro passo será gerar um vetor de pontos a partir dos dados de precipitação. Com o vetor, geramos os polígonos de Voronoi e plotamos os resultados (Figura <a href="quanti5.html#fig:plot-voronoi">12.3</a>).</p>
+<div class="sourceCode" id="cb468"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb468-1"><a href="quanti5.html#cb468-1" tabindex="-1"></a><span class="co">#para gerar um vetor de pontos a partir dos dados de precipitação</span></span>
+<span id="cb468-2"><a href="quanti5.html#cb468-2" tabindex="-1"></a>veraoV <span class="ot">&lt;-</span> <span class="fu">vect</span>(verao_sirgas)</span>
+<span id="cb468-3"><a href="quanti5.html#cb468-3" tabindex="-1"></a></span>
+<span id="cb468-4"><a href="quanti5.html#cb468-4" tabindex="-1"></a><span class="co">#para gerar os polígonos de Voronoi a partir do vetor criado</span></span>
+<span id="cb468-5"><a href="quanti5.html#cb468-5" tabindex="-1"></a>v <span class="ot">&lt;-</span> <span class="fu">voronoi</span>(veraoV)</span>
+<span id="cb468-6"><a href="quanti5.html#cb468-6" tabindex="-1"></a></span>
+<span id="cb468-7"><a href="quanti5.html#cb468-7" tabindex="-1"></a><span class="co">#para plotar os polígonos</span></span>
+<span id="cb468-8"><a href="quanti5.html#cb468-8" tabindex="-1"></a><span class="fu">plot</span>(v)</span>
+<span id="cb468-9"><a href="quanti5.html#cb468-9" tabindex="-1"></a></span>
+<span id="cb468-10"><a href="quanti5.html#cb468-10" tabindex="-1"></a><span class="co">#para plotar os pontos sobre os polígonos</span></span>
+<span id="cb468-11"><a href="quanti5.html#cb468-11" tabindex="-1"></a><span class="fu">points</span>(veraoV)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:plot-voronoi"></span>
+<img src="bookdownproj_files/figure-html/plot-voronoi-1.png" alt="Polígonos de Voronoi" width="672" />
+<p class="caption">
+Figure 12.3: Polígonos de Voronoi
+</p>
+</div>
+<p>Para que a visualização fique mais compreensível, vamos recortar os polígonos gerados, usando os limites do objeto ‘ufsp’. Aproveitamos para criar uma paleta de cores adequada, já que um mapa isarítmico deve ser representado por meio das variáveis visuais <strong>valor</strong> ou <strong>cor ordenada</strong> (Figura <a href="quanti5.html#fig:plot-voronoi-ufsp">12.4</a>). Veja opções de paletas de cores sequenciais em: <a href="https://r-charts.com/color-palettes/" class="uri">https://r-charts.com/color-palettes/</a> e <a href="https://pmassicotte.github.io/paletteer_gallery/" class="uri">https://pmassicotte.github.io/paletteer_gallery/</a></p>
+<div class="sourceCode" id="cb469"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb469-1"><a href="quanti5.html#cb469-1" tabindex="-1"></a><span class="co">#para recortar os polígonos de Voronoi considerando os limites dos municípios de &#39;ufsp&#39; que contêm estações pluviométricas</span></span>
+<span id="cb469-2"><a href="quanti5.html#cb469-2" tabindex="-1"></a>vVerao <span class="ot">&lt;-</span> <span class="fu">crop</span>(v, </span>
+<span id="cb469-3"><a href="quanti5.html#cb469-3" tabindex="-1"></a>               <span class="fu">vect</span>(<span class="fu">st_union</span>(ufsp)))</span>
+<span id="cb469-4"><a href="quanti5.html#cb469-4" tabindex="-1"></a></span>
+<span id="cb469-5"><a href="quanti5.html#cb469-5" tabindex="-1"></a><span class="co">#para criar uma paleta de cores usando RColorBrewer para 5 cores em blue+purple (&quot;BuPu&quot;)</span></span>
+<span id="cb469-6"><a href="quanti5.html#cb469-6" tabindex="-1"></a>azuis <span class="ot">&lt;-</span> <span class="fu">brewer.pal</span>(<span class="dv">7</span>, </span>
+<span id="cb469-7"><a href="quanti5.html#cb469-7" tabindex="-1"></a>                    <span class="st">&quot;BuPu&quot;</span>) </span>
+<span id="cb469-8"><a href="quanti5.html#cb469-8" tabindex="-1"></a></span>
+<span id="cb469-9"><a href="quanti5.html#cb469-9" tabindex="-1"></a><span class="co">#para definir as quebras da legenda</span></span>
+<span id="cb469-10"><a href="quanti5.html#cb469-10" tabindex="-1"></a>breaks <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">200</span>, <span class="dv">400</span>, <span class="dv">600</span>, <span class="dv">800</span>, <span class="dv">1000</span>, <span class="dv">1200</span>)</span>
+<span id="cb469-11"><a href="quanti5.html#cb469-11" tabindex="-1"></a></span>
+<span id="cb469-12"><a href="quanti5.html#cb469-12" tabindex="-1"></a><span class="co">#para plotar a precipitação nos polígonos nos municípios, usando a paleta de cores &#39;azuis&#39;</span></span>
+<span id="cb469-13"><a href="quanti5.html#cb469-13" tabindex="-1"></a><span class="fu">plot</span>(vVerao, </span>
+<span id="cb469-14"><a href="quanti5.html#cb469-14" tabindex="-1"></a>     <span class="st">&quot;prec&quot;</span>, </span>
+<span id="cb469-15"><a href="quanti5.html#cb469-15" tabindex="-1"></a>     <span class="at">col =</span> azuis, </span>
+<span id="cb469-16"><a href="quanti5.html#cb469-16" tabindex="-1"></a>     <span class="at">breaks =</span> breaks)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:plot-voronoi-ufsp"></span>
+<img src="bookdownproj_files/figure-html/plot-voronoi-ufsp-1.png" alt="Precipitação (mm) segundo polígonos de Voronoi no Estado de São Paulo" width="672" />
+<p class="caption">
+Figure 12.4: Precipitação (mm) segundo polígonos de Voronoi no Estado de São Paulo
+</p>
+</div>
+<p>Os polígonos podem ser convertidos para uma imagem raster. Para isso, define-se primeiro a resolução espacial do raster, em em seguida, são atribuídos os valores (Figura <a href="#fig:plot-voronoi-raster"><strong>??</strong></a>).</p>
+<div class="sourceCode" id="cb470"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb470-1"><a href="quanti5.html#cb470-1" tabindex="-1"></a><span class="co">#para criar uma imagem raster em branco</span></span>
+<span id="cb470-2"><a href="quanti5.html#cb470-2" tabindex="-1"></a>r <span class="ot">&lt;-</span> <span class="fu">rast</span>(vVerao, </span>
+<span id="cb470-3"><a href="quanti5.html#cb470-3" tabindex="-1"></a>          <span class="at">res =</span> <span class="fl">0.01</span>)</span>
+<span id="cb470-4"><a href="quanti5.html#cb470-4" tabindex="-1"></a></span>
+<span id="cb470-5"><a href="quanti5.html#cb470-5" tabindex="-1"></a><span class="co">#para criar a imagem com os dados</span></span>
+<span id="cb470-6"><a href="quanti5.html#cb470-6" tabindex="-1"></a>vr <span class="ot">&lt;-</span> <span class="fu">rasterize</span>(vVerao, </span>
+<span id="cb470-7"><a href="quanti5.html#cb470-7" tabindex="-1"></a>                r, </span>
+<span id="cb470-8"><a href="quanti5.html#cb470-8" tabindex="-1"></a>                <span class="st">&quot;prec&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb471"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb471-1"><a href="quanti5.html#cb471-1" tabindex="-1"></a><span class="co">#para plotar o raster</span></span>
+<span id="cb471-2"><a href="quanti5.html#cb471-2" tabindex="-1"></a><span class="fu">plot</span>(vr, </span>
+<span id="cb471-3"><a href="quanti5.html#cb471-3" tabindex="-1"></a>     <span class="at">breaks =</span> breaks, </span>
+<span id="cb471-4"><a href="quanti5.html#cb471-4" tabindex="-1"></a>     <span class="at">col =</span> azuis)</span></code></pre></div>
+<p><img src="bookdownproj_files/figure-html/unnamed-chunk-214-1.png" width="672" /></p>
+<div id="validação-cruzada-da-interpolação-por-polígonos-de-voronoi" class="section level5 hasAnchor" number="12.1.1.1.1">
+<h5><span class="header-section-number">12.1.1.1.1</span> Validação cruzada da interpolação por polígonos de Voronoi<a href="quanti5.html#validação-cruzada-da-interpolação-por-polígonos-de-voronoi" class="anchor-section" aria-label="Anchor link to header"></a></h5>
+<p>Para avaliar o desempenho da interpolação por polígonos de Voronoi, vamos usar a <strong>validação cruzada</strong>. Esta técnica consiste em particionar o conjunto de dados em subconjuntos mutuamente exclusivos. Em seguida, alguns destes subconjuntos são usados para a estimação dos parâmetros do modelo (dados de treinamento), sendo os subconjuntos restantes (dados de validação) usados para a validação. Existem diversas formas de particionar os dados, tais como: métodos <em>holdout</em>, <em>k-fold</em> e o <em>leave-one-out</em> (KOHAVI, 1995). Aqui, usaremos o método ‘k-fold’.</p>
+<div class="sourceCode" id="cb472"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb472-1"><a href="quanti5.html#cb472-1" tabindex="-1"></a><span class="co"># validação cruzada usando o método k-fold</span></span>
+<span id="cb472-2"><a href="quanti5.html#cb472-2" tabindex="-1"></a>k <span class="ot">&lt;-</span> <span class="dv">5</span></span>
+<span id="cb472-3"><a href="quanti5.html#cb472-3" tabindex="-1"></a></span>
+<span id="cb472-4"><a href="quanti5.html#cb472-4" tabindex="-1"></a><span class="co">#pode ser qualquer número </span></span>
+<span id="cb472-5"><a href="quanti5.html#cb472-5" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">23</span>)</span>
+<span id="cb472-6"><a href="quanti5.html#cb472-6" tabindex="-1"></a></span>
+<span id="cb472-7"><a href="quanti5.html#cb472-7" tabindex="-1"></a><span class="co">#para gerar números aleatórios entre 1 e 5 do mesmo tamanho dos pontos de entrada de veraoV</span></span>
+<span id="cb472-8"><a href="quanti5.html#cb472-8" tabindex="-1"></a>kf <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span>k, </span>
+<span id="cb472-9"><a href="quanti5.html#cb472-9" tabindex="-1"></a>             <span class="at">size =</span> <span class="fu">nrow</span>(veraoV), </span>
+<span id="cb472-10"><a href="quanti5.html#cb472-10" tabindex="-1"></a>             <span class="at">replace=</span><span class="cn">TRUE</span>)  </span>
+<span id="cb472-11"><a href="quanti5.html#cb472-11" tabindex="-1"></a></span>
+<span id="cb472-12"><a href="quanti5.html#cb472-12" tabindex="-1"></a><span class="co">#para gerar conjunto em branco de 5 NAs </span></span>
+<span id="cb472-13"><a href="quanti5.html#cb472-13" tabindex="-1"></a>rmse <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="cn">NA</span>, </span>
+<span id="cb472-14"><a href="quanti5.html#cb472-14" tabindex="-1"></a>            k)</span>
+<span id="cb472-15"><a href="quanti5.html#cb472-15" tabindex="-1"></a></span>
+<span id="cb472-16"><a href="quanti5.html#cb472-16" tabindex="-1"></a><span class="co">#função</span></span>
+<span id="cb472-17"><a href="quanti5.html#cb472-17" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>k) {</span>
+<span id="cb472-18"><a href="quanti5.html#cb472-18" tabindex="-1"></a>  teste <span class="ot">&lt;-</span> veraoV[kf <span class="sc">==</span> i, ]  <span class="co"># divide em k conjunto de pontos, </span></span>
+<span id="cb472-19"><a href="quanti5.html#cb472-19" tabindex="-1"></a>                              <span class="co"># (k-1)/k vai para o conjunto de treino,</span></span>
+<span id="cb472-20"><a href="quanti5.html#cb472-20" tabindex="-1"></a>  treino <span class="ot">&lt;-</span> veraoV[kf <span class="sc">!=</span> i, ] <span class="co"># e 1/k vai para teste, incluindo todas as variaveis</span></span>
+<span id="cb472-21"><a href="quanti5.html#cb472-21" tabindex="-1"></a>  <span class="co">#para gerar os valores para o modelo gerado por interpolação Voronoi</span></span>
+<span id="cb472-22"><a href="quanti5.html#cb472-22" tabindex="-1"></a>  v <span class="ot">&lt;-</span> <span class="fu">voronoi</span>(treino)</span>
+<span id="cb472-23"><a href="quanti5.html#cb472-23" tabindex="-1"></a>  v</span>
+<span id="cb472-24"><a href="quanti5.html#cb472-24" tabindex="-1"></a>  teste</span>
+<span id="cb472-25"><a href="quanti5.html#cb472-25" tabindex="-1"></a>  <span class="co"># para extrair valores do conjunto de dados de treino nos locais do teste</span></span>
+<span id="cb472-26"><a href="quanti5.html#cb472-26" tabindex="-1"></a>  p <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">extract</span>(v, </span>
+<span id="cb472-27"><a href="quanti5.html#cb472-27" tabindex="-1"></a>                      teste)</span>
+<span id="cb472-28"><a href="quanti5.html#cb472-28" tabindex="-1"></a>  </span>
+<span id="cb472-29"><a href="quanti5.html#cb472-29" tabindex="-1"></a>  <span class="co">#para calcular o rmse dos 5 pontos</span></span>
+<span id="cb472-30"><a href="quanti5.html#cb472-30" tabindex="-1"></a>  rmse[i] <span class="ot">&lt;-</span> <span class="fu">RMSE</span>(teste<span class="sc">$</span>prec, </span>
+<span id="cb472-31"><a href="quanti5.html#cb472-31" tabindex="-1"></a>                  p<span class="sc">$</span>prec)</span>
+<span id="cb472-32"><a href="quanti5.html#cb472-32" tabindex="-1"></a>}</span>
+<span id="cb472-33"><a href="quanti5.html#cb472-33" tabindex="-1"></a>rmse</span></code></pre></div>
+<pre><code>## [1] 270.9683 270.8918 295.1786 302.2570 269.3387</code></pre>
+<p>Foram calculdados 5 valores de RMSE. A média destes valores é mostrada a seguir.</p>
+<div class="sourceCode" id="cb474"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb474-1"><a href="quanti5.html#cb474-1" tabindex="-1"></a><span class="co">#para obter a média do rmse</span></span>
+<span id="cb474-2"><a href="quanti5.html#cb474-2" tabindex="-1"></a><span class="fu">mean</span>(rmse)</span></code></pre></div>
+<pre><code>## [1] 281.7269</code></pre>
+<p>O desempenho do modelo é calculado dividindo-se a média do RMSE pelo rmse do “modelo nulo” da precipitação de cada estação comparada com a média de todas as estações. Subtraindo-se este valor de 1, tem-se o desempenho relativo.</p>
+<div class="sourceCode" id="cb476"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb476-1"><a href="quanti5.html#cb476-1" tabindex="-1"></a><span class="co">#desempenho relativo do modelo</span></span>
+<span id="cb476-2"><a href="quanti5.html#cb476-2" tabindex="-1"></a>desemp <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">-</span> (<span class="fu">mean</span>(rmse) <span class="sc">/</span> null)</span>
+<span id="cb476-3"><a href="quanti5.html#cb476-3" tabindex="-1"></a></span>
+<span id="cb476-4"><a href="quanti5.html#cb476-4" tabindex="-1"></a><span class="co">#para arredondar o resultado</span></span>
+<span id="cb476-5"><a href="quanti5.html#cb476-5" tabindex="-1"></a><span class="fu">round</span>(desemp, </span>
+<span id="cb476-6"><a href="quanti5.html#cb476-6" tabindex="-1"></a>      <span class="dv">3</span>)</span></code></pre></div>
+<pre><code>## [1] -0.25</code></pre>
+<p>Anotamos o valor obtido para posterior comparação com as outras interpolações.</p>
+</div>
+</div>
+<div id="interpolação-por-vizinho-mais-próximo-nearest-neighbor" class="section level4 hasAnchor" number="12.1.1.2">
+<h4><span class="header-section-number">12.1.1.2</span> Interpolação por Vizinho mais Próximo (Nearest Neighbor)<a href="quanti5.html#interpolação-por-vizinho-mais-próximo-nearest-neighbor" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>A ideia central por trás da Interpolação por Vizinho mais Próximo (<em>Nearest Neighbor Interpolation</em>, em inglês) é atribuir ao ponto não amostrado o valor do ponto de amostra mais próximo. Isso significa que não há ponderação pela distância ou outra consideração, apenas uma simples atribuição do valor do vizinho mais próximo.</p>
+<p>A Interpolação por Vizinho mais Próximo é frequentemente usada em casos em que a simplicidade é mais importante do que a precisão e em situações em que a variação nos dados é relativamente grande em comparação com a escala dos pontos amostrados.</p>
+<div class="sourceCode" id="cb478"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb478-1"><a href="quanti5.html#cb478-1" tabindex="-1"></a><span class="co">#para carregar o pacote &#39;gstat&#39;</span></span>
+<span id="cb478-2"><a href="quanti5.html#cb478-2" tabindex="-1"></a><span class="fu">library</span>(gstat)</span>
+<span id="cb478-3"><a href="quanti5.html#cb478-3" tabindex="-1"></a></span>
+<span id="cb478-4"><a href="quanti5.html#cb478-4" tabindex="-1"></a><span class="co">#para criar um dataframe chamado &#39;d&#39; a partir do vetor de pontos &#39;veraoV&#39; gerado anteriormente</span></span>
+<span id="cb478-5"><a href="quanti5.html#cb478-5" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="fu">geom</span>(veraoV)[,<span class="fu">c</span>(<span class="st">&quot;x&quot;</span>, <span class="st">&quot;y&quot;</span>)], </span>
+<span id="cb478-6"><a href="quanti5.html#cb478-6" tabindex="-1"></a>                <span class="fu">as.data.frame</span>(veraoV))</span>
+<span id="cb478-7"><a href="quanti5.html#cb478-7" tabindex="-1"></a></span>
+<span id="cb478-8"><a href="quanti5.html#cb478-8" tabindex="-1"></a><span class="co">#para ver as primeiras linhas do objeto</span></span>
+<span id="cb478-9"><a href="quanti5.html#cb478-9" tabindex="-1"></a><span class="fu">head</span>(d)</span></code></pre></div>
+<pre><code>##           x         y    estacao   prec
+## 1 -46.62800 -22.47500 350050101A 901.60
+## 2 -46.59300 -22.48200 350050102A 876.60
+## 3 -47.87462 -22.60101 350060001A   4.60
+## 4 -47.31487 -22.73563 350160801A 553.74
+## 5 -46.81800 -22.70400 350190501A 715.47
+## 6 -46.75368 -22.65991 350190502A 753.00</code></pre>
+<p>A função <code>gstat</code>permite gerar um objeto do tipo lista, definir a fórmula incluindo apenas uma variável (prec~1), as coordenadas geográficas dos pontos, o banco de dados (d), o número máximo de vizinhos e o ‘idp’ (<em>inverse distance power</em>), no caso, igual a zero (idp = 0) para que todos os vizinhos tenham o mesmo peso. O resultado é o mapa da Figura <a href="quanti5.html#fig:plot-vizinho">12.5</a>.</p>
+<div class="sourceCode" id="cb480"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb480-1"><a href="quanti5.html#cb480-1" tabindex="-1"></a><span class="co">#para criar um objeto gstat do tipo lista e definir as coordenadas e dados</span></span>
+<span id="cb480-2"><a href="quanti5.html#cb480-2" tabindex="-1"></a>gs <span class="ot">&lt;-</span> <span class="fu">gstat</span>(<span class="at">formula=</span>prec<span class="sc">~</span><span class="dv">1</span>, </span>
+<span id="cb480-3"><a href="quanti5.html#cb480-3" tabindex="-1"></a>            <span class="at">locations=</span><span class="sc">~</span>x<span class="sc">+</span>y, </span>
+<span id="cb480-4"><a href="quanti5.html#cb480-4" tabindex="-1"></a>            <span class="at">data=</span>d, </span>
+<span id="cb480-5"><a href="quanti5.html#cb480-5" tabindex="-1"></a>            <span class="at">nmax=</span><span class="dv">5</span>, </span>
+<span id="cb480-6"><a href="quanti5.html#cb480-6" tabindex="-1"></a>            <span class="at">set=</span><span class="fu">list</span>(<span class="at">idp =</span> <span class="dv">0</span>))</span>
+<span id="cb480-7"><a href="quanti5.html#cb480-7" tabindex="-1"></a></span>
+<span id="cb480-8"><a href="quanti5.html#cb480-8" tabindex="-1"></a><span class="co">#para criar a interpolação por vizinho mais próximo a partir imagem raster em branco &#39;r&#39;</span></span>
+<span id="cb480-9"><a href="quanti5.html#cb480-9" tabindex="-1"></a>nn <span class="ot">&lt;-</span> <span class="fu">interpolate</span>(r, </span>
+<span id="cb480-10"><a href="quanti5.html#cb480-10" tabindex="-1"></a>                  gs,</span>
+<span id="cb480-11"><a href="quanti5.html#cb480-11" tabindex="-1"></a>                  <span class="at">debug.level=</span><span class="dv">0</span>)</span>
+<span id="cb480-12"><a href="quanti5.html#cb480-12" tabindex="-1"></a></span>
+<span id="cb480-13"><a href="quanti5.html#cb480-13" tabindex="-1"></a><span class="co">#para recortar com a máscara &#39;vr&#39;</span></span>
+<span id="cb480-14"><a href="quanti5.html#cb480-14" tabindex="-1"></a>nnmsk <span class="ot">&lt;-</span> <span class="fu">mask</span>(nn, </span>
+<span id="cb480-15"><a href="quanti5.html#cb480-15" tabindex="-1"></a>              vr)</span>
+<span id="cb480-16"><a href="quanti5.html#cb480-16" tabindex="-1"></a></span>
+<span id="cb480-17"><a href="quanti5.html#cb480-17" tabindex="-1"></a><span class="co">#para carregar o pacote para definir paleta de cores</span></span>
+<span id="cb480-18"><a href="quanti5.html#cb480-18" tabindex="-1"></a><span class="fu">library</span>(paletteer)</span>
+<span id="cb480-19"><a href="quanti5.html#cb480-19" tabindex="-1"></a></span>
+<span id="cb480-20"><a href="quanti5.html#cb480-20" tabindex="-1"></a><span class="co">#para gerar paleta de cores</span></span>
+<span id="cb480-21"><a href="quanti5.html#cb480-21" tabindex="-1"></a>pal <span class="ot">&lt;-</span> <span class="fu">paletteer_c</span>(<span class="st">&quot;ggthemes::Blue-Green Sequential&quot;</span>, </span>
+<span id="cb480-22"><a href="quanti5.html#cb480-22" tabindex="-1"></a>                   <span class="dv">100</span>)</span>
+<span id="cb480-23"><a href="quanti5.html#cb480-23" tabindex="-1"></a></span>
+<span id="cb480-24"><a href="quanti5.html#cb480-24" tabindex="-1"></a><span class="co">#para plotar</span></span>
+<span id="cb480-25"><a href="quanti5.html#cb480-25" tabindex="-1"></a><span class="fu">plot</span>(nnmsk, </span>
+<span id="cb480-26"><a href="quanti5.html#cb480-26" tabindex="-1"></a>     <span class="dv">1</span>, </span>
+<span id="cb480-27"><a href="quanti5.html#cb480-27" tabindex="-1"></a>     <span class="at">col =</span> pal)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:plot-vizinho"></span>
+<img src="bookdownproj_files/figure-html/plot-vizinho-1.png" alt="Precipitação (mm) segundo Interpolação por Vizinho mais Próximo" width="672" />
+<p class="caption">
+Figure 12.5: Precipitação (mm) segundo Interpolação por Vizinho mais Próximo
+</p>
+</div>
+<div id="validação-cruzada-do-modelo-por-vizinho-mais-próximo" class="section level5 hasAnchor" number="12.1.1.2.1">
+<h5><span class="header-section-number">12.1.1.2.1</span> Validação cruzada do modelo por Vizinho mais Próximo<a href="quanti5.html#validação-cruzada-do-modelo-por-vizinho-mais-próximo" class="anchor-section" aria-label="Anchor link to header"></a></h5>
+<div class="sourceCode" id="cb481"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb481-1"><a href="quanti5.html#cb481-1" tabindex="-1"></a><span class="co">#para gerar o rmse do vizinho mais próximo</span></span>
+<span id="cb481-2"><a href="quanti5.html#cb481-2" tabindex="-1"></a>rmsevp <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="cn">NA</span>, k)</span>
+<span id="cb481-3"><a href="quanti5.html#cb481-3" tabindex="-1"></a></span>
+<span id="cb481-4"><a href="quanti5.html#cb481-4" tabindex="-1"></a><span class="co">#função</span></span>
+<span id="cb481-5"><a href="quanti5.html#cb481-5" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>k) {</span>
+<span id="cb481-6"><a href="quanti5.html#cb481-6" tabindex="-1"></a>  test <span class="ot">&lt;-</span> d[kf <span class="sc">==</span> i, ]</span>
+<span id="cb481-7"><a href="quanti5.html#cb481-7" tabindex="-1"></a>  train <span class="ot">&lt;-</span> d[kf <span class="sc">!=</span> i, ]</span>
+<span id="cb481-8"><a href="quanti5.html#cb481-8" tabindex="-1"></a>  gscv <span class="ot">&lt;-</span> <span class="fu">gstat</span>(<span class="at">formula=</span>prec<span class="sc">~</span><span class="dv">1</span>, </span>
+<span id="cb481-9"><a href="quanti5.html#cb481-9" tabindex="-1"></a>                <span class="at">locations=</span><span class="sc">~</span>x<span class="sc">+</span>y, </span>
+<span id="cb481-10"><a href="quanti5.html#cb481-10" tabindex="-1"></a>                <span class="at">data=</span>train, </span>
+<span id="cb481-11"><a href="quanti5.html#cb481-11" tabindex="-1"></a>                <span class="at">nmax=</span><span class="dv">5</span>, </span>
+<span id="cb481-12"><a href="quanti5.html#cb481-12" tabindex="-1"></a>                <span class="at">set=</span><span class="fu">list</span>(<span class="at">idp =</span> <span class="dv">0</span>))</span>
+<span id="cb481-13"><a href="quanti5.html#cb481-13" tabindex="-1"></a>  p <span class="ot">&lt;-</span> <span class="fu">predict</span>(gscv, </span>
+<span id="cb481-14"><a href="quanti5.html#cb481-14" tabindex="-1"></a>               test, </span>
+<span id="cb481-15"><a href="quanti5.html#cb481-15" tabindex="-1"></a>               <span class="at">debug.level=</span><span class="dv">0</span>)<span class="sc">$</span>var1.pred</span>
+<span id="cb481-16"><a href="quanti5.html#cb481-16" tabindex="-1"></a>  rmsevp[i] <span class="ot">&lt;-</span> <span class="fu">RMSE</span>(test<span class="sc">$</span>prec, </span>
+<span id="cb481-17"><a href="quanti5.html#cb481-17" tabindex="-1"></a>                    p)</span>
+<span id="cb481-18"><a href="quanti5.html#cb481-18" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb482"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb482-1"><a href="quanti5.html#cb482-1" tabindex="-1"></a><span class="co">#para ver o resultado</span></span>
+<span id="cb482-2"><a href="quanti5.html#cb482-2" tabindex="-1"></a><span class="fu">mean</span>(rmsevp)</span></code></pre></div>
+<pre><code>## [1] 223.2793</code></pre>
+<div class="sourceCode" id="cb484"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb484-1"><a href="quanti5.html#cb484-1" tabindex="-1"></a><span class="co">#para calcular o desempenho relativo</span></span>
+<span id="cb484-2"><a href="quanti5.html#cb484-2" tabindex="-1"></a>desemp_vp <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">-</span> (<span class="fu">mean</span>(rmsevp) <span class="sc">/</span> null)</span>
+<span id="cb484-3"><a href="quanti5.html#cb484-3" tabindex="-1"></a></span>
+<span id="cb484-4"><a href="quanti5.html#cb484-4" tabindex="-1"></a><span class="co">#para arredondar o resultado</span></span>
+<span id="cb484-5"><a href="quanti5.html#cb484-5" tabindex="-1"></a><span class="fu">round</span>(desemp_vp,</span>
+<span id="cb484-6"><a href="quanti5.html#cb484-6" tabindex="-1"></a>      <span class="dv">3</span>)</span></code></pre></div>
+<pre><code>## [1] 0.009</code></pre>
+</div>
+</div>
+<div id="interpolação-pela-ponderação-pelo-inverso-da-distância-idw" class="section level4 hasAnchor" number="12.1.1.3">
+<h4><span class="header-section-number">12.1.1.3</span> Interpolação pela Ponderação pelo Inverso da Distância (IDW)<a href="quanti5.html#interpolação-pela-ponderação-pelo-inverso-da-distância-idw" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Nesta técnica, os valores em um local desconhecido são estimados com base na média ponderada dos valores conhecidos mais próximos, com os pesos atribuídos inversamente à distância entre os pontos de amostra e o local de estimativa. Em outras palavras, os pontos de amostra mais próximos têm um peso maior na estimativa, enquanto os pontos mais distantes têm um peso menor. Se a potência do inverso da distância (idp) for 2, corresponde ao modelo gravitacional Figura <a href="quanti5.html#fig:plot-idw">12.6</a>. É possível fazer mapas diferentes variando o valor de ‘idp’ no código a seguir.</p>
+<div class="sourceCode" id="cb486"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb486-1"><a href="quanti5.html#cb486-1" tabindex="-1"></a><span class="co">#para criar um objeto gstat do tipo lista e definir as coordenadas e dados</span></span>
+<span id="cb486-2"><a href="quanti5.html#cb486-2" tabindex="-1"></a>gs_idw <span class="ot">&lt;-</span> <span class="fu">gstat</span>(<span class="at">formula=</span>prec<span class="sc">~</span><span class="dv">1</span>, </span>
+<span id="cb486-3"><a href="quanti5.html#cb486-3" tabindex="-1"></a>            <span class="at">locations=</span><span class="sc">~</span>x<span class="sc">+</span>y, </span>
+<span id="cb486-4"><a href="quanti5.html#cb486-4" tabindex="-1"></a>            <span class="at">data=</span>d, </span>
+<span id="cb486-5"><a href="quanti5.html#cb486-5" tabindex="-1"></a>            <span class="at">nmax=</span><span class="cn">Inf</span>, </span>
+<span id="cb486-6"><a href="quanti5.html#cb486-6" tabindex="-1"></a>            <span class="at">set=</span><span class="fu">list</span>(<span class="at">idp=</span><span class="dv">2</span>))</span>
+<span id="cb486-7"><a href="quanti5.html#cb486-7" tabindex="-1"></a></span>
+<span id="cb486-8"><a href="quanti5.html#cb486-8" tabindex="-1"></a><span class="co">#para interpolar usando a imagem raster em branco e as definições acima</span></span>
+<span id="cb486-9"><a href="quanti5.html#cb486-9" tabindex="-1"></a>idw <span class="ot">&lt;-</span> <span class="fu">interpolate</span>(r, </span>
+<span id="cb486-10"><a href="quanti5.html#cb486-10" tabindex="-1"></a>                   gs_idw, </span>
+<span id="cb486-11"><a href="quanti5.html#cb486-11" tabindex="-1"></a>                   <span class="at">debug.level=</span><span class="dv">0</span>)</span>
+<span id="cb486-12"><a href="quanti5.html#cb486-12" tabindex="-1"></a></span>
+<span id="cb486-13"><a href="quanti5.html#cb486-13" tabindex="-1"></a><span class="co">#para recortar a área com a máscara &#39;vr&#39;</span></span>
+<span id="cb486-14"><a href="quanti5.html#cb486-14" tabindex="-1"></a>idwr <span class="ot">&lt;-</span> <span class="fu">mask</span>(idw, </span>
+<span id="cb486-15"><a href="quanti5.html#cb486-15" tabindex="-1"></a>             vr)</span>
+<span id="cb486-16"><a href="quanti5.html#cb486-16" tabindex="-1"></a></span>
+<span id="cb486-17"><a href="quanti5.html#cb486-17" tabindex="-1"></a><span class="co">#para plotar</span></span>
+<span id="cb486-18"><a href="quanti5.html#cb486-18" tabindex="-1"></a><span class="fu">plot</span>(idwr, </span>
+<span id="cb486-19"><a href="quanti5.html#cb486-19" tabindex="-1"></a>     <span class="dv">1</span>, </span>
+<span id="cb486-20"><a href="quanti5.html#cb486-20" tabindex="-1"></a>     <span class="at">col =</span> pal)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:plot-idw"></span>
+<img src="bookdownproj_files/figure-html/plot-idw-1.png" alt="Precipitação (mm) segundo Interpolação pela Ponderação pelo Inverso da Distância (IDW)" width="672" />
+<p class="caption">
+Figure 12.6: Precipitação (mm) segundo Interpolação pela Ponderação pelo Inverso da Distância (IDW)
+</p>
+</div>
+<div id="validação-cruzada-do-modelo-por-ponderação-pelo-inverso-da-distância" class="section level5 hasAnchor" number="12.1.1.3.1">
+<h5><span class="header-section-number">12.1.1.3.1</span> Validação cruzada do modelo por Ponderação pelo Inverso da Distância<a href="quanti5.html#validação-cruzada-do-modelo-por-ponderação-pelo-inverso-da-distância" class="anchor-section" aria-label="Anchor link to header"></a></h5>
+<p>Seguindo o roteiro anterior, temos:</p>
+<div class="sourceCode" id="cb487"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb487-1"><a href="quanti5.html#cb487-1" tabindex="-1"></a><span class="co">#para calcular o rmse para a interpolação idw</span></span>
+<span id="cb487-2"><a href="quanti5.html#cb487-2" tabindex="-1"></a>rmseidw <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="cn">NA</span>, </span>
+<span id="cb487-3"><a href="quanti5.html#cb487-3" tabindex="-1"></a>               k)</span>
+<span id="cb487-4"><a href="quanti5.html#cb487-4" tabindex="-1"></a></span>
+<span id="cb487-5"><a href="quanti5.html#cb487-5" tabindex="-1"></a><span class="co">#função</span></span>
+<span id="cb487-6"><a href="quanti5.html#cb487-6" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>k) {</span>
+<span id="cb487-7"><a href="quanti5.html#cb487-7" tabindex="-1"></a>  test <span class="ot">&lt;-</span> d[kf <span class="sc">==</span> i, ]</span>
+<span id="cb487-8"><a href="quanti5.html#cb487-8" tabindex="-1"></a>  train <span class="ot">&lt;-</span> d[kf <span class="sc">!=</span> i, ]</span>
+<span id="cb487-9"><a href="quanti5.html#cb487-9" tabindex="-1"></a>  gsidw <span class="ot">&lt;-</span> <span class="fu">gstat</span>(<span class="at">formula=</span>prec<span class="sc">~</span><span class="dv">1</span>, </span>
+<span id="cb487-10"><a href="quanti5.html#cb487-10" tabindex="-1"></a>                 <span class="at">locations=</span><span class="sc">~</span>x<span class="sc">+</span>y, </span>
+<span id="cb487-11"><a href="quanti5.html#cb487-11" tabindex="-1"></a>                 <span class="at">data=</span>train, </span>
+<span id="cb487-12"><a href="quanti5.html#cb487-12" tabindex="-1"></a>                 <span class="at">nmax=</span><span class="dv">5</span>, </span>
+<span id="cb487-13"><a href="quanti5.html#cb487-13" tabindex="-1"></a>                 <span class="at">set=</span><span class="fu">list</span>(<span class="at">idp =</span> <span class="dv">0</span>))</span>
+<span id="cb487-14"><a href="quanti5.html#cb487-14" tabindex="-1"></a>  </span>
+<span id="cb487-15"><a href="quanti5.html#cb487-15" tabindex="-1"></a>  p <span class="ot">&lt;-</span> <span class="fu">predict</span>(gscv, </span>
+<span id="cb487-16"><a href="quanti5.html#cb487-16" tabindex="-1"></a>               test, </span>
+<span id="cb487-17"><a href="quanti5.html#cb487-17" tabindex="-1"></a>               <span class="at">debug.level=</span><span class="dv">0</span>)<span class="sc">$</span>var1.pred</span>
+<span id="cb487-18"><a href="quanti5.html#cb487-18" tabindex="-1"></a>  rmseidw[i] <span class="ot">&lt;-</span> <span class="fu">RMSE</span>(test<span class="sc">$</span>prec, p)</span>
+<span id="cb487-19"><a href="quanti5.html#cb487-19" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb488"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb488-1"><a href="quanti5.html#cb488-1" tabindex="-1"></a><span class="co">#para ver o valor médio</span></span>
+<span id="cb488-2"><a href="quanti5.html#cb488-2" tabindex="-1"></a><span class="fu">mean</span>(rmseidw)</span></code></pre></div>
+<pre><code>## [1] 41.96665</code></pre>
+<div class="sourceCode" id="cb490"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb490-1"><a href="quanti5.html#cb490-1" tabindex="-1"></a><span class="co">#para calcular o desempenho relativo</span></span>
+<span id="cb490-2"><a href="quanti5.html#cb490-2" tabindex="-1"></a>desemp_idw <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">-</span> (<span class="fu">mean</span>(rmseidw) <span class="sc">/</span> null)</span>
+<span id="cb490-3"><a href="quanti5.html#cb490-3" tabindex="-1"></a></span>
+<span id="cb490-4"><a href="quanti5.html#cb490-4" tabindex="-1"></a><span class="co">#para arredondar o resultado</span></span>
+<span id="cb490-5"><a href="quanti5.html#cb490-5" tabindex="-1"></a><span class="fu">round</span>(desemp_idw,</span>
+<span id="cb490-6"><a href="quanti5.html#cb490-6" tabindex="-1"></a>      <span class="dv">3</span>)</span></code></pre></div>
+<pre><code>## [1] 0.814</code></pre>
+</div>
+</div>
+<div id="interpolação-global-por-superfície-de-tendência" class="section level4 hasAnchor" number="12.1.1.4">
+<h4><span class="header-section-number">12.1.1.4</span> Interpolação global por Superfície de Tendência<a href="quanti5.html#interpolação-global-por-superfície-de-tendência" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>A interpolação de tendência se concentra em modelar tendências ou padrões globais nos dados espaciais. A interpolação de tendência assume que os dados espaciais estão relacionados a uma função matemática subjacente que descreve a tendência geral dos valores em uma área geográfica. Serve para termos uma ideia da tendência geral dos dados e observar a direção de seu gradiente (Figura <a href="quanti5.html#fig:plot-tend">12.7</a>).</p>
+<div class="sourceCode" id="cb492"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb492-1"><a href="quanti5.html#cb492-1" tabindex="-1"></a><span class="co">#para gerar o objeto gstat </span></span>
+<span id="cb492-2"><a href="quanti5.html#cb492-2" tabindex="-1"></a>gs_tend <span class="ot">&lt;-</span> <span class="fu">gstat</span>(<span class="at">formula=</span>prec<span class="sc">~</span><span class="dv">1</span>, </span>
+<span id="cb492-3"><a href="quanti5.html#cb492-3" tabindex="-1"></a>                  <span class="at">locations=</span><span class="sc">~</span>x<span class="sc">+</span>y, </span>
+<span id="cb492-4"><a href="quanti5.html#cb492-4" tabindex="-1"></a>                  <span class="at">degree=</span><span class="dv">1</span>, </span>
+<span id="cb492-5"><a href="quanti5.html#cb492-5" tabindex="-1"></a>                  <span class="at">data=</span>d)</span>
+<span id="cb492-6"><a href="quanti5.html#cb492-6" tabindex="-1"></a></span>
+<span id="cb492-7"><a href="quanti5.html#cb492-7" tabindex="-1"></a><span class="co">#para interpolar os valores</span></span>
+<span id="cb492-8"><a href="quanti5.html#cb492-8" tabindex="-1"></a>tend_interp <span class="ot">&lt;-</span> <span class="fu">interpolate</span>(r, </span>
+<span id="cb492-9"><a href="quanti5.html#cb492-9" tabindex="-1"></a>                      gs_tend, </span>
+<span id="cb492-10"><a href="quanti5.html#cb492-10" tabindex="-1"></a>                      <span class="at">debug.level=</span><span class="dv">0</span>)</span>
+<span id="cb492-11"><a href="quanti5.html#cb492-11" tabindex="-1"></a></span>
+<span id="cb492-12"><a href="quanti5.html#cb492-12" tabindex="-1"></a><span class="co">#para recortar o objeto com a máscara de SP</span></span>
+<span id="cb492-13"><a href="quanti5.html#cb492-13" tabindex="-1"></a>tend_mask <span class="ot">&lt;-</span> <span class="fu">mask</span>(tend_interp, </span>
+<span id="cb492-14"><a href="quanti5.html#cb492-14" tabindex="-1"></a>                 vr)</span>
+<span id="cb492-15"><a href="quanti5.html#cb492-15" tabindex="-1"></a></span>
+<span id="cb492-16"><a href="quanti5.html#cb492-16" tabindex="-1"></a><span class="co">#para plotar o mapa</span></span>
+<span id="cb492-17"><a href="quanti5.html#cb492-17" tabindex="-1"></a><span class="fu">plot</span>(tend_mask, </span>
+<span id="cb492-18"><a href="quanti5.html#cb492-18" tabindex="-1"></a>     <span class="at">col =</span> pal, </span>
+<span id="cb492-19"><a href="quanti5.html#cb492-19" tabindex="-1"></a>     <span class="dv">1</span>)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:plot-tend"></span>
+<img src="bookdownproj_files/figure-html/plot-tend-1.png" alt="Precipitação (mm) segundo Interpolação global por Superfície de Tendência" width="672" />
+<p class="caption">
+Figure 12.7: Precipitação (mm) segundo Interpolação global por Superfície de Tendência
+</p>
+</div>
+<p>No caso da interpolação por Superfície de Tendência não faz sentido avaliar seu desempenho por validação cruzada dado o seu objetivo de observação geral da tendência dos dados.</p>
+</div>
+</div>
+<div id="abordagens-estocásticas" class="section level3 hasAnchor" number="12.1.2">
+<h3><span class="header-section-number">12.1.2</span> Abordagens Estocásticas<a href="quanti5.html#abordagens-estocásticas" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Abordagens estocásticas para interpolação de dados espaciais incorporam o conceito de incerteza nos dados interpolados. Essas abordagens consideram que as relações espaciais são aleatórias e podem variar. Alguns métodos estocásticos comuns incluem: Krigagem, Simulação Condicional, Processos Pontuais Marcados, Redes Bayesianas Espaciais; Bootstrap Espacial. Aqui ficaremos apenas com a Krigagem Ordinária.</p>
+<div id="krigagem-ordinária" class="section level4 hasAnchor" number="12.1.2.1">
+<h4><span class="header-section-number">12.1.2.1</span> Krigagem Ordinária<a href="quanti5.html#krigagem-ordinária" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>É um interpolador de abordagem estocástica, pois leva em consideração a incerteza associada às estimativas interpoladas.</p>
+<p>Antes de iniciar a análise, no entanto, é necessário verificar se algumas premissas são respeitadas:</p>
+<ul>
+<li><p>os dados precisam ter distribuição normal;</p></li>
+<li><p>os dados precisam ser estacionários;</p></li>
+<li><p>os dados não podem ter tendência.</p></li>
+</ul>
+<p><strong>Passo 1</strong>: Distribuição Normal</p>
+<p>Vamos olhar a distribuição da variável ‘prec’ elaborando um histograma (Figura <a href="quanti5.html#fig:plot-histo">12.8</a>).</p>
+<div class="sourceCode" id="cb493"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb493-1"><a href="quanti5.html#cb493-1" tabindex="-1"></a><span class="co">#para carregar o pacote</span></span>
+<span id="cb493-2"><a href="quanti5.html#cb493-2" tabindex="-1"></a><span class="fu">library</span>(rcompanion)</span>
+<span id="cb493-3"><a href="quanti5.html#cb493-3" tabindex="-1"></a></span>
+<span id="cb493-4"><a href="quanti5.html#cb493-4" tabindex="-1"></a><span class="co">#para plotar o histogram</span></span>
+<span id="cb493-5"><a href="quanti5.html#cb493-5" tabindex="-1"></a><span class="fu">plotNormalHistogram</span>(verao<span class="sc">$</span>prec)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:plot-histo"></span>
+<img src="bookdownproj_files/figure-html/plot-histo-1.png" alt="Histograma da variável precipitação" width="672" />
+<p class="caption">
+Figure 12.8: Histograma da variável precipitação
+</p>
+</div>
+<p>Vamos olhar também o qq-plot (Figura <a href="quanti5.html#fig:plot-qq">12.9</a>).</p>
+<div class="sourceCode" id="cb494"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb494-1"><a href="quanti5.html#cb494-1" tabindex="-1"></a><span class="co">#para plotar o qq-plot</span></span>
+<span id="cb494-2"><a href="quanti5.html#cb494-2" tabindex="-1"></a><span class="fu">qqnorm</span>(verao<span class="sc">$</span>prec,</span>
+<span id="cb494-3"><a href="quanti5.html#cb494-3" tabindex="-1"></a>       <span class="at">ylab=</span><span class="st">&quot;Precipitação&quot;</span>)</span>
+<span id="cb494-4"><a href="quanti5.html#cb494-4" tabindex="-1"></a></span>
+<span id="cb494-5"><a href="quanti5.html#cb494-5" tabindex="-1"></a><span class="co">#para adicionar a linha</span></span>
+<span id="cb494-6"><a href="quanti5.html#cb494-6" tabindex="-1"></a><span class="fu">qqline</span>(verao<span class="sc">$</span>prec, <span class="at">col=</span><span class="st">&quot;red&quot;</span>)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:plot-qq"></span>
+<img src="bookdownproj_files/figure-html/plot-qq-1.png" alt="Q-q plot da variável precipitação" width="672" />
+<p class="caption">
+Figure 12.9: Q-q plot da variável precipitação
+</p>
+</div>
+<p>Os gráficos obtidos sugerem que a distribuição não é normal e que uma transformação da variável ‘prec’ é necessária. Vamos utilizar o pacote ‘bestNormalize’ para isso.</p>
+<div class="sourceCode" id="cb495"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb495-1"><a href="quanti5.html#cb495-1" tabindex="-1"></a><span class="co">#para carregar o pacote que faz a normalização dos dados</span></span>
+<span id="cb495-2"><a href="quanti5.html#cb495-2" tabindex="-1"></a><span class="fu">library</span>(bestNormalize)</span>
+<span id="cb495-3"><a href="quanti5.html#cb495-3" tabindex="-1"></a></span>
+<span id="cb495-4"><a href="quanti5.html#cb495-4" tabindex="-1"></a><span class="co">#para gerar o modelo normal</span></span>
+<span id="cb495-5"><a href="quanti5.html#cb495-5" tabindex="-1"></a>modelo_normal <span class="ot">=</span> <span class="fu">bestNormalize</span>(verao<span class="sc">$</span>prec)</span>
+<span id="cb495-6"><a href="quanti5.html#cb495-6" tabindex="-1"></a></span>
+<span id="cb495-7"><a href="quanti5.html#cb495-7" tabindex="-1"></a><span class="co">#para ver o resultado</span></span>
+<span id="cb495-8"><a href="quanti5.html#cb495-8" tabindex="-1"></a>modelo_normal</span></code></pre></div>
+<pre><code>## Best Normalizing transformation with 604 Observations
+##  Estimated Normality Statistics (Pearson P / df, lower =&gt; more normal):
+##  - arcsinh(x): 12.4803
+##  - Center+scale: 2.1046
+##  - Double Reversed Log_b(x+a): 1.5224
+##  - Log_b(x+a): 17.4268
+##  - orderNorm (ORQ): 1.0904
+##  - sqrt(x + a): 4.1159
+##  - Yeo-Johnson: 1.8333
+## Estimation method: Out-of-sample via CV with 10 folds and 5 repeats
+##  
+## Based off these, bestNormalize chose:
+## orderNorm Transformation with 604 nonmissing obs and ties
+##  - 580 unique values 
+##  - Original quantiles:
+##       0%      25%      50%      75%     100% 
+##    0.000  505.500  626.090  737.378 1294.680</code></pre>
+<p>De forma automática, a função do pacote ‘bestNormalize’ escolheu a transformação com o menor valor (orderNorm Transformation) (Figura <a href="quanti5.html#fig:plot-normal">12.10</a>).</p>
+<div class="sourceCode" id="cb497"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb497-1"><a href="quanti5.html#cb497-1" tabindex="-1"></a><span class="co">#para visualizar o histograma da variavel normalizada</span></span>
+<span id="cb497-2"><a href="quanti5.html#cb497-2" tabindex="-1"></a><span class="fu">plotNormalHistogram</span>(modelo_normal<span class="sc">$</span>x.t)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:plot-normal"></span>
+<img src="bookdownproj_files/figure-html/plot-normal-1.png" alt="Histograma da variável precipitação transformada" width="672" />
+<p class="caption">
+Figure 12.10: Histograma da variável precipitação transformada
+</p>
+</div>
+<p>Vamos precisar retornar ao valor original posteriormente para elaborarmos o mapa com os valores originais de precipitação e não com os desvios-padrão. Assim, já vamos gerar um objeto retornando aos valores originais também.</p>
+<div class="sourceCode" id="cb498"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb498-1"><a href="quanti5.html#cb498-1" tabindex="-1"></a><span class="co">#para desnormalizar a variável para quando for fazer o mapa final</span></span>
+<span id="cb498-2"><a href="quanti5.html#cb498-2" tabindex="-1"></a>prec_original <span class="ot">&lt;-</span> <span class="fu">predict</span>(modelo_normal, </span>
+<span id="cb498-3"><a href="quanti5.html#cb498-3" tabindex="-1"></a>                         <span class="at">newdata =</span> modelo_normal<span class="sc">$</span>x.t, </span>
+<span id="cb498-4"><a href="quanti5.html#cb498-4" tabindex="-1"></a>                         <span class="at">inverse=</span><span class="cn">TRUE</span>)</span></code></pre></div>
+<p><strong>Passo 2</strong>: Estacionaridade</p>
+<p>Estacionaridade significa que a variação local não muda nas diferentes áreas do mapa. Por exemplo, 2 pontos distantes 10 metros em diferentes locais devem ter diferenças similares do valor medido (e.g., precipitação). Isto pode ser analisado a partir do mapa de Voronoi que já elaboramos.</p>
+<p><strong>Passo 3</strong>: Remoção da tendência do mapa e ajuste do variograma</p>
+<p>Para remover a tendência do mapa, calculamos uma equação polinomial de 1ª ordem que será utilizada durante a interpolação por krigagem.</p>
+<div class="sourceCode" id="cb499"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb499-1"><a href="quanti5.html#cb499-1" tabindex="-1"></a><span class="co">#para carregar os pacotes</span></span>
+<span id="cb499-2"><a href="quanti5.html#cb499-2" tabindex="-1"></a><span class="fu">library</span>(sf)</span>
+<span id="cb499-3"><a href="quanti5.html#cb499-3" tabindex="-1"></a><span class="fu">library</span>(spatstat)</span>
+<span id="cb499-4"><a href="quanti5.html#cb499-4" tabindex="-1"></a></span>
+<span id="cb499-5"><a href="quanti5.html#cb499-5" tabindex="-1"></a><span class="co"># para definir a equação polinomial de 1ª ordem</span></span>
+<span id="cb499-6"><a href="quanti5.html#cb499-6" tabindex="-1"></a>f<span class="fl">.1</span> <span class="ot">&lt;-</span> <span class="fu">as.formula</span>(modelo_normal<span class="sc">$</span>x.t <span class="sc">~</span> X <span class="sc">+</span> Y) </span>
+<span id="cb499-7"><a href="quanti5.html#cb499-7" tabindex="-1"></a> </span>
+<span id="cb499-8"><a href="quanti5.html#cb499-8" tabindex="-1"></a><span class="co"># para adicionar as colunas X e Y no objeto &#39;verao_sf&#39;</span></span>
+<span id="cb499-9"><a href="quanti5.html#cb499-9" tabindex="-1"></a>verao_sf <span class="ot">&lt;-</span> verao_sf <span class="sc">%&gt;%</span></span>
+<span id="cb499-10"><a href="quanti5.html#cb499-10" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">X =</span> <span class="fu">unlist</span>(<span class="fu">map</span>(verao_sf<span class="sc">$</span>geometry,<span class="dv">1</span>)),</span>
+<span id="cb499-11"><a href="quanti5.html#cb499-11" tabindex="-1"></a>           <span class="at">Y =</span> <span class="fu">unlist</span>(<span class="fu">map</span>(verao_sf<span class="sc">$</span>geometry,<span class="dv">2</span>)))</span></code></pre></div>
+<p>Utilizamos um variograma (Figura <a href="quanti5.html#fig:variograma">12.11</a>) como um modelo gráfico para analisar a estrutura de dependência espacial em um conjunto de dados espacialmente distribuídos. Ele descreve como a variabilidade entre observações muda com a distância entre essas observações. Permite avaliar a autocorrelação espacial.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:variograma"></span>
+<img src="variograma.jpg" alt="Variograma" width="372" />
+<p class="caption">
+Figure 12.11: Variograma
+</p>
+</div>
+<p>Ao analisar o variograma, podemos inferir informações valiosas, como:</p>
+<p><strong>Alcance</strong> (<em>Range</em>): A distância a partir da qual a autocorrelação espacial não é mais significativa.</p>
+<p><strong>Efeito pepita</strong> (<em>Nugget</em>): A variabilidade que é inerente à escala menor que o espaçamento entre as amostras, muitas vezes associada a variação microscópica ou erro de medição.</p>
+<p><strong>Patamar</strong> (<em>Sill</em>): onde a variância atige 95% de seu máximo.</p>
+<p>O variograma é uma ferramenta importante para modelagem espacial em geostatística, especialmente em técnicas como a krigagem, que é um método de interpolação espacial que utiliza informações do variograma para estimar valores desconhecidos em locais não amostrados.</p>
+<p>Este modelo se constitui na curva da <em>função de variância γ(h)</em> dos dados, onde <em>h</em> é um intervalo de distância até uma origem arbitrária. A relação matemática é dada por (FERREIRA, 2014):</p>
+<p><span class="math display">\[
+γ(h) = ½n \sum_{i = 1}^{n}(Z_{i_+h} - Z_i)^2
+\]</span></p>
+<p>Onde,</p>
+<p><em>n</em> é o número de pares de <em>Z</em> comparados;</p>
+<p><em>Z</em> é uma variável aleatória distribuída na superfície <em>S</em> que assume o valor <em>z<sub>i</sub></em> na posição <em>x<sub>i</sub></em> e <em>z<sub>i+h</sub></em> na posição <em>x<sub>i+h</sub></em>.</p>
+<p>Vamos adaptar a explicação de Ferreira (2014) de acordo com os dados do nosso exemplo. Considerando a precipitação em mm durante o verão de 2022 no estado de São Paulo, se tomarmos o valor <em>z<sub>i</sub></em> = 642 mm e <em>z<sub>i+1000m</sub></em> = 694 mm, significa que enquanto em um ponto <em>i</em> do estado a precipitação foi de 642 mm, em outro ponto distante 1000m de i (h = 1000m), a precipitação foi de 694 mm. Esta equação é usada para gerar o variograma em nuvem.</p>
+<p>Vamos ver a lista de modelos disponíveis no pacote ‘gstat’.</p>
+<div class="sourceCode" id="cb500"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb500-1"><a href="quanti5.html#cb500-1" tabindex="-1"></a><span class="co">#para ver a lista de modelos disponíveis no pacote &#39;gstat&#39;</span></span>
+<span id="cb500-2"><a href="quanti5.html#cb500-2" tabindex="-1"></a><span class="fu">vgm</span>()</span></code></pre></div>
+<pre><code>##    short                                      long
+## 1    Nug                              Nug (nugget)
+## 2    Exp                         Exp (exponential)
+## 3    Sph                           Sph (spherical)
+## 4    Gau                            Gau (gaussian)
+## 5    Exc        Exclass (Exponential class/stable)
+## 6    Mat                              Mat (Matern)
+## 7    Ste Mat (Matern, M. Stein&#39;s parameterization)
+## 8    Cir                            Cir (circular)
+## 9    Lin                              Lin (linear)
+## 10   Bes                              Bes (bessel)
+## 11   Pen                      Pen (pentaspherical)
+## 12   Per                            Per (periodic)
+## 13   Wav                                Wav (wave)
+## 14   Hol                                Hol (hole)
+## 15   Log                         Log (logarithmic)
+## 16   Pow                               Pow (power)
+## 17   Spl                              Spl (spline)
+## 18   Leg                            Leg (Legendre)
+## 19   Err                   Err (Measurement error)
+## 20   Int                           Int (Intercept)</code></pre>
+<p>Vamos ver os modelos possíveis de serem ajustados na análise do variograma.</p>
+<div class="sourceCode" id="cb502"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb502-1"><a href="quanti5.html#cb502-1" tabindex="-1"></a><span class="co">#para ver os de modelos</span></span>
+<span id="cb502-2"><a href="quanti5.html#cb502-2" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">show.vgms</span>(<span class="at">par.strip.text =</span> <span class="fu">list</span>(<span class="at">cex =</span> <span class="fl">0.70</span>)))</span></code></pre></div>
+<p><img src="bookdownproj_files/figure-html/unnamed-chunk-229-1.png" width="672" /></p>
+<p>Vamos começar a análise dos dados de precipitação gerando um variogram de nuvem (Figura <a href="quanti5.html#fig:plot-var-prec">12.12</a>).</p>
+<div class="sourceCode" id="cb503"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb503-1"><a href="quanti5.html#cb503-1" tabindex="-1"></a><span class="co">#para calcular o variograma em nuvem</span></span>
+<span id="cb503-2"><a href="quanti5.html#cb503-2" tabindex="-1"></a>var_nuvem <span class="ot">&lt;-</span> <span class="fu">variogram</span>(modelo_normal<span class="sc">$</span>x.t <span class="sc">~</span> <span class="dv">1</span>, verao_sf, <span class="at">cloud =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb503-3"><a href="quanti5.html#cb503-3" tabindex="-1"></a></span>
+<span id="cb503-4"><a href="quanti5.html#cb503-4" tabindex="-1"></a><span class="co">#para plotar o variograma</span></span>
+<span id="cb503-5"><a href="quanti5.html#cb503-5" tabindex="-1"></a><span class="fu">plot</span>(var_nuvem)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:plot-var-prec"></span>
+<img src="bookdownproj_files/figure-html/plot-var-prec-1.png" alt="Variograma em nuvem da precipitação" width="672" />
+<p class="caption">
+Figure 12.12: Variograma em nuvem da precipitação
+</p>
+</div>
+<p>O variograma da amostra representa a média do variograma em nuvem segundo intervalos de distâncias, facilitando a identificação do modelo mais adequado.
+Vamos gerar o variograma da amostra dos dados (Figura <a href="quanti5.html#fig:plot-var-amostra">12.13</a>).</p>
+<div class="sourceCode" id="cb504"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb504-1"><a href="quanti5.html#cb504-1" tabindex="-1"></a><span class="co">#para gerar o variograma da amostra</span></span>
+<span id="cb504-2"><a href="quanti5.html#cb504-2" tabindex="-1"></a>var_amostra <span class="ot">&lt;-</span> <span class="fu">variogram</span>(modelo_normal<span class="sc">$</span>x.t <span class="sc">~</span> <span class="dv">1</span>, <span class="at">data =</span> verao_sf)</span>
+<span id="cb504-3"><a href="quanti5.html#cb504-3" tabindex="-1"></a></span>
+<span id="cb504-4"><a href="quanti5.html#cb504-4" tabindex="-1"></a><span class="co">#para plotar</span></span>
+<span id="cb504-5"><a href="quanti5.html#cb504-5" tabindex="-1"></a><span class="fu">plot</span>(var_amostra)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:plot-var-amostra"></span>
+<img src="bookdownproj_files/figure-html/plot-var-amostra-1.png" alt="Variograma da amostra" width="672" />
+<p class="caption">
+Figure 12.13: Variograma da amostra
+</p>
+</div>
+<p>Com o modelo para a remoção de tendência (f.1), vamos calcular o variograma usando os dados normalizados e sem tendência. A partir da visualização do variograma da amostra, definimos alguns valores iniciais: sill parcial (psill) = 1.05, modelo = Ste, alcance (range) = 5 e efeito pepita (nugget) = 0.01 (Figura <a href="quanti5.html#fig:plot-var-inicial">12.14</a>).</p>
+<div class="sourceCode" id="cb505"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb505-1"><a href="quanti5.html#cb505-1" tabindex="-1"></a><span class="co">#para definir o modelo inicial</span></span>
+<span id="cb505-2"><a href="quanti5.html#cb505-2" tabindex="-1"></a>var_inicial <span class="ot">&lt;-</span> <span class="fu">vgm</span>(<span class="at">psill =</span> <span class="fl">1.05</span>,</span>
+<span id="cb505-3"><a href="quanti5.html#cb505-3" tabindex="-1"></a>                   <span class="at">model =</span> <span class="st">&quot;Ste&quot;</span>,</span>
+<span id="cb505-4"><a href="quanti5.html#cb505-4" tabindex="-1"></a>                   <span class="at">range =</span> <span class="dv">5</span>,</span>
+<span id="cb505-5"><a href="quanti5.html#cb505-5" tabindex="-1"></a>                   <span class="at">nugget =</span> <span class="fl">0.01</span>)</span>
+<span id="cb505-6"><a href="quanti5.html#cb505-6" tabindex="-1"></a></span>
+<span id="cb505-7"><a href="quanti5.html#cb505-7" tabindex="-1"></a><span class="co">#para visualizar o modelo teórico e os dados</span></span>
+<span id="cb505-8"><a href="quanti5.html#cb505-8" tabindex="-1"></a><span class="fu">plot</span>(var_amostra, </span>
+<span id="cb505-9"><a href="quanti5.html#cb505-9" tabindex="-1"></a>     var_inicial, </span>
+<span id="cb505-10"><a href="quanti5.html#cb505-10" tabindex="-1"></a>     <span class="at">cutoff =</span> <span class="dv">50</span>, </span>
+<span id="cb505-11"><a href="quanti5.html#cb505-11" tabindex="-1"></a>     <span class="at">cex =</span> <span class="fl">0.8</span>)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:plot-var-inicial"></span>
+<img src="bookdownproj_files/figure-html/plot-var-inicial-1.png" alt="Variograma inicial" width="672" />
+<p class="caption">
+Figure 12.14: Variograma inicial
+</p>
+</div>
+<p>É sempre importante avaliar se a anisotropia é relevante. Anisotropia pode ser avaliada pela visualização de variogramas em diversas direções. Aqui, vamos olhar os ângulos 0 (Norte), 45 (Nordeste), 90 (Leste), 135 (Sudeste) (Figura <a href="quanti5.html#fig:plot-var-ani">12.15</a>).</p>
+<div class="sourceCode" id="cb506"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb506-1"><a href="quanti5.html#cb506-1" tabindex="-1"></a><span class="co">#para ajustar o modelo em 4 direções</span></span>
+<span id="cb506-2"><a href="quanti5.html#cb506-2" tabindex="-1"></a>var_ani <span class="ot">&lt;-</span> <span class="fu">variogram</span>(modelo_normal<span class="sc">$</span>x.t <span class="sc">~</span> <span class="dv">1</span>, </span>
+<span id="cb506-3"><a href="quanti5.html#cb506-3" tabindex="-1"></a>                     <span class="at">data =</span> verao_sf, </span>
+<span id="cb506-4"><a href="quanti5.html#cb506-4" tabindex="-1"></a>                     <span class="at">alpha=</span><span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">45</span>, <span class="dv">90</span>, <span class="dv">135</span>), </span>
+<span id="cb506-5"><a href="quanti5.html#cb506-5" tabindex="-1"></a>                     <span class="at">cutoff=</span><span class="dv">50</span>)</span>
+<span id="cb506-6"><a href="quanti5.html#cb506-6" tabindex="-1"></a></span>
+<span id="cb506-7"><a href="quanti5.html#cb506-7" tabindex="-1"></a><span class="co">#para plotar os variogramas</span></span>
+<span id="cb506-8"><a href="quanti5.html#cb506-8" tabindex="-1"></a><span class="fu">plot</span>(var_ani, </span>
+<span id="cb506-9"><a href="quanti5.html#cb506-9" tabindex="-1"></a>     var_inicial)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:plot-var-ani"></span>
+<img src="bookdownproj_files/figure-html/plot-var-ani-1.png" alt="Variogramas em diferentes direções" width="672" />
+<p class="caption">
+Figure 12.15: Variogramas em diferentes direções
+</p>
+</div>
+<p>O modelo para a direção Norte parece ter um ajuste melhor, embora a anisotropia não pareça ser muito relevante no conjunto de dados. Como observamos tendência geral, vamos considerá-la no modelo para interpolação da precipitação. Assim, vamos gerar o modelo sem tendência, usando o modelos f.1 (Figura <a href="quanti5.html#fig:plot-var-ajust">12.16</a>).</p>
+<div class="sourceCode" id="cb507"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb507-1"><a href="quanti5.html#cb507-1" tabindex="-1"></a><span class="co">#para calcular o variograma sem tendência, usando o modelo f.1</span></span>
+<span id="cb507-2"><a href="quanti5.html#cb507-2" tabindex="-1"></a>var.smpl <span class="ot">&lt;-</span> <span class="fu">variogram</span>(f<span class="fl">.1</span>, </span>
+<span id="cb507-3"><a href="quanti5.html#cb507-3" tabindex="-1"></a>                      verao_sf, </span>
+<span id="cb507-4"><a href="quanti5.html#cb507-4" tabindex="-1"></a>                      <span class="at">cloud =</span> <span class="cn">FALSE</span>, </span>
+<span id="cb507-5"><a href="quanti5.html#cb507-5" tabindex="-1"></a>                      <span class="at">cutoff=</span><span class="dv">50</span>, </span>
+<span id="cb507-6"><a href="quanti5.html#cb507-6" tabindex="-1"></a>                      <span class="at">width=</span><span class="fl">0.5</span>)</span>
+<span id="cb507-7"><a href="quanti5.html#cb507-7" tabindex="-1"></a></span>
+<span id="cb507-8"><a href="quanti5.html#cb507-8" tabindex="-1"></a><span class="co">#para ajustar o modelo usando valores aproximados de psill, range e nugget</span></span>
+<span id="cb507-9"><a href="quanti5.html#cb507-9" tabindex="-1"></a>dat.fit  <span class="ot">&lt;-</span> <span class="fu">fit.variogram</span>(var.smpl, </span>
+<span id="cb507-10"><a href="quanti5.html#cb507-10" tabindex="-1"></a>                          <span class="at">fit.ranges =</span> <span class="cn">FALSE</span>, </span>
+<span id="cb507-11"><a href="quanti5.html#cb507-11" tabindex="-1"></a>                          <span class="at">fit.sills =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb507-12"><a href="quanti5.html#cb507-12" tabindex="-1"></a>                          <span class="fu">vgm</span>(<span class="at">psill=</span><span class="fl">1.0</span>, </span>
+<span id="cb507-13"><a href="quanti5.html#cb507-13" tabindex="-1"></a>                              <span class="at">model=</span><span class="st">&quot;Ste&quot;</span>, </span>
+<span id="cb507-14"><a href="quanti5.html#cb507-14" tabindex="-1"></a>                              <span class="at">range=</span><span class="fl">3.1</span>, </span>
+<span id="cb507-15"><a href="quanti5.html#cb507-15" tabindex="-1"></a>                              <span class="at">nugget=</span><span class="fl">0.15</span>))</span>
+<span id="cb507-16"><a href="quanti5.html#cb507-16" tabindex="-1"></a></span>
+<span id="cb507-17"><a href="quanti5.html#cb507-17" tabindex="-1"></a><span class="co">#o gráfico a seguir ajuda a avaliar o ajuste</span></span>
+<span id="cb507-18"><a href="quanti5.html#cb507-18" tabindex="-1"></a><span class="fu">plot</span>(var.smpl, </span>
+<span id="cb507-19"><a href="quanti5.html#cb507-19" tabindex="-1"></a>     dat.fit, </span>
+<span id="cb507-20"><a href="quanti5.html#cb507-20" tabindex="-1"></a>     <span class="at">xlim=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">50</span>))</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:plot-var-ajust"></span>
+<img src="bookdownproj_files/figure-html/plot-var-ajust-1.png" alt="Variograma do modelo ajustado" width="672" />
+<p class="caption">
+Figure 12.16: Variograma do modelo ajustado
+</p>
+</div>
+<p>O pacote ‘spatstat’ tem uma função para o cálculo automático do melhor ajuste. Ele deve sempre ser usado com cautela. É indicado sempre olhar os dados antes de fazer o ajuste automático (Figura <a href="quanti5.html#fig:plot-var-ajust-auto">12.17</a>).</p>
+<div class="sourceCode" id="cb508"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb508-1"><a href="quanti5.html#cb508-1" tabindex="-1"></a><span class="co">#para fazer o ajuste automático</span></span>
+<span id="cb508-2"><a href="quanti5.html#cb508-2" tabindex="-1"></a>dat.fit.auto <span class="ot">=</span> <span class="fu">fit.variogram</span>(var.smpl, </span>
+<span id="cb508-3"><a href="quanti5.html#cb508-3" tabindex="-1"></a>                             dat.fit)</span>
+<span id="cb508-4"><a href="quanti5.html#cb508-4" tabindex="-1"></a></span>
+<span id="cb508-5"><a href="quanti5.html#cb508-5" tabindex="-1"></a><span class="co">#para plotar o variograma</span></span>
+<span id="cb508-6"><a href="quanti5.html#cb508-6" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">plot</span>(var.smpl, </span>
+<span id="cb508-7"><a href="quanti5.html#cb508-7" tabindex="-1"></a>           <span class="at">pl =</span> T,</span>
+<span id="cb508-8"><a href="quanti5.html#cb508-8" tabindex="-1"></a>           <span class="at">model =</span> dat.fit.auto))</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:plot-var-ajust-auto"></span>
+<img src="bookdownproj_files/figure-html/plot-var-ajust-auto-1.png" alt="Variograma do modelo com ajuste automático" width="672" />
+<p class="caption">
+Figure 12.17: Variograma do modelo com ajuste automático
+</p>
+</div>
+<p>Para ver os parâmetros do ajuste automático.</p>
+<div class="sourceCode" id="cb509"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb509-1"><a href="quanti5.html#cb509-1" tabindex="-1"></a><span class="co">#para ver os resultados do modelo ajustado automaticamente</span></span>
+<span id="cb509-2"><a href="quanti5.html#cb509-2" tabindex="-1"></a>dat.fit.auto</span></code></pre></div>
+<pre><code>##   model     psill    range kappa
+## 1   Nug 0.6709153 0.000000   0.0
+## 2   Ste 0.4698257 5.778978   0.5</code></pre>
+<p><strong>Passo 4</strong>: Krigagem Ordinária</p>
+<p>Agora com o modelo ajustado, partiremos para a interpolação. Primeiro geramos uma grade do tamanho do objeto ‘ufsp’ para que a interpolação seja feita na área toda (Figura <a href="quanti5.html#fig:plot-krig">12.18</a>).</p>
+<div class="sourceCode" id="cb511"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb511-1"><a href="quanti5.html#cb511-1" tabindex="-1"></a><span class="co">#para carregar o pacote &#39;stars&#39;</span></span>
+<span id="cb511-2"><a href="quanti5.html#cb511-2" tabindex="-1"></a><span class="fu">library</span>(stars)</span>
+<span id="cb511-3"><a href="quanti5.html#cb511-3" tabindex="-1"></a><span class="co"># para criar a grade</span></span>
+<span id="cb511-4"><a href="quanti5.html#cb511-4" tabindex="-1"></a>grade <span class="ot">=</span> <span class="fu">st_as_stars</span>(<span class="fu">st_bbox</span>(<span class="fu">st_buffer</span>(ufsp, </span>
+<span id="cb511-5"><a href="quanti5.html#cb511-5" tabindex="-1"></a>                                      <span class="fl">0.001</span>)))</span>
+<span id="cb511-6"><a href="quanti5.html#cb511-6" tabindex="-1"></a></span>
+<span id="cb511-7"><a href="quanti5.html#cb511-7" tabindex="-1"></a><span class="co"># modelo de interpolação</span></span>
+<span id="cb511-8"><a href="quanti5.html#cb511-8" tabindex="-1"></a>kr <span class="ot">&lt;-</span> <span class="fu">gstat</span>(<span class="at">formula=</span>modelo_normal<span class="sc">$</span>x.t<span class="sc">~</span><span class="dv">1</span>, </span>
+<span id="cb511-9"><a href="quanti5.html#cb511-9" tabindex="-1"></a>            <span class="at">data=</span>verao_sirgas, </span>
+<span id="cb511-10"><a href="quanti5.html#cb511-10" tabindex="-1"></a>            <span class="at">model=</span>dat.fit.auto)</span>
+<span id="cb511-11"><a href="quanti5.html#cb511-11" tabindex="-1"></a></span>
+<span id="cb511-12"><a href="quanti5.html#cb511-12" tabindex="-1"></a><span class="co"># Interpolação</span></span>
+<span id="cb511-13"><a href="quanti5.html#cb511-13" tabindex="-1"></a>z <span class="ot">=</span> <span class="fu">predict</span>(kr, </span>
+<span id="cb511-14"><a href="quanti5.html#cb511-14" tabindex="-1"></a>            grade)</span></code></pre></div>
+<pre><code>## [using ordinary kriging]</code></pre>
+<div class="sourceCode" id="cb513"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb513-1"><a href="quanti5.html#cb513-1" tabindex="-1"></a><span class="fu">library</span>(colorspace)</span>
+<span id="cb513-2"><a href="quanti5.html#cb513-2" tabindex="-1"></a><span class="co"># para criar um vetor de cores usando hcl.colors()</span></span>
+<span id="cb513-3"><a href="quanti5.html#cb513-3" tabindex="-1"></a>cores <span class="ot">&lt;-</span> <span class="fu">hcl.colors</span>(<span class="dv">5</span>, </span>
+<span id="cb513-4"><a href="quanti5.html#cb513-4" tabindex="-1"></a>                    <span class="st">&quot;YlGnBu&quot;</span>)</span>
+<span id="cb513-5"><a href="quanti5.html#cb513-5" tabindex="-1"></a></span>
+<span id="cb513-6"><a href="quanti5.html#cb513-6" tabindex="-1"></a><span class="co"># para inverter a ordem das cores usando rev()</span></span>
+<span id="cb513-7"><a href="quanti5.html#cb513-7" tabindex="-1"></a>cores_invertidas <span class="ot">&lt;-</span> <span class="fu">rev</span>(cores)</span>
+<span id="cb513-8"><a href="quanti5.html#cb513-8" tabindex="-1"></a></span>
+<span id="cb513-9"><a href="quanti5.html#cb513-9" tabindex="-1"></a><span class="co"># Especificar o número desejado de intervalos</span></span>
+<span id="cb513-10"><a href="quanti5.html#cb513-10" tabindex="-1"></a>numero_intervalos <span class="ot">&lt;-</span> <span class="dv">5</span></span>
+<span id="cb513-11"><a href="quanti5.html#cb513-11" tabindex="-1"></a></span>
+<span id="cb513-12"><a href="quanti5.html#cb513-12" tabindex="-1"></a><span class="co"># Calcular os intervalos de classes</span></span>
+<span id="cb513-13"><a href="quanti5.html#cb513-13" tabindex="-1"></a>intervalos_classes <span class="ot">&lt;-</span> <span class="fu">cut</span>(z<span class="sc">$</span>var1.pred, </span>
+<span id="cb513-14"><a href="quanti5.html#cb513-14" tabindex="-1"></a>                          <span class="at">breaks =</span> numero_intervalos)</span>
+<span id="cb513-15"><a href="quanti5.html#cb513-15" tabindex="-1"></a></span>
+<span id="cb513-16"><a href="quanti5.html#cb513-16" tabindex="-1"></a><span class="co">#para plotar</span></span>
+<span id="cb513-17"><a href="quanti5.html#cb513-17" tabindex="-1"></a><span class="fu">plot</span>(z, </span>
+<span id="cb513-18"><a href="quanti5.html#cb513-18" tabindex="-1"></a>     <span class="at">col =</span> cores_invertidas, </span>
+<span id="cb513-19"><a href="quanti5.html#cb513-19" tabindex="-1"></a>     <span class="at">breaks =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">0.8233357</span>, <span class="sc">-</span><span class="fl">0.383</span>, <span class="fl">0.0564</span>, <span class="fl">0.492</span>, <span class="fl">0.936</span>, <span class="fl">1.376089</span>),</span>
+<span id="cb513-20"><a href="quanti5.html#cb513-20" tabindex="-1"></a>     <span class="at">reset =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:plot-krig"></span>
+<img src="bookdownproj_files/figure-html/plot-krig-1.png" alt="Resultado da interpolação por Krigagem Ordinária, com valores transformados" width="672" />
+<p class="caption">
+Figure 12.18: Resultado da interpolação por Krigagem Ordinária, com valores transformados
+</p>
+</div>
+<p>Vamos visualizar também a variância da predição, ou seja a espacialização da incerteza. O mapa da variância mostra os locais onde o erro foi menor (valores mais baixos) e onde foi maior (valores mais altos) (Figura <a href="quanti5.html#fig:plot-variancia">12.19</a>).</p>
+<div class="sourceCode" id="cb514"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb514-1"><a href="quanti5.html#cb514-1" tabindex="-1"></a><span class="co"># Calcular os intervalos de classes</span></span>
+<span id="cb514-2"><a href="quanti5.html#cb514-2" tabindex="-1"></a>intervalos_classes <span class="ot">&lt;-</span> <span class="fu">cut</span>(z<span class="sc">$</span>var1.var, <span class="at">breaks =</span> numero_intervalos)</span>
+<span id="cb514-3"><a href="quanti5.html#cb514-3" tabindex="-1"></a></span>
+<span id="cb514-4"><a href="quanti5.html#cb514-4" tabindex="-1"></a><span class="co">#para plotar o mapa da variância</span></span>
+<span id="cb514-5"><a href="quanti5.html#cb514-5" tabindex="-1"></a><span class="fu">plot</span>(z[<span class="st">&quot;var1.var&quot;</span>], </span>
+<span id="cb514-6"><a href="quanti5.html#cb514-6" tabindex="-1"></a>     <span class="at">col =</span> cores_invertidas, </span>
+<span id="cb514-7"><a href="quanti5.html#cb514-7" tabindex="-1"></a>     <span class="at">breaks =</span> <span class="fu">c</span>(<span class="fl">0.817</span>, <span class="fl">0.878</span>, <span class="fl">0.938</span>, <span class="fl">0.999</span>, <span class="fl">1.06</span>, <span class="fl">1.12</span>),</span>
+<span id="cb514-8"><a href="quanti5.html#cb514-8" tabindex="-1"></a>     <span class="at">reset =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:plot-variancia"></span>
+<img src="bookdownproj_files/figure-html/plot-variancia-1.png" alt="Variância da interpolação por Krigagem Ordinária" width="672" />
+<p class="caption">
+Figure 12.19: Variância da interpolação por Krigagem Ordinária
+</p>
+</div>
+<p>Agora, vamos retornar aos valores originais, antes da normalização da variável (Figura <a href="quanti5.html#fig:plot-original">12.20</a>).</p>
+<div class="sourceCode" id="cb515"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb515-1"><a href="quanti5.html#cb515-1" tabindex="-1"></a><span class="co">#para retornar aos valores originais</span></span>
+<span id="cb515-2"><a href="quanti5.html#cb515-2" tabindex="-1"></a>z<span class="sc">$</span>original <span class="ot">&lt;-</span> <span class="fu">predict</span>(modelo_normal, </span>
+<span id="cb515-3"><a href="quanti5.html#cb515-3" tabindex="-1"></a>                      <span class="at">newdata=</span>z<span class="sc">$</span>var1.pred, </span>
+<span id="cb515-4"><a href="quanti5.html#cb515-4" tabindex="-1"></a>                      <span class="at">inverse=</span><span class="cn">TRUE</span>)</span>
+<span id="cb515-5"><a href="quanti5.html#cb515-5" tabindex="-1"></a></span>
+<span id="cb515-6"><a href="quanti5.html#cb515-6" tabindex="-1"></a><span class="co">#para plotar os valores originais</span></span>
+<span id="cb515-7"><a href="quanti5.html#cb515-7" tabindex="-1"></a><span class="fu">plot</span>(z[<span class="st">&quot;original&quot;</span>], </span>
+<span id="cb515-8"><a href="quanti5.html#cb515-8" tabindex="-1"></a>     <span class="at">col =</span> cores_invertidas, </span>
+<span id="cb515-9"><a href="quanti5.html#cb515-9" tabindex="-1"></a>     <span class="at">reset =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb515-10"><a href="quanti5.html#cb515-10" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(ufsp), </span>
+<span id="cb515-11"><a href="quanti5.html#cb515-11" tabindex="-1"></a>     <span class="at">add=</span><span class="cn">TRUE</span>)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:plot-original"></span>
+<img src="bookdownproj_files/figure-html/plot-original-1.png" alt="Resultado da interpolação por Krigagem Ordinária, com valores originais" width="672" />
+<p class="caption">
+Figure 12.20: Resultado da interpolação por Krigagem Ordinária, com valores originais
+</p>
+</div>
+<p>Como vemos, a escala de cores não está correta e faltam muitos detalhes para termos um mapa isarítmico finalizado. Vamos converter os objetos do tipo ‘stars’ para formato raster para podermos usar o ‘ggplot2’ para a elaboração do mapa final. Em seguida, exportamos o mapa em formato jpg.</p>
+<div class="sourceCode" id="cb516"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb516-1"><a href="quanti5.html#cb516-1" tabindex="-1"></a><span class="co">#para converter como raster</span></span>
+<span id="cb516-2"><a href="quanti5.html#cb516-2" tabindex="-1"></a>prec_raster <span class="ot">&lt;-</span> <span class="fu">st_as_stars</span>(z)</span>
+<span id="cb516-3"><a href="quanti5.html#cb516-3" tabindex="-1"></a></span>
+<span id="cb516-4"><a href="quanti5.html#cb516-4" tabindex="-1"></a><span class="co">#para recortar o raster </span></span>
+<span id="cb516-5"><a href="quanti5.html#cb516-5" tabindex="-1"></a>prec_ufsp <span class="ot">&lt;-</span> <span class="fu">st_crop</span>(prec_raster, </span>
+<span id="cb516-6"><a href="quanti5.html#cb516-6" tabindex="-1"></a>                     ufsp)</span></code></pre></div>
+<p>Usando o ‘ggplot2’, elaboramos o mapa interpolado com a camada dos municípios do estado de São Paulo, escala gráfica, título e outros elementos.</p>
+<div class="sourceCode" id="cb517"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb517-1"><a href="quanti5.html#cb517-1" tabindex="-1"></a><span class="co">#para carregar os pacotes</span></span>
+<span id="cb517-2"><a href="quanti5.html#cb517-2" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb517-3"><a href="quanti5.html#cb517-3" tabindex="-1"></a><span class="fu">library</span>(ggspatial) <span class="co">#pacote que permite colocar escala gráfica</span></span>
+<span id="cb517-4"><a href="quanti5.html#cb517-4" tabindex="-1"></a></span>
+<span id="cb517-5"><a href="quanti5.html#cb517-5" tabindex="-1"></a><span class="co"># para gerar o mapa</span></span>
+<span id="cb517-6"><a href="quanti5.html#cb517-6" tabindex="-1"></a>mapa_prec_verao <span class="ot">&lt;-</span> <span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb517-7"><a href="quanti5.html#cb517-7" tabindex="-1"></a>  <span class="fu">geom_stars</span>(<span class="at">data =</span> prec_ufsp, </span>
+<span id="cb517-8"><a href="quanti5.html#cb517-8" tabindex="-1"></a>             <span class="fu">aes</span>(<span class="at">fill =</span> original)) <span class="sc">+</span></span>
+<span id="cb517-9"><a href="quanti5.html#cb517-9" tabindex="-1"></a>  <span class="fu">scale_fill_continuous_sequential</span>(<span class="at">palette =</span> <span class="st">&quot;BuPu&quot;</span>, </span>
+<span id="cb517-10"><a href="quanti5.html#cb517-10" tabindex="-1"></a>                                   <span class="at">na.value =</span> <span class="st">&quot;grey95&quot;</span>)<span class="sc">+</span></span>
+<span id="cb517-11"><a href="quanti5.html#cb517-11" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> UFBR, </span>
+<span id="cb517-12"><a href="quanti5.html#cb517-12" tabindex="-1"></a>          <span class="at">colour =</span> <span class="st">&quot;grey50&quot;</span>, </span>
+<span id="cb517-13"><a href="quanti5.html#cb517-13" tabindex="-1"></a>          <span class="at">alpha =</span> <span class="dv">0</span>)<span class="sc">+</span></span>
+<span id="cb517-14"><a href="quanti5.html#cb517-14" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb517-15"><a href="quanti5.html#cb517-15" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">&quot;Precipitação (mm)&quot;</span>,</span>
+<span id="cb517-16"><a href="quanti5.html#cb517-16" tabindex="-1"></a>    <span class="at">caption =</span> <span class="st">&quot;Fonte: CEMADEN (2023) </span><span class="sc">\n</span><span class="st"> Elaborado por: @Ligiaviz&quot;</span></span>
+<span id="cb517-17"><a href="quanti5.html#cb517-17" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb517-18"><a href="quanti5.html#cb517-18" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> ufsp, </span>
+<span id="cb517-19"><a href="quanti5.html#cb517-19" tabindex="-1"></a>          <span class="at">colour =</span> <span class="st">&quot;grey50&quot;</span>, </span>
+<span id="cb517-20"><a href="quanti5.html#cb517-20" tabindex="-1"></a>          <span class="at">alpha =</span> <span class="dv">0</span>) <span class="sc">+</span></span>
+<span id="cb517-21"><a href="quanti5.html#cb517-21" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="cn">NULL</span>) <span class="sc">+</span></span>
+<span id="cb517-22"><a href="quanti5.html#cb517-22" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="cn">NULL</span>) <span class="sc">+</span></span>
+<span id="cb517-23"><a href="quanti5.html#cb517-23" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="fu">c</span>(<span class="fl">0.2</span>, <span class="fl">0.2</span>),</span>
+<span id="cb517-24"><a href="quanti5.html#cb517-24" tabindex="-1"></a>        <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">12</span>, </span>
+<span id="cb517-25"><a href="quanti5.html#cb517-25" tabindex="-1"></a>                                  <span class="at">hjust =</span> <span class="fl">0.98</span>, </span>
+<span id="cb517-26"><a href="quanti5.html#cb517-26" tabindex="-1"></a>                                  <span class="at">vjust =</span> <span class="sc">-</span><span class="dv">15</span>),</span>
+<span id="cb517-27"><a href="quanti5.html#cb517-27" tabindex="-1"></a>        <span class="at">legend.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">9</span>))<span class="sc">+</span></span>
+<span id="cb517-28"><a href="quanti5.html#cb517-28" tabindex="-1"></a>  <span class="fu">coord_sf</span>(<span class="at">xlim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">53.10503</span>, <span class="sc">-</span><span class="fl">44.15377</span>), </span>
+<span id="cb517-29"><a href="quanti5.html#cb517-29" tabindex="-1"></a>           <span class="at">ylim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">25.33229</span>, <span class="sc">-</span><span class="fl">19.77919</span>), </span>
+<span id="cb517-30"><a href="quanti5.html#cb517-30" tabindex="-1"></a>           <span class="at">expand =</span> <span class="cn">FALSE</span>)<span class="sc">+</span></span>
+<span id="cb517-31"><a href="quanti5.html#cb517-31" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">&quot;Precipitação no verão de 2022,</span><span class="sc">\n</span><span class="st"> estado de São Paulo&quot;</span>) <span class="sc">+</span></span>
+<span id="cb517-32"><a href="quanti5.html#cb517-32" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">panel.background =</span> <span class="fu">element_rect</span>(<span class="at">fill =</span> <span class="st">&quot;white&quot;</span>),</span>
+<span id="cb517-33"><a href="quanti5.html#cb517-33" tabindex="-1"></a>        <span class="at">panel.grid.major =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb517-34"><a href="quanti5.html#cb517-34" tabindex="-1"></a>    <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>())<span class="sc">+</span></span>
+<span id="cb517-35"><a href="quanti5.html#cb517-35" tabindex="-1"></a>  ggspatial<span class="sc">::</span><span class="fu">annotation_scale</span>(<span class="at">location =</span> <span class="st">&quot;br&quot;</span>, </span>
+<span id="cb517-36"><a href="quanti5.html#cb517-36" tabindex="-1"></a>                              <span class="at">width_hint =</span> <span class="fl">0.3</span>, </span>
+<span id="cb517-37"><a href="quanti5.html#cb517-37" tabindex="-1"></a>                              <span class="at">line_width =</span> <span class="fl">0.5</span>, </span>
+<span id="cb517-38"><a href="quanti5.html#cb517-38" tabindex="-1"></a>                              <span class="at">height =</span> <span class="fu">unit</span>(<span class="fl">0.1</span>,<span class="st">&quot;cm&quot;</span>))</span>
+<span id="cb517-39"><a href="quanti5.html#cb517-39" tabindex="-1"></a></span>
+<span id="cb517-40"><a href="quanti5.html#cb517-40" tabindex="-1"></a><span class="co">#para ver o mapa</span></span>
+<span id="cb517-41"><a href="quanti5.html#cb517-41" tabindex="-1"></a>mapa_prec_verao</span>
+<span id="cb517-42"><a href="quanti5.html#cb517-42" tabindex="-1"></a></span>
+<span id="cb517-43"><a href="quanti5.html#cb517-43" tabindex="-1"></a><span class="co">#para exportar o mapa como figura jpg</span></span>
+<span id="cb517-44"><a href="quanti5.html#cb517-44" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="st">&quot;mapa_prec_verao.jpg&quot;</span>, </span>
+<span id="cb517-45"><a href="quanti5.html#cb517-45" tabindex="-1"></a>       <span class="at">width =</span> <span class="dv">8</span>, </span>
+<span id="cb517-46"><a href="quanti5.html#cb517-46" tabindex="-1"></a>       <span class="at">height =</span> <span class="dv">8</span>, </span>
+<span id="cb517-47"><a href="quanti5.html#cb517-47" tabindex="-1"></a>       <span class="at">dpi =</span> <span class="dv">300</span>)</span></code></pre></div>
+<p>O mapa resultante deverá ser igual à Figura <a href="quanti5.html#fig:plot-isa">12.21</a>.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:plot-isa"></span>
+<img src="mapa_prec_verao.jpg" alt="Mapa isarítmico da precipitação do verão de 2022, no estado de São Paulo, a partir de Krigagem Ordinária" width="1200" />
+<p class="caption">
+Figure 12.21: Mapa isarítmico da precipitação do verão de 2022, no estado de São Paulo, a partir de Krigagem Ordinária
+</p>
+</div>
+</div>
+</div>
+</div>
+<div id="referências-citadas-2" class="section level2 hasAnchor" number="12.2">
+<h2><span class="header-section-number">12.2</span> Referências citadas<a href="quanti5.html#referências-citadas-2" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>DAVIS, J. 2023. <strong>Introduction to Environmental Data Science</strong>. Cap. 9 Spatial Interpolation. <a href="https://bookdown.org/igisc/EnvDataSci/spatial-interpolation.html" class="uri">https://bookdown.org/igisc/EnvDataSci/spatial-interpolation.html</a></p>
+<p>FERREIRA, M.C. <strong>Iniciação à análise geoespacial</strong>: teoria, técnicas e exemplos para geoprocessamento. São Paulo: Editora UNESP, 2014. 343p.</p>
+<p>FUSHITA, A.T., VASCONCELOS, V.V. (2020). <strong>Interpolação e Geoestatística em R</strong>. <a href="https://www.youtube.com/watch?v=O1hiz-7FmmI" class="uri">https://www.youtube.com/watch?v=O1hiz-7FmmI</a></p>
+<p>GIMOND, M. <strong>Intro to GIS and Spatial Analysis</strong>. Chapter 14 - Spatial Interpolation (<a href="https://mgimond.github.io/Spatial/spatial-interpolation.html" class="uri">https://mgimond.github.io/Spatial/spatial-interpolation.html</a>)</p>
+<p>ZHU, C., ZHENG, C., SHU, S., HAN, G. 2012. A survey on coverage and connectivity issues in wireless sensor networks. <strong>Journal of Network and Computer Applications</strong>, 35(2):619-632 <a href="https://doi.org/10.1016/j.jnca.2011.11.016" class="uri">https://doi.org/10.1016/j.jnca.2011.11.016</a></p>
+</div>
+<div id="sugestões-de-leitura" class="section level2 hasAnchor" number="12.3">
+<h2><span class="header-section-number">12.3</span> Sugestões de leitura<a href="quanti5.html#sugestões-de-leitura" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>DAVIS, J. 2023. <strong>Introduction to Environmental Data Science</strong>.
+<a href="https://bookdown.org/igisc/EnvDataSci/spatial-interpolation.html" class="uri">https://bookdown.org/igisc/EnvDataSci/spatial-interpolation.html</a></p>
+<p>DORMAN, M. 2014. <strong>Learning R for Geospatial Analysis</strong>: Leverage the power of R to elegantly manage crucial geospatial analysis tasks. Birmingham: Packt Publishing Ltd., 364p. Chapter 8 - Spatial Interpolation of Point Data.</p>
+<p>ENGEL, C. 2019. <strong>Using Spatial Data with r</strong>. <a href="https://cengel.github.io/R-spatial/" class="uri">https://cengel.github.io/R-spatial/</a>.</p>
+<p>KOHAVI, R. A study of cross-validation and bootstrap for accuracy estimation and model selection. In: International joint Conference on artificial intelligence. [S.l.: s.n.], 1995. v. 14, p. 1137–1145 (<a href="https://www.ijcai.org/Proceedings/95-2/Papers/016.pdf" class="uri">https://www.ijcai.org/Proceedings/95-2/Papers/016.pdf</a>)</p>
+<p>LOVELACE, R. 2022. <strong>Geocomputation with R</strong>. <a href="https://geocompr.robinlovelace.net/index.html" class="uri">https://geocompr.robinlovelace.net/index.html</a>.</p>
+<p>MORAGA, P. <strong>Spatial Statistics for Data Science</strong>: Theory and Practice with R. <a href="https://www.paulamoraga.com/book-spatial/index.html" class="uri">https://www.paulamoraga.com/book-spatial/index.html</a></p>
+<p>PEBESMA, E., BIVAND, R. 2022. <strong>Spatial Data Science</strong>. <a href="https://keen-swartz-3146c4.netlify.app/" class="uri">https://keen-swartz-3146c4.netlify.app/</a>.</p>
+<p>YAMAMOTO, J.K. 2020. <strong>Estatística, análise e Interpolação de Dados Geoespaciais</strong>. 1. ed. Sao Paulo: Gráfica Paulo’s. 308p.</p>
 
 </div>
 </div>

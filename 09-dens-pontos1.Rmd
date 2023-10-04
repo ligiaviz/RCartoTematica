@@ -63,7 +63,7 @@ head(sp_distr)
 ```
 Vamos visualizar os Distritos usando `ggplot` do pacote **ggplot2**, definindo a geometria a partir de `geom_sf` com o contorno na cor preta e o preenchimento em cinza claro.
 
-```{r plot-distr-ufsp, warning=FALSE, fig.align = 'center', fig.cap='Malha de Distritos do Estado de São Paulo'}
+```{r plot-distr-ufsp, fig.align='center', fig.cap='Malha', warning=FALSE}
 #para plotar a camada dos distritos do estado de SP
 ggplot()+
   geom_sf(data = sp_distr, colour = "black", fill = "grey90") #para plotar

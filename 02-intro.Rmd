@@ -2,7 +2,7 @@
 
 ## O programa R
 
-Na página do projeto **R** https://www.r-project.org/about.html você encontrará todos os detalhes sobre este programa incrível. O **R** pode ser definido como uma linguagem e ambiente para computação estatística e gráficos. O **R** teve origem na linguagem S desenvolvida nas décadas de 1970 e 1980 e inicialmente desenvolvido por Robert Gentleman e Ross Ihaka — também conhecido como “R & R” - do Departamento de Estatística da Universidade de Auckland, Austrália. A versão atual é resultado de esforço colaborativo com contribuição de pesquisadores de todo o mundo. Desde a metade de 1997 existe um grupo central, o **R Core Team**, com acesso à gravação da fonte **R**.
+Na página do projeto **R** https://www.r-project.org/about.html você encontrará todos os detalhes sobre este programa incrível. O **R** pode ser definido como uma linguagem e ambiente para computação estatística e gráficos. O **R** teve origem na linguagem S desenvolvida nas décadas de 1970 e 1980 e inicialmente desenvolvido por Robert Gentleman e Ross Ihaka — também conhecido como “R & R” - do Departamento de Estatística da Universidade de Auckland, Nova Zelândia. A versão atual é resultado de esforço colaborativo com contribuição de pesquisadores de todo o mundo. Desde a metade de 1997 existe um grupo central, o **R Core Team**, com acesso à gravação da fonte **R**.
 
 O **R** disponibiliza grande variedade de técnicas gráficas, de análise estatística (modelagem linear e não linear, clássicos testes estatísticos, análise de séries temporais, classificação, agrupamento etc.) e de análise espacial. 
 

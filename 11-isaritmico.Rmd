@@ -1,7 +1,934 @@
 # Dados quantitativos a partir de amostras: mapa isarítmico {#quanti5}
 
-Algumas informações com referência espacial são obtidas a partir de amostras distribuídas no espaço. Tais amostras podem ser pontuais e até mesmo lineares, tais como curvas de nível com valores de altitude ou batimetria. As amostras de pontos são mais comuns e incluem medidas de variáveis atmosféricas, de poluição do ar, amostras de solo, entre outras. Muitas vezes temos interesse em visualizar os valores em área não amostrada, sendo possível recorrermos a modelos matemáticos para gerar interpolações dos valores entre os pontos amostrados, resultando em uma superfície contínua. O mapa resultante é do tipo isarítmico.
+Algumas informações com referência espacial são obtidas a partir de amostras distribuídas no espaço. Tais amostras podem ser pontuais e até mesmo lineares, tais como curvas de nível com valores de altitude ou batimetria. As amostras de pontos são mais comuns e incluem medidas de variáveis atmosféricas, de poluição do ar, amostras de solo, entre outras. Muitas vezes temos interesse em visualizar os valores em área não amostrada, sendo possível recorrermos a modelos matemáticos para gerar interpolações dos valores entre os pontos amostrados, resultando em uma superfície contínua. O mapa resultante é do tipo **isarítmico**.
 
-**Capítulo em elaboração**
+A interpolação de dados pode envolver abordagens determinísticas e/ou estocásticas, como veremos mais adiante. Muitas vezes é necessário recorrer à **Geoestatística** para esta finalidade.  A Geoestatística é um ramo da Estatística Aplicada que lida especificamente com dados espaciais e georreferenciados. Ela fornece ferramentas e métodos estatísticos para analisar padrões espaciais, modelar dependências espaciais e realizar previsões ou interpolações em locais não amostrados. Em sua essência, a Geoestatística é mais associada a abordagens estocásticas do que determinísticas. Ela se desenvolveu originalmente para lidar com a variabilidade espacial que muitas vezes não pode ser totalmente capturada por métodos puramente determinísticos. No entanto, é importante destacar que a Geoestatística não é exclusivamente estocástica. Há situações em que abordagens determinísticas podem ser aplicadas (e.g., Superfície de Tendência), dependendo da natureza dos dados, dos objetivos da análise e do contexto específico do problema espacial em questão. Muitas vezes, a escolha entre abordagens determinísticas e estocásticas dependerá das características dos dados e das questões específicas que se deseja abordar. A Geoestatística requer conhecimento aprofundado, o que não será o objetivo deste item. Aqui, em termos de Geoestatística apenas veremos uma técnica mais comumente aplicada, a Krigagem Ordinária. Existem inúmeros livros e cursos sobre Geoestatística que apresentam aprofundamento deste tema. Cito algumas referências interessantes como sugestões de leitura ao final do capítulo.
 
-## Referências sugeridas
+Para ilustrar a aplicação de algumas técnicas de interpolação espacial, vamos tomar os dados de precipitação durante o verão de 2022 no estado de São Paulo, com 604 estações pluviométricas. Os dados são do CEMADEN (http://www2.cemaden.gov.br/mapainterativo/#) e compreendem o período de 21 de dezembro de 2021 a 20 de março de 2022. 
+
+As técnicas de interpolação apresentadas aqui foram baseadas nas propostas por Davis (2023), Fushita & Vasconcelos (2020) e Gimond (2023).
+
+Para darmos início, vamos limpar a memória, verificar e definir o diretório de trabalho.
+
+```{r warning=FALSE}
+#para limpar a memoria
+rm(list= ls())
+```
+
+```{r eval=FALSE}
+#para verificar o diretório de trabalho
+getwd()
+```
+
+```{r}
+#para desativar a notação científica
+options(scipen = 999)
+```
+
+
+```{r warning=FALSE}
+
+#para carregar o pacote 'pacman'
+library(pacman)
+
+#para carregar os pacotes necessários
+pacman::p_load(
+  tidyverse,
+  sp,
+  sf,
+  exactextractr,
+  ggplot2,
+  gstat,
+  terra,
+  RColorBrewer)
+```
+
+Vamos abrir o arquivo do tipo csv com os dados dos pontos com as informações de latitude, longitude e precipitação total do período de dezembro de 2021 a março de 2022.
+
+```{r eval=FALSE}
+#para fazer download dos dados
+download.file(url ="https://github.com/ligiaviz/ufsp_prec_verao2022.csv", 
+              destfile = "ufsp_prec_verao2022.csv")
+```
+
+```{r}
+#para gerar um objeto 'verao' com os dados
+verao <- read_csv("./ufsp_prec_verao2022.csv", 
+                  show_col_types = FALSE)
+```
+
+```{r}
+#para ver a classe do objeto
+class(verao)
+```
+
+
+Para tornar o arquivo de pontos em um objeto do tipo 'sf', vamos usar a função `st_as_sf`do pacote 'sf'.
+
+```{r }
+#para transformar em um objeto 'sf'
+verao_sf <- st_as_sf(verao, 
+                     coords = c("long","lat"))
+
+#para ver as primeiras linhas dos dados
+head(verao_sf)
+```
+Como visto, o objeto criado tem CRS indefinido. Vamos definir o CRS da projeção cartográfica de onde os dados foram extraídos - WGS 84 (CRS = 4326). 
+
+```{r }
+#para definir a projeção cartográfica (crs=4326) dos dados como disponibilizados pelo CEMADEN
+verao_sf <- st_set_crs(verao_sf, 
+                       4326)
+```
+
+Agora vamos converter o CRS 4326 para 4674 (Sirgas 2000) para ficar compatível com a base do Estado de São Paulo que vamos utilizar.
+
+```{r }
+#para transformar para a projeção SIRGAS 2000 (crs=4674) para ficar compatível com o arquivo do estado de SP que será usado
+verao_sirgas <- st_transform(verao_sf, 
+                             crs= 4674)
+```
+
+Vamos precisar do shapefile do estado de São Paulo, já usado no item {#quanti1}. 
+
+```{r }
+#para identificar o url, faca o download do arquivo shapefile e clique em Ctrl+J
+download.file(url = "https://repositorio.seade.gov.br/dataset/9bb4f8ef-f1a4-4734-92a2-814cfc8d0974/resource/09ba3695-a6a1-44ab-9916-fd1a8aa1c980/download/populacao.zip", 
+              destfile = "Populacao.zip")
+```
+Vamos abrir o arquivo do tipo zip.
+
+```{r }
+#para abrir o arquivo zip
+unzip(zipfile = "Populacao.zip")
+```
+
+Na sequência, criamos o objeto 'ufsp' usando a função para leitura de arquivo do tipo shapefile. Este arquivo traz a projeção SIRGAS 2000 (crs = 4674).
+
+```{r }
+#para abrir o arquivo shapefile do estado de São Paulo 
+ufsp <- st_read("C:/Users/l_viz/Documents/RCartoTematica/Populacao.shp")
+```
+
+Com os objetos do tipo 'sf' compatíveis (ufsp e verao_sirgas), vamos plotá-los usando o pacote **ggplot2**. Os pontos terão o tamanho 0.4 (Figura \@ref(fig:plot-prec-ufsp)).
+
+```{r plot-prec-ufsp, warning=FALSE, fig.align = 'center', fig.cap='Distribuição dos postos climatológicos e valores de precipitação (mm) no Estado de São Paulo'}
+#para plotar o mapa
+ggplot() + 
+  geom_sf(data = ufsp) + 
+    geom_sf(data = verao_sirgas, 
+            mapping = aes(col = prec), 
+            size=0.4)
+```
+
+Para comparar o desempenho dos modelos que usaremos, vamos inicialmente calcular a Raiz do Erro Quadrático Médio (RMSE - *Root Mean Squared Error*, em inglês), que é uma medida frequentemente usada da diferença entre valores preditos por um modelo ou estimador e os valores observados (da amostra ou da população). Quanto menor o valor do RMSE, mais próximos são os valores previstos e observados. O RMSE é dado por:
+
+$$
+RMSE = \sqrt{\sum_{i = 1}^{n}{({z_i} - \bar{z})^2}}{/n}
+$$
+onde,
+
+*z* = valor da variável em questão (precipitação, neste caso),
+
+*n* = tamanho da população (número de estações pluviométricas).
+
+Para o cálculo do RMSE, vamos usar a função desenvolvida por Davis(2023). Vamos também calcular um "modelo nulo" da precipitação de cada estação comparada com a média de todas as estações. Posteriormente, este resultado será usado para comparar o desempenho das interpolações.
+
+```{r }
+#função para cálculo do RMSE
+RMSE <- function(obs, pred) {
+  sqrt(mean((pred - obs)^2, 
+            na.rm=TRUE))
+}
+
+#para gerar um modelo nulo dos dados originais
+null <- RMSE(mean(verao_sirgas$prec), 
+             verao_sirgas$prec)
+
+#para visualização do resultado
+null
+```
+
+## Abordagens de interpolação espacial
+
+Interpolar significa estimar valores para locais não amostrados em uma área de estudo, a partir dos valores amostrados. Seguindo a definição de autocorrelação espacial, se os pontos amostrados apresentarem valores semelhantes com a proximidade, seria possível estimar valores para áreas não amostradas a partir da relação entre as distâncias entre os pontos e os valores amostrados.
+
+Essa estimação pode ser feita por métodos determinísticos ou probabilísticos (estocásticos). 
+
+Por **métodos determinísticos** entendemos que são abordagens matemáticas e estatísticas que produzem resultados específicos e previsíveis, sem incorporar aleatoriedade ou incerteza em seus modelos. São interpoladores exatos pois retornam um valor idêntico ao valor medido nos pontos amostrais. As principais características dos métodos determinísticos envolvem:
+
+- **Previsibilidade**: Os métodos determinísticos produzem resultados consistentes e previsíveis, dado um conjunto de entradas ou condições iniciais. Isso significa que, se você tiver as mesmas entradas, obterá os mesmos resultados sempre;
+
+- **Ausência de Aleatoriedade**: Esses métodos não incorporam elementos aleatórios ou estocásticos em seus modelos. As relações entre as variáveis são consideradas fixas e não sujeitas a variações aleatórias;
+
+- **Equações Matemáticas**: Os métodos determinísticos frequentemente se baseiam em equações matemáticas ou modelos matemáticos que descrevem as relações entre as variáveis de interesse;
+
+- **Precisão**: Quando as condições do modelo são atendidas, os métodos determinísticos são precisos e ideais para situações em que a exatidão é fundamental;
+
+- **Aplicabilidade**: Eles são amplamente aplicados em áreas onde as relações entre as variáveis são bem compreendidas e podem ser descritas com precisão por meio de equações matemáticas, como física, engenharia civil, modelagem climática, análise estrutural, entre outras.
+
+No entanto, é importante observar que muitos sistemas do mundo real podem ser afetados por incerteza e variabilidade que não podem ser totalmente capturados por métodos determinísticos. Nessas situações, métodos probabilísticos ou estocásticos, que incorporam elementos aleatórios, podem ser mais apropriados para modelar a incerteza e a variabilidade.
+
+### Abordagens determinísticas
+
+Existem inúmeros métodos determinísticos para interpolação. Alguns são globais e outros, locais. As técnicas globais consideram todo o conjunto de dados na análise para a predição da área como um todo (e.g., Superfície de Tendência, Tendência Global - Regressão Linear, entre outros), enquanto as técnicas locais calculam os valores estimados a partir dos pontos e seus vizinhos (e.g., Interpolação por Proximidade: Polígonos de Thiessen, Polígonos de Voronoi; Ponderação pelo Inverso da Distância - IDW; Interpolação Radial; Método da Média Ponderada; Método de Spline, entre outros). 
+
+Vamos utilizar algumas técnicas determinísticas de interpolação espacial neste exercício: Interpolação por Proximidade, Interpolação por Vizinho Mais Próximo, Interpolação pela Ponderação pelo Inverso da Distância e Interpolação Global por Superfície de Tendência.
+
+```{r}
+#para identificar o url, faca o download do arquivo shapefile e clique em Ctrl+J
+download.file(url = "https://geoftp.ibge.gov.br/organizacao_do_territorio/malhas_territoriais/malhas_municipais/municipio_2020/Brasil/BR/BR_UF_2020.zip", 
+              destfile = "BR_UF_2020.zip")
+```
+
+```{r}
+#para abrir o arquivo zip
+unzip(zipfile = "BR_UF_2020.zip")
+```
+
+```{r}
+#para abrir o arquivo shapefile dos estados
+UFBR <- st_read("./BR_UF_2020.shp")
+```
+
+```{r}
+#para transformar a projeção de 'UFBR' para WGS84
+UFBRwgs84<- st_transform(UFBR, 
+                         crs= 4326)
+```
+
+Vamos ver a distribuição dos postos climatológicos de forma interativa usando o pacote 'leaflet'(Figura \@ref(fig:plot-prec-interativo)).
+
+```{r plot-prec-interativo, warning=FALSE, fig.align = 'center', fig.cap='Distribuição dos postos climatológicos no Estado de São Paulo, de forma interativa '}
+
+#para carregar o pacote
+library(leaflet)
+
+#para elaborar o mapa
+leaflet() %>%
+  addTiles() %>%
+  addCircleMarkers(
+    data = verao_sf, # objeto do tipo 'sf' com os postos e valores
+    radius = 0.3,  # para ajustar o tamanho dos pontos
+    color = "orange", #para definir a cor laranja do círculo
+    fillColor = "black", #para definir a cor preta dos pontos
+    fillOpacity = 0.5 #para definir a transparência do círculo
+  )
+```
+#### Interpolação por Proximidade
+
+Uma das interpolações mais simples. Pode ser gerada a partir de polígonos de Thiessen ou por Polígonos de Voronoi. As duas técnicas dividem o espaço com base na proximidade dos pontos de dados. A diferença principal está na maneira como as células são delimitadas: os **polígonos de Voronoi** têm bordas equidistantes entre pontos de dados mais próximos, enquanto os **polígonos de Thiessen** incluem todos os pontos mais próximos a um ponto de dados específico.
+
+Vamos calcular o Diagrama de Voronoi. Cada ponto em um polígono de Voronoi é mais próximo do ponto associado a esse polígono do que de qualquer outro ponto de amostra. Isso cria uma tesselação do espaço onde cada ponto dentro de um polígono de Voronoi é atribuído ao valor do ponto associado a esse polígono.
+
+Este método de interpolação é eficaz quando a distribuição dos pontos de amostra é representativa da variação espacial dos dados. No entanto, pode não ser ideal quando a densidade dos pontos é muito alta ou muito baixa. Além disso, a Interpolação por Polígonos de Voronoi pode produzir resultados descontínuos em locais onde os polígonos se encontram, resultando em superfícies interpoladas com bordas nítidas.
+
+Vamos seguir o roteiro de Davis (2023) para a elaboração de um mapa com base nos polígonos de Voronoi e sua validação. O primeiro passo será gerar um vetor de pontos a partir dos dados de precipitação. Com o vetor, geramos os polígonos de Voronoi e plotamos os resultados (Figura \@ref(fig:plot-voronoi)).
+
+```{r plot-voronoi, warning=FALSE, fig.align = 'center', fig.cap='Polígonos de Voronoi'}
+#para gerar um vetor de pontos a partir dos dados de precipitação
+veraoV <- vect(verao_sirgas)
+
+#para gerar os polígonos de Voronoi a partir do vetor criado
+v <- voronoi(veraoV)
+
+#para plotar os polígonos
+plot(v)
+
+#para plotar os pontos sobre os polígonos
+points(veraoV)
+```
+
+Para que a visualização fique mais compreensível, vamos recortar os polígonos gerados, usando os limites do objeto 'ufsp'. Aproveitamos para criar uma paleta de cores adequada, já que um mapa isarítmico deve ser representado por meio das variáveis visuais **valor** ou **cor ordenada** (Figura \@ref(fig:plot-voronoi-ufsp)). Veja opções de paletas de cores sequenciais em: https://r-charts.com/color-palettes/ e https://pmassicotte.github.io/paletteer_gallery/
+
+```{r plot-voronoi-ufsp, warning=FALSE, fig.align = 'center', fig.cap='Precipitação (mm) segundo polígonos de Voronoi no Estado de São Paulo'}
+#para recortar os polígonos de Voronoi considerando os limites dos municípios de 'ufsp' que contêm estações pluviométricas
+vVerao <- crop(v, 
+               vect(st_union(ufsp)))
+
+#para criar uma paleta de cores usando RColorBrewer para 5 cores em blue+purple ("BuPu")
+azuis <- brewer.pal(7, 
+                    "BuPu") 
+
+#para definir as quebras da legenda
+breaks <- c(0, 200, 400, 600, 800, 1000, 1200)
+
+#para plotar a precipitação nos polígonos nos municípios, usando a paleta de cores 'azuis'
+plot(vVerao, 
+     "prec", 
+     col = azuis, 
+     breaks = breaks)
+```
+
+Os polígonos podem ser convertidos para uma imagem raster. Para isso, define-se primeiro a resolução espacial do raster, em em seguida, são atribuídos os valores (Figura \@ref(fig:plot-voronoi-raster)).
+
+```{r plot-voronoi-raster, fig.align='center', fig.cap='Imagem, warning=FALSE}
+#para criar uma imagem raster em branco
+r <- rast(vVerao, 
+          res = 0.01)
+
+#para criar a imagem com os dados
+vr <- rasterize(vVerao, 
+                r, 
+                "prec")
+```
+
+```{r }
+#para plotar o raster
+plot(vr, 
+     breaks = breaks, 
+     col = azuis)
+```
+
+##### Validação cruzada da interpolação por polígonos de Voronoi
+
+Para avaliar o desempenho da interpolação por polígonos de Voronoi, vamos usar a **validação cruzada**. Esta técnica consiste em particionar o conjunto de dados em subconjuntos mutuamente exclusivos. Em seguida, alguns destes subconjuntos são usados para a estimação dos parâmetros do modelo (dados de treinamento), sendo os subconjuntos restantes (dados de validação) usados para a validação. Existem diversas formas de particionar os dados, tais como: métodos *holdout*, *k-fold* e o *leave-one-out* (KOHAVI, 1995). Aqui, usaremos o método 'k-fold'.
+
+```{r }
+# validação cruzada usando o método k-fold
+k <- 5
+
+#pode ser qualquer número 
+set.seed(23)
+
+#para gerar números aleatórios entre 1 e 5 do mesmo tamanho dos pontos de entrada de veraoV
+kf <- sample(1:k, 
+             size = nrow(veraoV), 
+             replace=TRUE)  
+
+#para gerar conjunto em branco de 5 NAs 
+rmse <- rep(NA, 
+            k)
+
+#função
+for (i in 1:k) {
+  teste <- veraoV[kf == i, ]  # divide em k conjunto de pontos, 
+                              # (k-1)/k vai para o conjunto de treino,
+  treino <- veraoV[kf != i, ] # e 1/k vai para teste, incluindo todas as variaveis
+  #para gerar os valores para o modelo gerado por interpolação Voronoi
+  v <- voronoi(treino)
+  v
+  teste
+  # para extrair valores do conjunto de dados de treino nos locais do teste
+  p <- terra::extract(v, 
+                      teste)
+  
+  #para calcular o rmse dos 5 pontos
+  rmse[i] <- RMSE(teste$prec, 
+                  p$prec)
+}
+rmse
+```
+
+Foram calculdados 5 valores de RMSE. A média destes valores é mostrada a seguir.
+
+```{r }
+#para obter a média do rmse
+mean(rmse)
+```
+
+O desempenho do modelo é calculado dividindo-se a média do RMSE pelo rmse do "modelo nulo" da precipitação de cada estação comparada com a média de todas as estações. Subtraindo-se este valor de 1, tem-se o desempenho relativo.
+
+```{r }
+#desempenho relativo do modelo
+desemp <- 1 - (mean(rmse) / null)
+
+#para arredondar o resultado
+round(desemp, 
+      3)
+```
+
+Anotamos o valor obtido para posterior comparação com as outras interpolações. 
+
+#### Interpolação por Vizinho mais Próximo (Nearest Neighbor)
+
+A ideia central por trás da Interpolação por Vizinho mais Próximo (*Nearest Neighbor Interpolation*, em inglês) é atribuir ao ponto não amostrado o valor do ponto de amostra mais próximo. Isso significa que não há ponderação pela distância ou outra consideração, apenas uma simples atribuição do valor do vizinho mais próximo.
+
+A Interpolação por Vizinho mais Próximo é frequentemente usada em casos em que a simplicidade é mais importante do que a precisão e em situações em que a variação nos dados é relativamente grande em comparação com a escala dos pontos amostrados.
+
+```{r }
+#para carregar o pacote 'gstat'
+library(gstat)
+
+#para criar um dataframe chamado 'd' a partir do vetor de pontos 'veraoV' gerado anteriormente
+d <- data.frame(geom(veraoV)[,c("x", "y")], 
+                as.data.frame(veraoV))
+
+#para ver as primeiras linhas do objeto
+head(d)
+```
+
+A função `gstat`permite gerar um objeto do tipo lista, definir a fórmula incluindo apenas uma variável (prec~1), as coordenadas geográficas dos pontos, o banco de dados (d), o número máximo de vizinhos e o 'idp' (*inverse distance power*), no caso, igual a zero (idp = 0) para que todos os vizinhos tenham o mesmo peso. O resultado é o mapa da Figura \@ref(fig:plot-vizinho).
+
+```{r warning=FALSE, plot-vizinho, fig.align = 'center', fig.cap='Precipitação (mm) segundo Interpolação por Vizinho mais Próximo'}
+#para criar um objeto gstat do tipo lista e definir as coordenadas e dados
+gs <- gstat(formula=prec~1, 
+            locations=~x+y, 
+            data=d, 
+            nmax=5, 
+            set=list(idp = 0))
+
+#para criar a interpolação por vizinho mais próximo a partir imagem raster em branco 'r'
+nn <- interpolate(r, 
+                  gs,
+                  debug.level=0)
+
+#para recortar com a máscara 'vr'
+nnmsk <- mask(nn, 
+              vr)
+
+#para carregar o pacote para definir paleta de cores
+library(paletteer)
+
+#para gerar paleta de cores
+pal <- paletteer_c("ggthemes::Blue-Green Sequential", 
+                   100)
+
+#para plotar
+plot(nnmsk, 
+     1, 
+     col = pal)
+```
+
+##### Validação cruzada do modelo por Vizinho mais Próximo
+
+```{r }
+#para gerar o rmse do vizinho mais próximo
+rmsevp <- rep(NA, k)
+
+#função
+for (i in 1:k) {
+  test <- d[kf == i, ]
+  train <- d[kf != i, ]
+  gscv <- gstat(formula=prec~1, 
+                locations=~x+y, 
+                data=train, 
+                nmax=5, 
+                set=list(idp = 0))
+  p <- predict(gscv, 
+               test, 
+               debug.level=0)$var1.pred
+  rmsevp[i] <- RMSE(test$prec, 
+                    p)
+}
+```
+
+```{r }
+#para ver o resultado
+mean(rmsevp)
+```
+
+```{r }
+#para calcular o desempenho relativo
+desemp_vp <- 1 - (mean(rmsevp) / null)
+
+#para arredondar o resultado
+round(desemp_vp,
+      3)
+```
+
+
+#### Interpolação pela Ponderação pelo Inverso da Distância (IDW)
+
+Nesta técnica, os valores em um local desconhecido são estimados com base na média ponderada dos valores conhecidos mais próximos, com os pesos atribuídos inversamente à distância entre os pontos de amostra e o local de estimativa. Em outras palavras, os pontos de amostra mais próximos têm um peso maior na estimativa, enquanto os pontos mais distantes têm um peso menor. Se a potência do inverso da distância (idp) for 2, corresponde ao modelo gravitacional Figura \@ref(fig:plot-idw). É possível fazer mapas diferentes variando o valor de 'idp' no código a seguir.
+
+```{r warning=FALSE, plot-idw, fig.align = 'center', fig.cap='Precipitação (mm) segundo Interpolação pela Ponderação pelo Inverso da Distância (IDW)'}
+
+#para criar um objeto gstat do tipo lista e definir as coordenadas e dados
+gs_idw <- gstat(formula=prec~1, 
+            locations=~x+y, 
+            data=d, 
+            nmax=Inf, 
+            set=list(idp=2))
+
+#para interpolar usando a imagem raster em branco e as definições acima
+idw <- interpolate(r, 
+                   gs_idw, 
+                   debug.level=0)
+
+#para recortar a área com a máscara 'vr'
+idwr <- mask(idw, 
+             vr)
+
+#para plotar
+plot(idwr, 
+     1, 
+     col = pal)
+```
+
+##### Validação cruzada do modelo por Ponderação pelo Inverso da Distância
+
+Seguindo o roteiro anterior, temos:
+
+```{r }
+#para calcular o rmse para a interpolação idw
+rmseidw <- rep(NA, 
+               k)
+
+#função
+for (i in 1:k) {
+  test <- d[kf == i, ]
+  train <- d[kf != i, ]
+  gsidw <- gstat(formula=prec~1, 
+                 locations=~x+y, 
+                 data=train, 
+                 nmax=5, 
+                 set=list(idp = 0))
+  
+  p <- predict(gscv, 
+               test, 
+               debug.level=0)$var1.pred
+  rmseidw[i] <- RMSE(test$prec, p)
+}
+```
+
+```{r }
+#para ver o valor médio
+mean(rmseidw)
+```
+
+```{r }
+#para calcular o desempenho relativo
+desemp_idw <- 1 - (mean(rmseidw) / null)
+
+#para arredondar o resultado
+round(desemp_idw,
+      3)
+```
+
+#### Interpolação global por Superfície de Tendência
+
+A interpolação de tendência se concentra em modelar tendências ou padrões globais nos dados espaciais. A interpolação de tendência assume que os dados espaciais estão relacionados a uma função matemática subjacente que descreve a tendência geral dos valores em uma área geográfica. Serve para termos uma ideia da tendência geral dos dados e observar a direção de seu gradiente (Figura \@ref(fig:plot-tend)).
+
+```{r warning=FALSE, plot-tend, fig.align = 'center', fig.cap='Precipitação (mm) segundo Interpolação global por Superfície de Tendência'}
+
+#para gerar o objeto gstat 
+gs_tend <- gstat(formula=prec~1, 
+                  locations=~x+y, 
+                  degree=1, 
+                  data=d)
+
+#para interpolar os valores
+tend_interp <- interpolate(r, 
+                      gs_tend, 
+                      debug.level=0)
+
+#para recortar o objeto com a máscara de SP
+tend_mask <- mask(tend_interp, 
+                 vr)
+
+#para plotar o mapa
+plot(tend_mask, 
+     col = pal, 
+     1)
+```
+
+No caso da interpolação por Superfície de Tendência não faz sentido avaliar seu desempenho por validação cruzada dado o seu objetivo de observação geral da tendência dos dados.
+
+### Abordagens Estocásticas
+
+Abordagens estocásticas para interpolação de dados espaciais incorporam o conceito de incerteza nos dados interpolados. Essas abordagens consideram que as relações espaciais são aleatórias e podem variar. Alguns métodos estocásticos comuns incluem: Krigagem, Simulação Condicional, Processos Pontuais Marcados, Redes Bayesianas Espaciais; Bootstrap Espacial. Aqui ficaremos apenas com a Krigagem Ordinária.
+
+#### Krigagem Ordinária
+
+É um interpolador de abordagem estocástica, pois leva em consideração a incerteza associada às estimativas interpoladas.
+
+Antes de iniciar a análise, no entanto, é necessário verificar se algumas premissas são respeitadas:
+
+- os dados precisam ter distribuição normal;
+
+- os dados precisam ser estacionários;
+
+- os dados não podem ter tendência.
+
+**Passo 1**: Distribuição Normal
+
+Vamos olhar a distribuição da variável 'prec' elaborando um histograma (Figura \@ref(fig:plot-histo)).
+
+```{r warning=FALSE, plot-histo, fig.align = 'center', fig.cap='Histograma da variável precipitação'}
+#para carregar o pacote
+library(rcompanion)
+
+#para plotar o histogram
+plotNormalHistogram(verao$prec)
+```
+
+Vamos olhar também o qq-plot (Figura \@ref(fig:plot-qq)).
+
+
+```{r warning=FALSE, plot-qq, fig.align = 'center', fig.cap='Q-q plot da variável precipitação'}
+#para plotar o qq-plot
+qqnorm(verao$prec,
+       ylab="Precipitação")
+
+#para adicionar a linha
+qqline(verao$prec, col="red")
+```
+
+Os gráficos obtidos sugerem que a distribuição não é normal e que uma transformação da variável 'prec' é necessária. Vamos utilizar o pacote 'bestNormalize' para isso.
+
+```{r warning=FALSE}
+#para carregar o pacote que faz a normalização dos dados
+library(bestNormalize)
+
+#para gerar o modelo normal
+modelo_normal = bestNormalize(verao$prec)
+
+#para ver o resultado
+modelo_normal
+```
+
+De forma automática, a função do pacote 'bestNormalize' escolheu a transformação com o menor valor (orderNorm Transformation) (Figura \@ref(fig:plot-normal)).
+
+```{r warning=FALSE, plot-normal, fig.align = 'center', fig.cap='Histograma da variável precipitação transformada'}
+#para visualizar o histograma da variavel normalizada
+plotNormalHistogram(modelo_normal$x.t)
+```
+
+Vamos precisar retornar ao valor original posteriormente para elaborarmos o mapa com os valores originais de precipitação e não com os desvios-padrão. Assim, já vamos gerar um objeto retornando aos valores originais também.
+
+```{r }
+#para desnormalizar a variável para quando for fazer o mapa final
+prec_original <- predict(modelo_normal, 
+                         newdata = modelo_normal$x.t, 
+                         inverse=TRUE)
+```
+
+**Passo 2**: Estacionaridade
+
+Estacionaridade significa que a variação local não muda nas diferentes áreas do mapa. Por exemplo, 2 pontos distantes 10 metros em diferentes locais devem ter diferenças similares do valor medido (e.g., precipitação). Isto pode ser analisado a partir do mapa de Voronoi que já elaboramos.
+
+
+**Passo 3**: Remoção da tendência do mapa e ajuste do variograma
+
+Para remover a tendência do mapa, calculamos uma equação polinomial de 1ª ordem que será utilizada durante a interpolação por krigagem.
+
+
+```{r warning=FALSE, comment=FALSE, message=FALSE}
+#para carregar os pacotes
+library(sf)
+library(spatstat)
+
+# para definir a equação polinomial de 1ª ordem
+f.1 <- as.formula(modelo_normal$x.t ~ X + Y) 
+ 
+# para adicionar as colunas X e Y no objeto 'verao_sf'
+verao_sf <- verao_sf %>%
+    mutate(X = unlist(map(verao_sf$geometry,1)),
+           Y = unlist(map(verao_sf$geometry,2)))
+```
+
+Utilizamos um variograma (Figura \@ref(fig:variograma)) como um modelo gráfico para analisar a estrutura de dependência espacial em um conjunto de dados espacialmente distribuídos. Ele  descreve como a variabilidade entre observações muda com a distância entre essas observações. Permite avaliar a autocorrelação espacial. 
+
+```{r echo=FALSE, fig.align = 'center', variograma, fig.cap='Variograma'}
+knitr::include_graphics(rep("variograma.jpg"))
+```
+
+Ao analisar o variograma, podemos inferir informações valiosas, como:
+
+**Alcance** (*Range*): A distância a partir da qual a autocorrelação espacial não é mais significativa.
+
+**Efeito pepita** (*Nugget*): A variabilidade que é inerente à escala menor que o espaçamento entre as amostras, muitas vezes associada a variação microscópica ou erro de medição.
+
+**Patamar** (*Sill*): onde a variância atige 95% de seu máximo.
+
+O variograma é uma ferramenta importante para modelagem espacial em geostatística, especialmente em técnicas como a krigagem, que é um método de interpolação espacial que utiliza informações do variograma para estimar valores desconhecidos em locais não amostrados.
+
+Este modelo se constitui na curva da *função de variância γ(h)* dos dados, onde *h* é um intervalo de distância até uma origem arbitrária. A relação matemática é dada por (FERREIRA, 2014):
+
+$$
+γ(h) = ½n \sum_{i = 1}^{n}(Z_{i_+h} - Z_i)^2 
+$$
+
+Onde, 
+
+*n* é o número de pares de *Z* comparados;
+
+*Z* é uma variável aleatória distribuída na superfície *S* que assume o valor *z~i~* na posição *x~i~* e *z~i+h~* na posição *x~i+h~*. 
+
+Vamos adaptar a explicação de Ferreira (2014) de acordo com os dados do nosso exemplo. Considerando a precipitação em mm durante o verão de 2022 no estado de São Paulo, se tomarmos o valor *z~i~* = 642 mm e *z~i+1000m~* = 694 mm, significa que enquanto em um ponto *i* do estado a precipitação foi de 642 mm, em outro ponto distante 1000m de i (h = 1000m), a precipitação foi de 694 mm. Esta equação é usada para gerar o variograma em nuvem.
+
+Vamos ver a lista de modelos disponíveis no pacote 'gstat'.
+
+```{r}
+#para ver a lista de modelos disponíveis no pacote 'gstat'
+vgm()
+```
+
+Vamos ver os modelos possíveis de serem ajustados na análise do variograma.
+
+```{r }
+#para ver os de modelos
+print(show.vgms(par.strip.text = list(cex = 0.70)))
+```
+
+Vamos começar a análise dos dados de precipitação gerando um variogram de nuvem (Figura \@ref(fig:plot-var-prec)).
+
+```{r warning=FALSE, plot-var-prec, fig.align = 'center', fig.cap='Variograma em nuvem da precipitação'}
+#para calcular o variograma em nuvem
+var_nuvem <- variogram(modelo_normal$x.t ~ 1, verao_sf, cloud = TRUE)
+
+#para plotar o variograma
+plot(var_nuvem)
+```
+
+O variograma da amostra representa a média do variograma em nuvem segundo intervalos de distâncias, facilitando a identificação do modelo mais adequado.
+Vamos gerar o variograma da amostra dos dados (Figura \@ref(fig:plot-var-amostra)).
+
+```{r warning=FALSE, plot-var-amostra, fig.align = 'center', fig.cap='Variograma da amostra'}
+#para gerar o variograma da amostra
+var_amostra <- variogram(modelo_normal$x.t ~ 1, data = verao_sf)
+
+#para plotar
+plot(var_amostra)
+```
+
+Com o modelo para a remoção de tendência (f.1), vamos calcular o variograma usando os dados normalizados e sem tendência. A partir da visualização do variograma da amostra, definimos alguns valores iniciais: sill parcial (psill) = 1.05, modelo = Ste, alcance (range) = 5 e efeito pepita (nugget) = 0.01 (Figura \@ref(fig:plot-var-inicial)).
+
+```{r warning=FALSE, plot-var-inicial, fig.align = 'center', fig.cap='Variograma inicial'}
+#para definir o modelo inicial
+var_inicial <- vgm(psill = 1.05,
+                   model = "Ste",
+                   range = 5,
+                   nugget = 0.01)
+
+#para visualizar o modelo teórico e os dados
+plot(var_amostra, 
+     var_inicial, 
+     cutoff = 50, 
+     cex = 0.8)
+
+```
+
+É sempre importante avaliar se a anisotropia é relevante. Anisotropia pode ser avaliada pela visualização de variogramas em diversas direções. Aqui, vamos olhar os ângulos 0 (Norte), 45 (Nordeste), 90 (Leste), 135 (Sudeste) (Figura \@ref(fig:plot-var-ani)).
+
+```{r warning=FALSE, plot-var-ani, fig.align = 'center', fig.cap='Variogramas em diferentes direções'}
+#para ajustar o modelo em 4 direções
+var_ani <- variogram(modelo_normal$x.t ~ 1, 
+                     data = verao_sf, 
+                     alpha=c(0, 45, 90, 135), 
+                     cutoff=50)
+
+#para plotar os variogramas
+plot(var_ani, 
+     var_inicial)
+```
+
+O modelo para a direção Norte parece ter um ajuste melhor, embora a anisotropia não pareça ser muito relevante no conjunto de dados. Como observamos tendência geral, vamos considerá-la no modelo para interpolação da precipitação. Assim, vamos gerar o modelo sem tendência, usando o modelos f.1 (Figura \@ref(fig:plot-var-ajust)).
+
+```{r warning=FALSE, plot-var-ajust, fig.align = 'center', fig.cap='Variograma do modelo ajustado'}
+#para calcular o variograma sem tendência, usando o modelo f.1
+var.smpl <- variogram(f.1, 
+                      verao_sf, 
+                      cloud = FALSE, 
+                      cutoff=50, 
+                      width=0.5)
+
+#para ajustar o modelo usando valores aproximados de psill, range e nugget
+dat.fit  <- fit.variogram(var.smpl, 
+                          fit.ranges = FALSE, 
+                          fit.sills = FALSE,
+                          vgm(psill=1.0, 
+                              model="Ste", 
+                              range=3.1, 
+                              nugget=0.15))
+
+#o gráfico a seguir ajuda a avaliar o ajuste
+plot(var.smpl, 
+     dat.fit, 
+     xlim=c(0,50))
+```
+
+O pacote 'spatstat' tem uma função para o cálculo automático do melhor ajuste. Ele deve sempre ser usado com cautela. É indicado sempre olhar os dados antes de fazer o ajuste automático (Figura \@ref(fig:plot-var-ajust-auto)).
+
+```{r warning=FALSE, plot-var-ajust-auto, fig.align = 'center', fig.cap='Variograma do modelo com ajuste automático'}
+
+#para fazer o ajuste automático
+dat.fit.auto = fit.variogram(var.smpl, 
+                             dat.fit)
+
+#para plotar o variograma
+print(plot(var.smpl, 
+           pl = T,
+           model = dat.fit.auto))
+```
+
+Para ver os parâmetros do ajuste automático.
+
+```{r}
+#para ver os resultados do modelo ajustado automaticamente
+dat.fit.auto
+```
+
+**Passo 4**: Krigagem Ordinária
+
+Agora com o modelo ajustado, partiremos para a interpolação. Primeiro geramos uma grade do tamanho do objeto 'ufsp' para que a interpolação seja feita na área toda (Figura \@ref(fig:plot-krig)).
+
+
+```{r warning=FALSE, plot-krig, fig.align = 'center', fig.cap='Resultado da interpolação por Krigagem Ordinária, com valores transformados'}
+#para carregar o pacote 'stars'
+library(stars)
+# para criar a grade
+grade = st_as_stars(st_bbox(st_buffer(ufsp, 
+                                      0.001)))
+
+# modelo de interpolação
+kr <- gstat(formula=modelo_normal$x.t~1, 
+            data=verao_sirgas, 
+            model=dat.fit.auto)
+
+# Interpolação
+z = predict(kr, 
+            grade)
+
+library(colorspace)
+# para criar um vetor de cores usando hcl.colors()
+cores <- hcl.colors(5, 
+                    "YlGnBu")
+
+# para inverter a ordem das cores usando rev()
+cores_invertidas <- rev(cores)
+
+# Especificar o número desejado de intervalos
+numero_intervalos <- 5
+
+# Calcular os intervalos de classes
+intervalos_classes <- cut(z$var1.pred, 
+                          breaks = numero_intervalos)
+
+#para plotar
+plot(z, 
+     col = cores_invertidas, 
+     breaks = c(-0.8233357, -0.383, 0.0564, 0.492, 0.936, 1.376089),
+     reset = FALSE)
+
+```
+
+Vamos visualizar também a variância da predição, ou seja a espacialização da incerteza. O mapa da variância mostra os locais onde o erro foi menor (valores mais baixos) e onde foi maior (valores mais altos) (Figura \@ref(fig:plot-variancia)).
+
+```{r warning=FALSE, plot-variancia, fig.align = 'center', fig.cap='Variância da interpolação por Krigagem Ordinária'}
+
+# Calcular os intervalos de classes
+intervalos_classes <- cut(z$var1.var, breaks = numero_intervalos)
+
+#para plotar o mapa da variância
+plot(z["var1.var"], 
+     col = cores_invertidas, 
+     breaks = c(0.817, 0.878, 0.938, 0.999, 1.06, 1.12),
+     reset = FALSE)
+```
+
+Agora, vamos retornar aos valores originais, antes da normalização da variável (Figura \@ref(fig:plot-original)).
+
+```{r warning=FALSE, plot-original, fig.align = 'center', fig.cap='Resultado da interpolação por Krigagem Ordinária, com valores originais'}
+#para retornar aos valores originais
+z$original <- predict(modelo_normal, 
+                      newdata=z$var1.pred, 
+                      inverse=TRUE)
+
+#para plotar os valores originais
+plot(z["original"], 
+     col = cores_invertidas, 
+     reset = FALSE)
+plot(st_geometry(ufsp), 
+     add=TRUE)
+```
+
+Como vemos, a escala de cores não está correta e faltam muitos detalhes para termos um mapa isarítmico finalizado. Vamos converter os objetos do tipo 'stars' para formato raster para podermos usar o 'ggplot2' para a elaboração do mapa final. Em seguida, exportamos o mapa em formato jpg.
+
+```{r}
+#para converter como raster
+prec_raster <- st_as_stars(z)
+
+#para recortar o raster 
+prec_ufsp <- st_crop(prec_raster, 
+                     ufsp)
+```
+
+Usando o 'ggplot2', elaboramos o mapa interpolado com a camada dos municípios do estado de São Paulo, escala gráfica, título e outros elementos.
+
+```{r eval=FALSE, warning=FALSE, plot-isaritmico, fig.align = 'center', fig.cap='Mapa isarítmico da precipitação no verão de 2022 no estado de São Paulo'}
+#para carregar os pacotes
+library(ggplot2)
+library(ggspatial) #pacote que permite colocar escala gráfica
+
+# para gerar o mapa
+mapa_prec_verao <- ggplot() +
+  geom_stars(data = prec_ufsp, 
+             aes(fill = original)) +
+  scale_fill_continuous_sequential(palette = "BuPu", 
+                                   na.value = "grey95")+
+  geom_sf(data = UFBR, 
+          colour = "grey50", 
+          alpha = 0)+
+  labs(
+    fill = "Precipitação (mm)",
+    caption = "Fonte: CEMADEN (2023) \n Elaborado por: @Ligiaviz"
+  ) +
+  geom_sf(data = ufsp, 
+          colour = "grey50", 
+          alpha = 0) +
+  xlab(NULL) +
+  ylab(NULL) +
+  theme(legend.position = c(0.2, 0.2),
+        plot.title = element_text(size = 12, 
+                                  hjust = 0.98, 
+                                  vjust = -15),
+        legend.text = element_text(size = 9))+
+  coord_sf(xlim = c(-53.10503, -44.15377), 
+           ylim = c(-25.33229, -19.77919), 
+           expand = FALSE)+
+  ggtitle("Precipitação no verão de 2022,\n estado de São Paulo") +
+  theme(panel.background = element_rect(fill = "white"),
+        panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank())+
+  ggspatial::annotation_scale(location = "br", 
+                              width_hint = 0.3, 
+                              line_width = 0.5, 
+                              height = unit(0.1,"cm"))
+
+#para ver o mapa
+mapa_prec_verao
+
+#para exportar o mapa como figura jpg
+ggsave("mapa_prec_verao.jpg", 
+       width = 8, 
+       height = 8, 
+       dpi = 300)
+```
+
+O mapa resultante deverá ser igual à Figura \@ref(fig:plot-isa).
+
+```{r echo=FALSE, fig.align = 'center', plot-isa, fig.cap='Mapa isarítmico da precipitação do verão de 2022, no estado de São Paulo, a partir de Krigagem Ordinária'}
+knitr::include_graphics(rep("mapa_prec_verao.jpg"))
+```
+## Referências citadas
+
+DAVIS, J. 2023. **Introduction to Environmental Data Science**. Cap. 9 Spatial Interpolation. https://bookdown.org/igisc/EnvDataSci/spatial-interpolation.html
+
+FERREIRA, M.C. **Iniciação à análise geoespacial**: teoria, técnicas e exemplos para geoprocessamento. São Paulo: Editora UNESP, 2014. 343p.
+
+FUSHITA, A.T., VASCONCELOS, V.V. (2020). **Interpolação e Geoestatística em R**. https://www.youtube.com/watch?v=O1hiz-7FmmI
+
+GIMOND, M. **Intro to GIS and Spatial Analysis**. Chapter 14 - Spatial Interpolation (https://mgimond.github.io/Spatial/spatial-interpolation.html)
+
+ZHU, C., ZHENG, C., SHU, S., HAN, G. 2012. A survey on coverage and connectivity issues in wireless sensor networks. **Journal of Network and Computer Applications**, 35(2):619-632 https://doi.org/10.1016/j.jnca.2011.11.016
+
+## Sugestões de leitura
+
+DAVIS, J. 2023. **Introduction to Environmental Data Science**.
+https://bookdown.org/igisc/EnvDataSci/spatial-interpolation.html
+
+DORMAN, M. 2014. **Learning R for Geospatial Analysis**: Leverage the power of R to elegantly manage crucial geospatial analysis tasks. Birmingham: Packt Publishing Ltd., 364p. Chapter 8 - Spatial Interpolation of Point Data.
+
+ENGEL, C. 2019. **Using Spatial Data with r**. https://cengel.github.io/R-spatial/.
+
+KOHAVI, R. A study of cross-validation and bootstrap for accuracy estimation and model selection. In: International joint Conference on artificial intelligence. [S.l.: s.n.], 1995. v. 14, p. 1137–1145 (https://www.ijcai.org/Proceedings/95-2/Papers/016.pdf)
+
+LOVELACE, R. 2022. **Geocomputation with R**. https://geocompr.robinlovelace.net/index.html.
+
+MORAGA, P. **Spatial Statistics for Data Science**: Theory and Practice with R. https://www.paulamoraga.com/book-spatial/index.html
+
+PEBESMA, E., BIVAND, R. 2022. **Spatial Data Science**. https://keen-swartz-3146c4.netlify.app/.
+
+YAMAMOTO, J.K. 2020. **Estatística, análise e Interpolação de Dados Geoespaciais**. 1. ed. Sao Paulo: Gráfica Paulo's. 308p.

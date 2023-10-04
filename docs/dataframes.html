@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title> 3 Dataframes | Cartografia Temática em R para estudantes de Geografia</title>
   <meta name="description" content=" 3 Dataframes | Cartografia Temática em R para estudantes de Geografia" />
-  <meta name="generator" content="bookdown 0.34 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.35 and GitBook 2.6.7" />
 
   <meta property="og:title" content=" 3 Dataframes | Cartografia Temática em R para estudantes de Geografia" />
   <meta property="og:type" content="book" />
@@ -51,6 +51,14 @@
 <link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
 <link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
 <script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/htmlwidgets-1.6.2/htmlwidgets.js"></script>
+<link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-1.3.1/leaflet.js"></script>
+<link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
+<script src="libs/proj4-2.6.2/proj4.min.js"></script>
+<script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
+<link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-binding-2.1.2/leaflet.js"></script>
 
 
 <style type="text/css">
@@ -243,7 +251,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="12" data-path="quanti5.html"><a href="quanti5.html"><i class="fa fa-check"></i><b>12</b> Dados quantitativos a partir de amostras: mapa isarítmico</a>
 <ul>
-<li class="chapter" data-level="12.1" data-path="quanti5.html"><a href="quanti5.html#referências-sugeridas-4"><i class="fa fa-check"></i><b>12.1</b> Referências sugeridas</a></li>
+<li class="chapter" data-level="12.1" data-path="quanti5.html"><a href="quanti5.html#abordagens-de-interpolação-espacial"><i class="fa fa-check"></i><b>12.1</b> Abordagens de interpolação espacial</a>
+<ul>
+<li class="chapter" data-level="12.1.1" data-path="quanti5.html"><a href="quanti5.html#abordagens-determinísticas"><i class="fa fa-check"></i><b>12.1.1</b> Abordagens determinísticas</a></li>
+<li class="chapter" data-level="12.1.2" data-path="quanti5.html"><a href="quanti5.html#abordagens-estocásticas"><i class="fa fa-check"></i><b>12.1.2</b> Abordagens Estocásticas</a></li>
+</ul></li>
+<li class="chapter" data-level="12.2" data-path="quanti5.html"><a href="quanti5.html#referências-citadas-2"><i class="fa fa-check"></i><b>12.2</b> Referências citadas</a></li>
+<li class="chapter" data-level="12.3" data-path="quanti5.html"><a href="quanti5.html#sugestões-de-leitura"><i class="fa fa-check"></i><b>12.3</b> Sugestões de leitura</a></li>
 </ul></li>
 <li class="chapter" data-level="13" data-path="quanti6.html"><a href="quanti6.html"><i class="fa fa-check"></i><b>13</b> Mapa de fluxos: movimentos no espaço</a></li>
 <li class="chapter" data-level="14" data-path="osm.html"><a href="osm.html"><i class="fa fa-check"></i><b>14</b> Usando dados do Open Street Map</a></li>
@@ -306,83 +320,51 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Também será necessário carregá-lo.</p>
 <div class="sourceCode" id="cb140"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb140-1"><a href="dataframes.html#cb140-1" tabindex="-1"></a><span class="co">#para carregar o pacote instalado</span></span>
 <span id="cb140-2"><a href="dataframes.html#cb140-2" tabindex="-1"></a><span class="fu">library</span>(R.utils)</span></code></pre></div>
-<pre><code>## Loading required package: R.oo</code></pre>
-<pre><code>## Loading required package: R.methodsS3</code></pre>
-<pre><code>## R.methodsS3 v1.8.2 (2022-06-13 22:00:14 UTC) successfully loaded. See ?R.methodsS3 for help.</code></pre>
-<pre><code>## R.oo v1.25.0 (2022-06-12 02:20:02 UTC) successfully loaded. See ?R.oo for help.</code></pre>
-<pre><code>## 
-## Attaching package: &#39;R.oo&#39;</code></pre>
-<pre><code>## The following object is masked from &#39;package:R.methodsS3&#39;:
-## 
-##     throw</code></pre>
-<pre><code>## The following objects are masked from &#39;package:methods&#39;:
-## 
-##     getClasses, getMethods</code></pre>
-<pre><code>## The following objects are masked from &#39;package:base&#39;:
-## 
-##     attach, detach, load, save</code></pre>
-<pre><code>## R.utils v2.12.2 (2022-11-11 22:00:03 UTC) successfully loaded. See ?R.utils for help.</code></pre>
-<pre><code>## 
-## Attaching package: &#39;R.utils&#39;</code></pre>
-<pre><code>## The following object is masked from &#39;package:utils&#39;:
-## 
-##     timestamp</code></pre>
-<pre><code>## The following objects are masked from &#39;package:base&#39;:
-## 
-##     cat, commandArgs, getOption, isOpen, nullfile, parse,
-##     warnings</code></pre>
 <p>O arquivo com extensão csv está disponível no site da Fundação SEADE. Desta forma, faremos o download do arquivo CSV após a identificação da url (<em>Uniform Resource Locator</em>, ou Localizador Uniforme de Recursos - significa endereço web, ou seja, o texto que você digita na barra do navegador para acessar uma determinada página ou serviço). Para isso, usaremos a função <code>download.file</code> do pacote <strong>R.utils</strong>. A documentação completa dos pacotes e funções estão disponíveis em <a href="https://www.rdocumentation.org/">R documentation</a>.</p>
-<div class="sourceCode" id="cb153"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb153-1"><a href="dataframes.html#cb153-1" tabindex="-1"></a><span class="co">#se quiser identificar a url de um determinado conjunto de dados, faça o download do arquivo desejado manualmente e clique em Ctrl+J. O navegador mostrará o caminho completo, que poderá ser copiado. Para o download do arquivo com os municípios do estado de São Paulo, use o comando a seguir. Use o nome do arquivo como arquivo de destino (destfile) </span></span>
-<span id="cb153-2"><a href="dataframes.html#cb153-2" tabindex="-1"></a><span class="fu">download.file</span>(<span class="at">url =</span> <span class="st">&quot;https://repositorio.seade.gov.br/dataset/71bffea4-0650-4f2e-9d82-b0179137cd3e/resource/ef737887-69d9-4afa-a513-00aa78ec2419/download/evolucao_casamentos.csv&quot;</span>, <span class="at">destfile =</span> <span class="st">&quot;evolucao_casamentos.csv&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb141"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb141-1"><a href="dataframes.html#cb141-1" tabindex="-1"></a><span class="co">#se quiser identificar a url de um determinado conjunto de dados, faça o download do arquivo desejado manualmente e clique em Ctrl+J. O navegador mostrará o caminho completo, que poderá ser copiado. Para o download do arquivo com os municípios do estado de São Paulo, use o comando a seguir. Use o nome do arquivo como arquivo de destino (destfile) </span></span>
+<span id="cb141-2"><a href="dataframes.html#cb141-2" tabindex="-1"></a><span class="fu">download.file</span>(<span class="at">url =</span> <span class="st">&quot;https://repositorio.seade.gov.br/dataset/71bffea4-0650-4f2e-9d82-b0179137cd3e/resource/ef737887-69d9-4afa-a513-00aa78ec2419/download/evolucao_casamentos.csv&quot;</span>, <span class="at">destfile =</span> <span class="st">&quot;evolucao_casamentos.csv&quot;</span>)</span></code></pre></div>
 <p>Também precisaremos do arquivo com os nomes dos municípios.</p>
-<div class="sourceCode" id="cb154"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb154-1"><a href="dataframes.html#cb154-1" tabindex="-1"></a><span class="co">#para fazer download do arquivo &#39;codigos_municipios_regioes.csv&#39;</span></span>
-<span id="cb154-2"><a href="dataframes.html#cb154-2" tabindex="-1"></a></span>
-<span id="cb154-3"><a href="dataframes.html#cb154-3" tabindex="-1"></a><span class="fu">download.file</span>(<span class="at">url =</span> <span class="st">&quot;https://repositorio.seade.gov.br/dataset/1617c335-f5ab-426c-b175-280d4e41ec1c/resource/1871ac05-7b7f-4c13-9b4a-23c7d41fd988/download/codigos_municipios_regioes.csv&quot;</span>, <span class="at">destfile =</span> <span class="st">&quot;codigos_municipios_regioes.csv&quot;</span>)</span></code></pre></div>
-<div class="sourceCode" id="cb155"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb155-1"><a href="dataframes.html#cb155-1" tabindex="-1"></a><span class="co">#para criar um dataframe com o nome &#39;evol_casam&#39; a partir do arquivo csv. Como o arquivo contém a primeira linha de cabeçalho, é preciso indicar que &#39;header = TRUE&#39;. Como os campos estão separados por ponto e vírgula, deve-se indicar &#39;sep = &quot;;&quot; </span></span>
-<span id="cb155-2"><a href="dataframes.html#cb155-2" tabindex="-1"></a>evol_casam <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;C:/Users/l_viz/Documents/RCartoTematica/evolucao_casamentos.csv&quot;</span>, <span class="at">header =</span> <span class="cn">TRUE</span>, <span class="at">sep =</span> <span class="st">&quot;;&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb142"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb142-1"><a href="dataframes.html#cb142-1" tabindex="-1"></a><span class="co">#para fazer download do arquivo &#39;codigos_municipios_regioes.csv&#39;</span></span>
+<span id="cb142-2"><a href="dataframes.html#cb142-2" tabindex="-1"></a></span>
+<span id="cb142-3"><a href="dataframes.html#cb142-3" tabindex="-1"></a><span class="fu">download.file</span>(<span class="at">url =</span> <span class="st">&quot;https://repositorio.seade.gov.br/dataset/1617c335-f5ab-426c-b175-280d4e41ec1c/resource/1871ac05-7b7f-4c13-9b4a-23c7d41fd988/download/codigos_municipios_regioes.csv&quot;</span>, <span class="at">destfile =</span> <span class="st">&quot;codigos_municipios_regioes.csv&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb143"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb143-1"><a href="dataframes.html#cb143-1" tabindex="-1"></a><span class="co">#para criar um dataframe com o nome &#39;evol_casam&#39; a partir do arquivo csv. Como o arquivo contém a primeira linha de cabeçalho, é preciso indicar que &#39;header = TRUE&#39;. Como os campos estão separados por ponto e vírgula, deve-se indicar &#39;sep = &quot;;&quot; </span></span>
+<span id="cb143-2"><a href="dataframes.html#cb143-2" tabindex="-1"></a>evol_casam <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;C:/Users/l_viz/Documents/RCartoTematica/evolucao_casamentos.csv&quot;</span>, <span class="at">header =</span> <span class="cn">TRUE</span>, <span class="at">sep =</span> <span class="st">&quot;;&quot;</span>)</span></code></pre></div>
 <p>Vamos abrir o segundo arquivo csv que contém os códigos do IBGE e os nomes dos municípios do Estado de São Paulo.</p>
-<div class="sourceCode" id="cb156"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb156-1"><a href="dataframes.html#cb156-1" tabindex="-1"></a><span class="co">#Este arquivo está codificado em &#39;latin1&#39;.</span></span>
-<span id="cb156-2"><a href="dataframes.html#cb156-2" tabindex="-1"></a><span class="co">#para criar um dataframe com o nome &#39;codigos&#39;, precisamos indicar o encoding como &#39;latin1&#39; para que a acentuação seja lida corretamente</span></span>
-<span id="cb156-3"><a href="dataframes.html#cb156-3" tabindex="-1"></a>codigos <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;C:/Users/l_viz/Documents/RCartoTematica/codigos_municipios_regioes.csv&quot;</span>, <span class="at">header =</span> <span class="cn">TRUE</span>, <span class="at">sep =</span> <span class="st">&quot;;&quot;</span>, <span class="at">dec =</span> <span class="st">&quot;.&quot;</span>, <span class="at">stringsAsFactors=</span><span class="cn">FALSE</span>, <span class="at">encoding=</span><span class="st">&quot;latin1&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb144"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb144-1"><a href="dataframes.html#cb144-1" tabindex="-1"></a><span class="co">#Este arquivo está codificado em &#39;latin1&#39;.</span></span>
+<span id="cb144-2"><a href="dataframes.html#cb144-2" tabindex="-1"></a><span class="co">#para criar um dataframe com o nome &#39;codigos&#39;, precisamos indicar o encoding como &#39;latin1&#39; para que a acentuação seja lida corretamente</span></span>
+<span id="cb144-3"><a href="dataframes.html#cb144-3" tabindex="-1"></a>codigos <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;C:/Users/l_viz/Documents/RCartoTematica/codigos_municipios_regioes.csv&quot;</span>, <span class="at">header =</span> <span class="cn">TRUE</span>, <span class="at">sep =</span> <span class="st">&quot;;&quot;</span>, <span class="at">dec =</span> <span class="st">&quot;.&quot;</span>, <span class="at">stringsAsFactors=</span><span class="cn">FALSE</span>, <span class="at">encoding=</span><span class="st">&quot;latin1&quot;</span>)</span></code></pre></div>
 <p>Como o banco de dados é muito grande, podemos olhar para uma amostra bem menor, digamos, de 6 linhas do começo do banco de dados ou das últimas linhas. Para isso usamos a função <strong>head()</strong> (<em>cabeça</em>) ou <strong>tail()</strong> (<em>cauda</em>), respectivamente. Rode as duas funções para ‘evol_casam’ e ‘codigos’.</p>
-<div class="sourceCode" id="cb157"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb157-1"><a href="dataframes.html#cb157-1" tabindex="-1"></a><span class="co">#para ver as 6 primeiras linhas do início</span></span>
-<span id="cb157-2"><a href="dataframes.html#cb157-2" tabindex="-1"></a><span class="fu">head</span>(evol_casam)</span></code></pre></div>
-<pre><code>##    ano cod_ibge entre.pessoas.de.sexos.diferentes
-## 1 2000  3500105                               139
-## 2 2000  3500204                                22
-## 3 2000  3500303                               119
-## 4 2000  3500402                                69
-## 5 2000  3500501                                73
-## 6 2000  3500550                                14
-##   entre.pessoas.do.mesmo.sexo ignorado total
-## 1                          NA       NA   139
-## 2                          NA       NA    22
-## 3                          NA       NA   119
-## 4                          NA       NA    69
-## 5                          NA       NA    73
-## 6                          NA       NA    14</code></pre>
-<div class="sourceCode" id="cb159"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb159-1"><a href="dataframes.html#cb159-1" tabindex="-1"></a><span class="fu">head</span>(codigos)</span></code></pre></div>
-<pre><code>##   cod_ibge          municipios                   cod_ra
-## 1  3500000 Estado de São Paulo Estado sem especificação
-## 2  3500105          Adamantina                      691
-## 3  3500204              Adolfo                      689
-## 4  3500303               Aguaí                      686
-## 5  3500402      Águas da Prata                      686
-## 6  3500501    Águas de Lindóia                      686
-##            reg_administrativa       reg_metropolitanas cod_ibge6
-## 1    Estado sem especificação Estado sem especificação    350000
-## 2   RA de Presidente Prudente        Demais municípios    350010
-## 3 RA de São José do Rio Preto RM São José do Rio Preto    350020
-## 4              RA de Campinas        Demais municípios    350030
-## 5              RA de Campinas        Demais municípios    350040
-## 6              RA de Campinas        Demais municípios    350050
-##                    pop2020             porte_pop2020
-## 1 Estado sem especificação  Estado sem especificação
-## 2                    33894 Mais de 20 mil até 50 mil
-## 3                     3447                 Até 5 mil
-## 4                    35608 Mais de 20 mil até 50 mil
-## 5                     7797  Mais de 5 mil até 10 mil
-## 6                    18374 Mais de 10 mil até 20 mil
+<div class="sourceCode" id="cb145"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb145-1"><a href="dataframes.html#cb145-1" tabindex="-1"></a><span class="co">#para ver as 6 primeiras linhas do início</span></span>
+<span id="cb145-2"><a href="dataframes.html#cb145-2" tabindex="-1"></a><span class="fu">head</span>(evol_casam)</span></code></pre></div>
+<pre><code>##    ano cod_ibge entre.pessoas.de.sexos.diferentes entre.pessoas.do.mesmo.sexo ignorado
+## 1 2000  3500105                               139                          NA       NA
+## 2 2000  3500204                                22                          NA       NA
+## 3 2000  3500303                               119                          NA       NA
+## 4 2000  3500402                                69                          NA       NA
+## 5 2000  3500501                                73                          NA       NA
+## 6 2000  3500550                                14                          NA       NA
+##   total
+## 1   139
+## 2    22
+## 3   119
+## 4    69
+## 5    73
+## 6    14</code></pre>
+<div class="sourceCode" id="cb147"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb147-1"><a href="dataframes.html#cb147-1" tabindex="-1"></a><span class="fu">head</span>(codigos)</span></code></pre></div>
+<pre><code>##   cod_ibge               municipios                   cod_ra          reg_administrativa
+## 1  3500000 Estado sem especificação Estado sem especificação    Estado sem especificação
+## 2  3500105               Adamantina                      691   RA de Presidente Prudente
+## 3  3500204                   Adolfo                      689 RA de São José do Rio Preto
+## 4  3500303                    Aguaí                      686              RA de Campinas
+## 5  3500402           Águas da Prata                      686              RA de Campinas
+## 6  3500501         Águas de Lindóia                      686              RA de Campinas
+##         reg_metropolitanas cod_ibge6                  pop2020             porte_pop2020
+## 1 Estado sem especificação    350000 Estado sem especificação  Estado sem especificação
+## 2        Demais municípios    350010                    33894 Mais de 20 mil até 50 mil
+## 3 RM São José do Rio Preto    350020                     3447                 Até 5 mil
+## 4        Demais municípios    350030                    35608 Mais de 20 mil até 50 mil
+## 5        Demais municípios    350040                     7797  Mais de 5 mil até 10 mil
+## 6        Demais municípios    350050                    18374 Mais de 10 mil até 20 mil
 ##                    cod_drs                      drs
 ## 1 Estado sem especificação Estado sem especificação
 ## 2                        5                  Marília
@@ -390,44 +372,37 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## 4                       14    São João da Boa Vista
 ## 5                       14    São João da Boa Vista
 ## 6                        3                 Campinas</code></pre>
-<div class="sourceCode" id="cb161"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb161-1"><a href="dataframes.html#cb161-1" tabindex="-1"></a><span class="co">#para ver as 6 últimas linhas</span></span>
-<span id="cb161-2"><a href="dataframes.html#cb161-2" tabindex="-1"></a><span class="fu">tail</span>(evol_casam)</span></code></pre></div>
-<pre><code>##        ano cod_ibge entre.pessoas.de.sexos.diferentes
-## 14763 2022  3557154                                11
-## 14764 2022  3557204                                87
-## 14765 2022  3557303                                69
-## 14766 2022  3549102                               398
-## 14767 2022  3522901                                39
-## 14768 2022  3538105                                79
-##       entre.pessoas.do.mesmo.sexo ignorado total
-## 14763                          NA       NA    11
-## 14764                          NA       NA    87
-## 14765                          NA       NA    69
-## 14766                          NA       NA   398
-## 14767                           1       NA    40
-## 14768                          NA       NA    79</code></pre>
-<div class="sourceCode" id="cb163"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb163-1"><a href="dataframes.html#cb163-1" tabindex="-1"></a><span class="fu">tail</span>(codigos)</span></code></pre></div>
-<pre><code>##     cod_ibge     municipios cod_ra          reg_administrativa
-## 641  3556958 Vitória Brasil    689 RA de São José do Rio Preto
-## 642  3557006     Votorantim    685              RA de Sorocaba
-## 643  3557105    Votuporanga    689 RA de São José do Rio Preto
-## 644  3557154       Zacarias    689 RA de São José do Rio Preto
-## 645  3557204      Chavantes    692               RA de Marília
-## 646  3557303   Estiva Gerbi    686              RA de Campinas
-##           reg_metropolitanas cod_ibge6 pop2020
-## 641        Demais municípios    355695    1760
-## 642           RM de Sorocaba    355700  119824
-## 643        Demais municípios    355710   91760
-## 644 RM São José do Rio Preto    355715    2560
-## 645        Demais municípios    355720   12223
-## 646        Demais municípios    355730   11079
-##                   porte_pop2020 cod_drs                   drs
-## 641                   Até 5 mil      15 São José do Rio Preto
-## 642 Mais de 100 mil até 200 mil       6              Sorocaba
-## 643  Mais de 50 mil até 100 mil      15 São José do Rio Preto
-## 644                   Até 5 mil      15 São José do Rio Preto
-## 645   Mais de 10 mil até 20 mil       5               Marília
-## 646   Mais de 10 mil até 20 mil      14 São João da Boa Vista</code></pre>
+<div class="sourceCode" id="cb149"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb149-1"><a href="dataframes.html#cb149-1" tabindex="-1"></a><span class="co">#para ver as 6 últimas linhas</span></span>
+<span id="cb149-2"><a href="dataframes.html#cb149-2" tabindex="-1"></a><span class="fu">tail</span>(evol_casam)</span></code></pre></div>
+<pre><code>##        ano cod_ibge entre.pessoas.de.sexos.diferentes entre.pessoas.do.mesmo.sexo ignorado
+## 14763 2022  3557154                                11                          NA       NA
+## 14764 2022  3557204                                87                          NA       NA
+## 14765 2022  3557303                                69                          NA       NA
+## 14766 2022  3549102                               398                          NA       NA
+## 14767 2022  3522901                                39                           1       NA
+## 14768 2022  3538105                                79                          NA       NA
+##       total
+## 14763    11
+## 14764    87
+## 14765    69
+## 14766   398
+## 14767    40
+## 14768    79</code></pre>
+<div class="sourceCode" id="cb151"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb151-1"><a href="dataframes.html#cb151-1" tabindex="-1"></a><span class="fu">tail</span>(codigos)</span></code></pre></div>
+<pre><code>##     cod_ibge     municipios cod_ra          reg_administrativa       reg_metropolitanas
+## 641  3556958 Vitória Brasil    689 RA de São José do Rio Preto        Demais municípios
+## 642  3557006     Votorantim    685              RA de Sorocaba           RM de Sorocaba
+## 643  3557105    Votuporanga    689 RA de São José do Rio Preto        Demais municípios
+## 644  3557154       Zacarias    689 RA de São José do Rio Preto RM São José do Rio Preto
+## 645  3557204      Chavantes    692               RA de Marília        Demais municípios
+## 646  3557303   Estiva Gerbi    686              RA de Campinas        Demais municípios
+##     cod_ibge6 pop2020               porte_pop2020 cod_drs                   drs
+## 641    355695    1760                   Até 5 mil      15 São José do Rio Preto
+## 642    355700  119824 Mais de 100 mil até 200 mil       6              Sorocaba
+## 643    355710   91760  Mais de 50 mil até 100 mil      15 São José do Rio Preto
+## 644    355715    2560                   Até 5 mil      15 São José do Rio Preto
+## 645    355720   12223   Mais de 10 mil até 20 mil       5               Marília
+## 646    355730   11079   Mais de 10 mil até 20 mil      14 São João da Boa Vista</code></pre>
 <p>Vamos usar estes dois dataframes para as operações com o pacote <strong>Tidyverse</strong>, a seguir.</p>
 </div>
 </div>

@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title> 10 Dados quantitativos relativos: mapa coroplético | Cartografia Temática em R para estudantes de Geografia</title>
   <meta name="description" content=" 10 Dados quantitativos relativos: mapa coroplético | Cartografia Temática em R para estudantes de Geografia" />
-  <meta name="generator" content="bookdown 0.34 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.35 and GitBook 2.6.7" />
 
   <meta property="og:title" content=" 10 Dados quantitativos relativos: mapa coroplético | Cartografia Temática em R para estudantes de Geografia" />
   <meta property="og:type" content="book" />
@@ -51,6 +51,14 @@
 <link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
 <link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
 <script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/htmlwidgets-1.6.2/htmlwidgets.js"></script>
+<link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-1.3.1/leaflet.js"></script>
+<link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
+<script src="libs/proj4-2.6.2/proj4.min.js"></script>
+<script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
+<link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-binding-2.1.2/leaflet.js"></script>
 
 
 <style type="text/css">
@@ -243,7 +251,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="12" data-path="quanti5.html"><a href="quanti5.html"><i class="fa fa-check"></i><b>12</b> Dados quantitativos a partir de amostras: mapa isarítmico</a>
 <ul>
-<li class="chapter" data-level="12.1" data-path="quanti5.html"><a href="quanti5.html#referências-sugeridas-4"><i class="fa fa-check"></i><b>12.1</b> Referências sugeridas</a></li>
+<li class="chapter" data-level="12.1" data-path="quanti5.html"><a href="quanti5.html#abordagens-de-interpolação-espacial"><i class="fa fa-check"></i><b>12.1</b> Abordagens de interpolação espacial</a>
+<ul>
+<li class="chapter" data-level="12.1.1" data-path="quanti5.html"><a href="quanti5.html#abordagens-determinísticas"><i class="fa fa-check"></i><b>12.1.1</b> Abordagens determinísticas</a></li>
+<li class="chapter" data-level="12.1.2" data-path="quanti5.html"><a href="quanti5.html#abordagens-estocásticas"><i class="fa fa-check"></i><b>12.1.2</b> Abordagens Estocásticas</a></li>
+</ul></li>
+<li class="chapter" data-level="12.2" data-path="quanti5.html"><a href="quanti5.html#referências-citadas-2"><i class="fa fa-check"></i><b>12.2</b> Referências citadas</a></li>
+<li class="chapter" data-level="12.3" data-path="quanti5.html"><a href="quanti5.html#sugestões-de-leitura"><i class="fa fa-check"></i><b>12.3</b> Sugestões de leitura</a></li>
 </ul></li>
 <li class="chapter" data-level="13" data-path="quanti6.html"><a href="quanti6.html"><i class="fa fa-check"></i><b>13</b> Mapa de fluxos: movimentos no espaço</a></li>
 <li class="chapter" data-level="14" data-path="osm.html"><a href="osm.html"><i class="fa fa-check"></i><b>14</b> Usando dados do Open Street Map</a></li>
@@ -274,107 +288,94 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 Utilizaremos como exemplos três indicadores na escala intraurbana da Região Metropolitana de São Paulo (RMSP), calculados para as Unidades de Desenvolvimento Humano (UDHs). Com base em dados provenientes de diversas fontes, tais como, Ministério da Saúde (DATASUS/SIM, SINASC, SIH/SUS), Ministério da Educação (Censos Escolares), MapBiomas, Ministério da Cidadania (CadÚnico, Bolsa Família e BPC), Ministério da Economia (RAIS), Tribunal Superior Eleitoral, Ministério do Desenvolvimento Regional (SNIS) e IBGE (Contas Nacionais), o PNUD, a Fundação João Pinheiro e o Instituto de Pesquisa Econômica Aplicada (IPEA) desenvolveram o <a href="http://www.atlasbrasil.org.br/">Atlas do Desenvolvimento Humano no Brasil</a>, publicado em 2013. Foram criadas malhas de UDHs para as Regiões Metropolitanas (RMs) a partir do agrupamento de unidades com a maior homogeneidade interna possível.</p>
 <p>Para a elaboração destes mapas precisaremos dos valores dos indicadores para cada UDH da RMSP. A base cartográfica será a malha de UDHs da RMSP disponível no site do Atlas Brasil.</p>
 <p>Para darmos início, vamos limpar a memória, verificar e definir o diretório de trabalho.</p>
-<div class="sourceCode" id="cb372"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb372-1"><a href="quanti3.html#cb372-1" tabindex="-1"></a><span class="co">#para limpar a memoria</span></span>
-<span id="cb372-2"><a href="quanti3.html#cb372-2" tabindex="-1"></a><span class="fu">rm</span>(<span class="at">list=</span> <span class="fu">ls</span>())</span>
-<span id="cb372-3"><a href="quanti3.html#cb372-3" tabindex="-1"></a><span class="co">#para verificar o diretório de trabalho</span></span>
-<span id="cb372-4"><a href="quanti3.html#cb372-4" tabindex="-1"></a><span class="fu">getwd</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb355"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb355-1"><a href="quanti3.html#cb355-1" tabindex="-1"></a><span class="co">#para limpar a memoria</span></span>
+<span id="cb355-2"><a href="quanti3.html#cb355-2" tabindex="-1"></a><span class="fu">rm</span>(<span class="at">list=</span> <span class="fu">ls</span>())</span>
+<span id="cb355-3"><a href="quanti3.html#cb355-3" tabindex="-1"></a><span class="co">#para verificar o diretório de trabalho</span></span>
+<span id="cb355-4"><a href="quanti3.html#cb355-4" tabindex="-1"></a><span class="fu">getwd</span>()</span></code></pre></div>
 <pre><code>## [1] &quot;C:/Users/l_viz/Documents/RCartoTematica&quot;</code></pre>
-<div class="sourceCode" id="cb374"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb374-1"><a href="quanti3.html#cb374-1" tabindex="-1"></a><span class="co">#para ajustar a lingua para portugues usando a funcao</span></span>
-<span id="cb374-2"><a href="quanti3.html#cb374-2" tabindex="-1"></a><span class="fu">Sys.setlocale</span>(<span class="at">category =</span> <span class="st">&quot;LC_ALL&quot;</span>, <span class="at">locale =</span> <span class="st">&quot;pt_BR.UTF-8&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb357"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb357-1"><a href="quanti3.html#cb357-1" tabindex="-1"></a><span class="co">#para ajustar a lingua para portugues usando a funcao</span></span>
+<span id="cb357-2"><a href="quanti3.html#cb357-2" tabindex="-1"></a><span class="fu">Sys.setlocale</span>(<span class="at">category =</span> <span class="st">&quot;LC_ALL&quot;</span>, <span class="at">locale =</span> <span class="st">&quot;pt_BR.UTF-8&quot;</span>)</span></code></pre></div>
 <pre><code>## [1] &quot;LC_COLLATE=pt_BR.UTF-8;LC_CTYPE=pt_BR.UTF-8;LC_MONETARY=pt_BR.UTF-8;LC_NUMERIC=C;LC_TIME=pt_BR.UTF-8&quot;</code></pre>
-<div class="sourceCode" id="cb376"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb376-1"><a href="quanti3.html#cb376-1" tabindex="-1"></a><span class="co">#para desativar a notação científica</span></span>
-<span id="cb376-2"><a href="quanti3.html#cb376-2" tabindex="-1"></a><span class="fu">options</span>(<span class="at">scipen =</span> <span class="dv">999</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb359"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb359-1"><a href="quanti3.html#cb359-1" tabindex="-1"></a><span class="co">#para desativar a notação científica</span></span>
+<span id="cb359-2"><a href="quanti3.html#cb359-2" tabindex="-1"></a><span class="fu">options</span>(<span class="at">scipen =</span> <span class="dv">999</span>)</span></code></pre></div>
 <p>Vamos carregar os pacotes que serão utilizados.</p>
-<div class="sourceCode" id="cb377"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb377-1"><a href="quanti3.html#cb377-1" tabindex="-1"></a><span class="fu">library</span>(R.utils)</span>
-<span id="cb377-2"><a href="quanti3.html#cb377-2" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb377-3"><a href="quanti3.html#cb377-3" tabindex="-1"></a><span class="fu">library</span>(sf)</span>
-<span id="cb377-4"><a href="quanti3.html#cb377-4" tabindex="-1"></a><span class="fu">library</span>(ggplot2,<span class="at">warn.conflicts=</span><span class="cn">FALSE</span>)</span>
-<span id="cb377-5"><a href="quanti3.html#cb377-5" tabindex="-1"></a><span class="fu">library</span>(ggspatial)</span>
-<span id="cb377-6"><a href="quanti3.html#cb377-6" tabindex="-1"></a><span class="fu">library</span>(archive)</span>
-<span id="cb377-7"><a href="quanti3.html#cb377-7" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
-<span id="cb377-8"><a href="quanti3.html#cb377-8" tabindex="-1"></a><span class="fu">library</span>(gridExtra)</span></code></pre></div>
-<pre><code>## 
-## Attaching package: &#39;gridExtra&#39;</code></pre>
-<pre><code>## The following object is masked from &#39;package:dplyr&#39;:
-## 
-##     combine</code></pre>
-<div class="sourceCode" id="cb380"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb380-1"><a href="quanti3.html#cb380-1" tabindex="-1"></a><span class="fu">library</span>(classInt)</span>
-<span id="cb380-2"><a href="quanti3.html#cb380-2" tabindex="-1"></a><span class="fu">library</span>(tmap)</span>
-<span id="cb380-3"><a href="quanti3.html#cb380-3" tabindex="-1"></a><span class="fu">library</span>(RColorBrewer)</span></code></pre></div>
+<div class="sourceCode" id="cb360"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb360-1"><a href="quanti3.html#cb360-1" tabindex="-1"></a><span class="fu">library</span>(R.utils)</span>
+<span id="cb360-2"><a href="quanti3.html#cb360-2" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb360-3"><a href="quanti3.html#cb360-3" tabindex="-1"></a><span class="fu">library</span>(sf)</span>
+<span id="cb360-4"><a href="quanti3.html#cb360-4" tabindex="-1"></a><span class="fu">library</span>(ggplot2,<span class="at">warn.conflicts=</span><span class="cn">FALSE</span>)</span>
+<span id="cb360-5"><a href="quanti3.html#cb360-5" tabindex="-1"></a><span class="fu">library</span>(ggspatial)</span>
+<span id="cb360-6"><a href="quanti3.html#cb360-6" tabindex="-1"></a><span class="fu">library</span>(archive)</span>
+<span id="cb360-7"><a href="quanti3.html#cb360-7" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
+<span id="cb360-8"><a href="quanti3.html#cb360-8" tabindex="-1"></a><span class="fu">library</span>(gridExtra)</span>
+<span id="cb360-9"><a href="quanti3.html#cb360-9" tabindex="-1"></a><span class="fu">library</span>(classInt)</span>
+<span id="cb360-10"><a href="quanti3.html#cb360-10" tabindex="-1"></a><span class="fu">library</span>(tmap)</span>
+<span id="cb360-11"><a href="quanti3.html#cb360-11" tabindex="-1"></a><span class="fu">library</span>(RColorBrewer)</span></code></pre></div>
 <div id="bancos-de-dados" class="section level2 hasAnchor" number="10.1">
 <h2><span class="header-section-number">10.1</span> Bancos de dados<a href="quanti3.html#bancos-de-dados" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>O arquivo shapefile das UDHs está disponível de forma compactada junto com os indicadores por RM no sítio do Atlas Brasil. Como em capítulos anteriores, faremos o download do arquivo zip após a identificação da url dos dados. Para baixar os dados, usaremos a função <code>download.file</code> do pacote <strong>R.utils</strong>.</p>
-<div class="sourceCode" id="cb381"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb381-1"><a href="quanti3.html#cb381-1" tabindex="-1"></a><span class="co">#se quiser identificar a url de um determinado conjunto de dados, faça o download do arquivo desejado manualmente e clique em Ctrl+J. O navegador mostrará o caminho completo, que poderá ser copiado. Para o download do arquivo com as UDHs da RMSP, use o comando a seguir. Use o nome do arquivo como arquivo de destino (destfile) </span></span>
-<span id="cb381-2"><a href="quanti3.html#cb381-2" tabindex="-1"></a><span class="fu">download.file</span>(<span class="at">url =</span> <span class="st">&quot;https://dv69vw.dm.files.1drv.com/y4mGCIOeG89QN-sOTMEQ4X1lyzmraQiwh4LzSTYvcxb9rrvkkmW_Am300R8_-WB_hZ-qtfPffeEoJ0rRVFpUV95lvP-nOvxI1Q-5iQzqHAwPeWMy8uDZ1pBM918KVAmFUFWpfWRIcINlOg1T9ooCQcVE_Qg42gmf-zjrX6IfvtU2e3Ca6ADD8ZDXNpSSrnjroE8490cc8CK9AHk_OY3rQ8-Ow&quot;</span>, <span class="at">destfile =</span> <span class="st">&quot;dados_sp.zip&quot;</span>, <span class="at">mode=</span><span class="st">&quot;wb&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb361"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb361-1"><a href="quanti3.html#cb361-1" tabindex="-1"></a><span class="co">#se quiser identificar a url de um determinado conjunto de dados, faça o download do arquivo desejado manualmente e clique em Ctrl+J. O navegador mostrará o caminho completo, que poderá ser copiado. Para o download do arquivo com as UDHs da RMSP, use o comando a seguir. Use o nome do arquivo como arquivo de destino (destfile) </span></span>
+<span id="cb361-2"><a href="quanti3.html#cb361-2" tabindex="-1"></a><span class="fu">download.file</span>(<span class="at">url =</span> <span class="st">&quot;https://dv69vw.dm.files.1drv.com/y4mGCIOeG89QN-sOTMEQ4X1lyzmraQiwh4LzSTYvcxb9rrvkkmW_Am300R8_-WB_hZ-qtfPffeEoJ0rRVFpUV95lvP-nOvxI1Q-5iQzqHAwPeWMy8uDZ1pBM918KVAmFUFWpfWRIcINlOg1T9ooCQcVE_Qg42gmf-zjrX6IfvtU2e3Ca6ADD8ZDXNpSSrnjroE8490cc8CK9AHk_OY3rQ8-Ow&quot;</span>, <span class="at">destfile =</span> <span class="st">&quot;dados_sp.zip&quot;</span>, <span class="at">mode=</span><span class="st">&quot;wb&quot;</span>)</span></code></pre></div>
 <p>O arquivo “RM 63500 São Paulo - Base UDH 2000_2010.xlsx” contém os indicadores que usaremos para a elaboração dos mapas.
 Vamos ler o arquivo xlsx e criar um objeto em R com o nome de “dadosUDH”.</p>
-<div class="sourceCode" id="cb382"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb382-1"><a href="quanti3.html#cb382-1" tabindex="-1"></a><span class="co">#para ler o arquivo xlsx</span></span>
-<span id="cb382-2"><a href="quanti3.html#cb382-2" tabindex="-1"></a>dadosUDH <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">&quot;RM 63500 São Paulo - Base UDH 2000_2010.xlsx&quot;</span>)</span>
-<span id="cb382-3"><a href="quanti3.html#cb382-3" tabindex="-1"></a><span class="co">#para ver as 6 primeiras linhas de dadosUDH</span></span>
-<span id="cb382-4"><a href="quanti3.html#cb382-4" tabindex="-1"></a><span class="fu">head</span>(dadosUDH)</span></code></pre></div>
+<div class="sourceCode" id="cb362"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb362-1"><a href="quanti3.html#cb362-1" tabindex="-1"></a><span class="co">#para ler o arquivo xlsx</span></span>
+<span id="cb362-2"><a href="quanti3.html#cb362-2" tabindex="-1"></a>dadosUDH <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">&quot;RM 63500 São Paulo - Base UDH 2000_2010.xlsx&quot;</span>)</span>
+<span id="cb362-3"><a href="quanti3.html#cb362-3" tabindex="-1"></a><span class="co">#para ver as 6 primeiras linhas de dadosUDH</span></span>
+<span id="cb362-4"><a href="quanti3.html#cb362-4" tabindex="-1"></a><span class="fu">head</span>(dadosUDH)</span></code></pre></div>
 <pre><code>## # A tibble: 6 × 237
-##          Cod_ID UDH_Atlas NOME_UDH CODMUN6 NOME_MUN CODUF NOME_UF CODRM
-##           &lt;dbl&gt;     &lt;dbl&gt; &lt;chr&gt;      &lt;dbl&gt; &lt;chr&gt;    &lt;dbl&gt; &lt;chr&gt;   &lt;dbl&gt;
-## 1 1350390100001   1.35e12 Fazenda…  350390 Arujá (…    35 SP      63500
-## 2 1350390100002   1.35e12 Arujá :…  350390 Arujá (…    35 SP      63500
-## 3 1350390100003   1.35e12 Arujá :…  350390 Arujá (…    35 SP      63500
-## 4 1350390100004   1.35e12 Arujá :…  350390 Arujá (…    35 SP      63500
-## 5 1350390100005   1.35e12 São Ben…  350390 Arujá (…    35 SP      63500
-## 6 1350390100006   1.35e12 Arujá :…  350390 Arujá (…    35 SP      63500
-## # ℹ 229 more variables: NOME_RM &lt;chr&gt;, ANO &lt;dbl&gt;, ESPVIDA &lt;dbl&gt;,
-## #   FECTOT &lt;dbl&gt;, MORT1 &lt;dbl&gt;, MORT5 &lt;dbl&gt;, SOBRE40 &lt;dbl&gt;,
-## #   SOBRE60 &lt;dbl&gt;, RAZDEP &lt;dbl&gt;, T_ENV &lt;dbl&gt;, E_ANOSESTUDO &lt;dbl&gt;,
-## #   T_ANALF11A14 &lt;dbl&gt;, T_ANALF15A17 &lt;dbl&gt;, T_ANALF15M &lt;dbl&gt;,
-## #   T_ANALF18A24 &lt;dbl&gt;, T_ANALF18M &lt;dbl&gt;, T_ANALF25A29 &lt;dbl&gt;,
-## #   T_ANALF25M &lt;dbl&gt;, T_ATRASO_2_BASICO &lt;dbl&gt;, T_ATRASO_2_FUND &lt;dbl&gt;,
-## #   T_FBBAS &lt;dbl&gt;, T_FBFUND &lt;dbl&gt;, T_FBMED &lt;dbl&gt;, T_FBSUPER &lt;dbl&gt;, …</code></pre>
+##         Cod_ID UDH_Atlas NOME_UDH CODMUN6 NOME_MUN CODUF NOME_UF CODRM NOME_RM   ANO ESPVIDA
+##          &lt;dbl&gt;     &lt;dbl&gt; &lt;chr&gt;      &lt;dbl&gt; &lt;chr&gt;    &lt;dbl&gt; &lt;chr&gt;   &lt;dbl&gt; &lt;chr&gt;   &lt;dbl&gt;   &lt;dbl&gt;
+## 1      1.35e12   1.35e12 Fazenda…  350390 Arujá (…    35 SP      63500 RM São…  2000    68.4
+## 2      1.35e12   1.35e12 Arujá :…  350390 Arujá (…    35 SP      63500 RM São…  2000    68.0
+## 3      1.35e12   1.35e12 Arujá :…  350390 Arujá (…    35 SP      63500 RM São…  2000    73.7
+## 4      1.35e12   1.35e12 Arujá :…  350390 Arujá (…    35 SP      63500 RM São…  2000    68.0
+## 5      1.35e12   1.35e12 São Ben…  350390 Arujá (…    35 SP      63500 RM São…  2000    76.6
+## 6      1.35e12   1.35e12 Arujá :…  350390 Arujá (…    35 SP      63500 RM São…  2000    73.7
+## # ℹ 226 more variables: FECTOT &lt;dbl&gt;, MORT1 &lt;dbl&gt;, MORT5 &lt;dbl&gt;, SOBRE40 &lt;dbl&gt;,
+## #   SOBRE60 &lt;dbl&gt;, RAZDEP &lt;dbl&gt;, T_ENV &lt;dbl&gt;, E_ANOSESTUDO &lt;dbl&gt;, T_ANALF11A14 &lt;dbl&gt;,
+## #   T_ANALF15A17 &lt;dbl&gt;, T_ANALF15M &lt;dbl&gt;, T_ANALF18A24 &lt;dbl&gt;, T_ANALF18M &lt;dbl&gt;,
+## #   T_ANALF25A29 &lt;dbl&gt;, T_ANALF25M &lt;dbl&gt;, T_ATRASO_2_BASICO &lt;dbl&gt;, T_ATRASO_2_FUND &lt;dbl&gt;,
+## #   T_FBBAS &lt;dbl&gt;, T_FBFUND &lt;dbl&gt;, T_FBMED &lt;dbl&gt;, T_FBSUPER &lt;dbl&gt;, T_FLBAS &lt;dbl&gt;,
+## #   T_FLFUND &lt;dbl&gt;, T_FLMED &lt;dbl&gt;, T_FLSUPER &lt;dbl&gt;, T_FREQ0A5 &lt;dbl&gt;, T_FREQ15A17 &lt;dbl&gt;,
+## #   T_FREQ18A24 &lt;dbl&gt;, T_FREQ25A29 &lt;dbl&gt;, T_FREQ5A6 &lt;dbl&gt;, T_FREQ6A14 &lt;dbl&gt;, …</code></pre>
 <p>O arquivo xlsx que foi aberto tem 237 colunas, das quais 227 são indicadores criados para o Atlas Brasil.</p>
-<div class="sourceCode" id="cb384"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb384-1"><a href="quanti3.html#cb384-1" tabindex="-1"></a><span class="co"># Para ler o arquivo shapefile</span></span>
-<span id="cb384-2"><a href="quanti3.html#cb384-2" tabindex="-1"></a>UDH <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">&quot;RM_SaoPaulo_UDH_region.shp&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb364"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb364-1"><a href="quanti3.html#cb364-1" tabindex="-1"></a><span class="co"># Para ler o arquivo shapefile</span></span>
+<span id="cb364-2"><a href="quanti3.html#cb364-2" tabindex="-1"></a>UDH <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">&quot;RM_SaoPaulo_UDH_region.shp&quot;</span>)</span></code></pre></div>
 <pre><code>## Reading layer `RM_SaoPaulo_UDH_region&#39; from data source 
-##   `C:\Users\l_viz\Documents\RCartoTematica\RM_SaoPaulo_UDH_region.shp&#39; 
-##   using driver `ESRI Shapefile&#39;
+##   `C:\Users\l_viz\Documents\RCartoTematica\RM_SaoPaulo_UDH_region.shp&#39; using driver `ESRI Shapefile&#39;
 ## Simple feature collection with 2858 features and 4 fields
 ## Geometry type: MULTIPOLYGON
 ## Dimension:     XY
 ## Bounding box:  xmin: -47.20852 ymin: -24.06425 xmax: -45.69481 ymax: -23.18342
 ## Geodetic CRS:  WGS 84</code></pre>
 <p>Para verificar o tipo de objeto, usamos <code>class</code> do pacote <strong>R.utils</strong>. Para olharmos as 6 primeiras linhas do objeto, usamos a função <code>head</code> do mesmo pacote.</p>
-<div class="sourceCode" id="cb386"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb386-1"><a href="quanti3.html#cb386-1" tabindex="-1"></a><span class="co">#para verificar o tipo de objeto</span></span>
-<span id="cb386-2"><a href="quanti3.html#cb386-2" tabindex="-1"></a><span class="fu">class</span>(UDH)</span></code></pre></div>
+<div class="sourceCode" id="cb366"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb366-1"><a href="quanti3.html#cb366-1" tabindex="-1"></a><span class="co">#para verificar o tipo de objeto</span></span>
+<span id="cb366-2"><a href="quanti3.html#cb366-2" tabindex="-1"></a><span class="fu">class</span>(UDH)</span></code></pre></div>
 <pre><code>## [1] &quot;sf&quot;         &quot;data.frame&quot;</code></pre>
-<div class="sourceCode" id="cb388"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb388-1"><a href="quanti3.html#cb388-1" tabindex="-1"></a><span class="co">#para vermos as 6 primeiras linhas</span></span>
-<span id="cb388-2"><a href="quanti3.html#cb388-2" tabindex="-1"></a><span class="fu">head</span>(UDH)</span></code></pre></div>
+<div class="sourceCode" id="cb368"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb368-1"><a href="quanti3.html#cb368-1" tabindex="-1"></a><span class="co">#para vermos as 6 primeiras linhas</span></span>
+<span id="cb368-2"><a href="quanti3.html#cb368-2" tabindex="-1"></a><span class="fu">head</span>(UDH)</span></code></pre></div>
 <pre><code>## Simple feature collection with 6 features and 4 fields
 ## Geometry type: MULTIPOLYGON
 ## Dimension:     XY
 ## Bounding box:  xmin: -46.37286 ymin: -23.43001 xmax: -46.24768 ymax: -23.32145
 ## Geodetic CRS:  WGS 84
-##       UDH_ATLAS CD_GEOCODM NM_MUNICIP  RM
-## 1 1350390100001    3503901   ARUJ\xc1 635
-## 2 1350390100002    3503901   ARUJ\xc1 635
-## 3 1350390100003    3503901   ARUJ\xc1 635
-## 4 1350390100004    3503901   ARUJ\xc1 635
-## 5 1350390100005    3503901   ARUJ\xc1 635
-## 6 1350390100006    3503901   ARUJ\xc1 635
-##                         geometry
-## 1 MULTIPOLYGON (((-46.37286 -...
-## 2 MULTIPOLYGON (((-46.31341 -...
-## 3 MULTIPOLYGON (((-46.28883 -...
-## 4 MULTIPOLYGON (((-46.27519 -...
-## 5 MULTIPOLYGON (((-46.24768 -...
-## 6 MULTIPOLYGON (((-46.31747 -...</code></pre>
+##       UDH_ATLAS CD_GEOCODM NM_MUNICIP  RM                       geometry
+## 1 1350390100001    3503901   ARUJ\xc1 635 MULTIPOLYGON (((-46.37286 -...
+## 2 1350390100002    3503901   ARUJ\xc1 635 MULTIPOLYGON (((-46.31341 -...
+## 3 1350390100003    3503901   ARUJ\xc1 635 MULTIPOLYGON (((-46.28883 -...
+## 4 1350390100004    3503901   ARUJ\xc1 635 MULTIPOLYGON (((-46.27519 -...
+## 5 1350390100005    3503901   ARUJ\xc1 635 MULTIPOLYGON (((-46.24768 -...
+## 6 1350390100006    3503901   ARUJ\xc1 635 MULTIPOLYGON (((-46.31747 -...</code></pre>
 <p>Vamos visualizar as UDHs usando <code>ggplot</code> do pacote <strong>ggplot2</strong>, definindo a geometria a partir de <code>geom_sf</code> com o contorno na cor preta e o preenchimento em laranja.</p>
-<div class="sourceCode" id="cb390"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb390-1"><a href="quanti3.html#cb390-1" tabindex="-1"></a><span class="fu">ggplot</span>()<span class="sc">+</span></span>
-<span id="cb390-2"><a href="quanti3.html#cb390-2" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> UDH, <span class="at">colour =</span> <span class="st">&quot;black&quot;</span>, <span class="at">fill =</span> <span class="st">&quot;orange&quot;</span>) <span class="co">#para plotar UDH</span></span></code></pre></div>
+<div class="sourceCode" id="cb370"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb370-1"><a href="quanti3.html#cb370-1" tabindex="-1"></a><span class="fu">ggplot</span>()<span class="sc">+</span></span>
+<span id="cb370-2"><a href="quanti3.html#cb370-2" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> UDH, <span class="at">colour =</span> <span class="st">&quot;black&quot;</span>, <span class="at">fill =</span> <span class="st">&quot;orange&quot;</span>) <span class="co">#para plotar UDH</span></span></code></pre></div>
 <p><img src="bookdownproj_files/figure-html/unnamed-chunk-171-1.png" width="672" /></p>
-<div class="sourceCode" id="cb391"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb391-1"><a href="quanti3.html#cb391-1" tabindex="-1"></a><span class="co">#para ver as colunas de UDH</span></span>
-<span id="cb391-2"><a href="quanti3.html#cb391-2" tabindex="-1"></a><span class="fu">names</span>(UDH)</span></code></pre></div>
+<div class="sourceCode" id="cb371"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb371-1"><a href="quanti3.html#cb371-1" tabindex="-1"></a><span class="co">#para ver as colunas de UDH</span></span>
+<span id="cb371-2"><a href="quanti3.html#cb371-2" tabindex="-1"></a><span class="fu">names</span>(UDH)</span></code></pre></div>
 <pre><code>## [1] &quot;UDH_ATLAS&quot;  &quot;CD_GEOCODM&quot; &quot;NM_MUNICIP&quot; &quot;RM&quot;         &quot;geometry&quot;</code></pre>
 <p>Como nosso objetivo é fazer alguns mapas da RMSP, no arquivo <strong>dadosUDH</strong> vamos selecionar algumas colunas das variáveis que nos interessam: UDH_Atlas, NOME_MUN, P_SUPER, T_LUZ e IDHM. Temos sempre que manter a coluna de identificador que permitirá a união entre o shapefile e o banco de dados.</p>
-<div class="sourceCode" id="cb393"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb393-1"><a href="quanti3.html#cb393-1" tabindex="-1"></a>dados_RMSP <span class="ot">&lt;-</span> dadosUDH <span class="sc">%&gt;%</span></span>
-<span id="cb393-2"><a href="quanti3.html#cb393-2" tabindex="-1"></a>  <span class="fu">select</span>(UDH_Atlas, NOME_MUN, P_SUPER, T_LUZ, IDHM)</span>
-<span id="cb393-3"><a href="quanti3.html#cb393-3" tabindex="-1"></a><span class="fu">head</span>(dados_RMSP)</span></code></pre></div>
+<div class="sourceCode" id="cb373"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb373-1"><a href="quanti3.html#cb373-1" tabindex="-1"></a>dados_RMSP <span class="ot">&lt;-</span> dadosUDH <span class="sc">%&gt;%</span></span>
+<span id="cb373-2"><a href="quanti3.html#cb373-2" tabindex="-1"></a>  <span class="fu">select</span>(UDH_Atlas, NOME_MUN, P_SUPER, T_LUZ, IDHM)</span>
+<span id="cb373-3"><a href="quanti3.html#cb373-3" tabindex="-1"></a><span class="fu">head</span>(dados_RMSP)</span></code></pre></div>
 <pre><code>## # A tibble: 6 × 5
 ##       UDH_Atlas NOME_MUN   P_SUPER T_LUZ  IDHM
 ##           &lt;dbl&gt; &lt;chr&gt;        &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
@@ -385,10 +386,10 @@ Vamos ler o arquivo xlsx e criar um objeto em R com o nome de “dadosUDH”.</p
 ## 5 1350390100005 Arujá (SP)   25.3   99.8 0.793
 ## 6 1350390100006 Arujá (SP)    7.68  98.8 0.688</code></pre>
 <p>Como vimos, a coluna “UDH_Atlas” aparece como numérica “dbl”(double) e precisa ser convertida para caractere. Usamos a função a seguir.</p>
-<div class="sourceCode" id="cb395"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb395-1"><a href="quanti3.html#cb395-1" tabindex="-1"></a><span class="co">#para converter &quot;dbl&quot; para &quot;chr&quot;</span></span>
-<span id="cb395-2"><a href="quanti3.html#cb395-2" tabindex="-1"></a>dados_RMSP <span class="ot">&lt;-</span> dados_RMSP <span class="sc">%&gt;%</span></span>
-<span id="cb395-3"><a href="quanti3.html#cb395-3" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">UDH_Atlas =</span> <span class="fu">as.character</span>(UDH_Atlas))</span>
-<span id="cb395-4"><a href="quanti3.html#cb395-4" tabindex="-1"></a><span class="fu">head</span>(dados_RMSP)</span></code></pre></div>
+<div class="sourceCode" id="cb375"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb375-1"><a href="quanti3.html#cb375-1" tabindex="-1"></a><span class="co">#para converter &quot;dbl&quot; para &quot;chr&quot;</span></span>
+<span id="cb375-2"><a href="quanti3.html#cb375-2" tabindex="-1"></a>dados_RMSP <span class="ot">&lt;-</span> dados_RMSP <span class="sc">%&gt;%</span></span>
+<span id="cb375-3"><a href="quanti3.html#cb375-3" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">UDH_Atlas =</span> <span class="fu">as.character</span>(UDH_Atlas))</span>
+<span id="cb375-4"><a href="quanti3.html#cb375-4" tabindex="-1"></a><span class="fu">head</span>(dados_RMSP)</span></code></pre></div>
 <pre><code>## # A tibble: 6 × 5
 ##   UDH_Atlas     NOME_MUN   P_SUPER T_LUZ  IDHM
 ##   &lt;chr&gt;         &lt;chr&gt;        &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
@@ -399,41 +400,41 @@ Vamos ler o arquivo xlsx e criar um objeto em R com o nome de “dadosUDH”.</p
 ## 5 1350390100005 Arujá (SP)   25.3   99.8 0.793
 ## 6 1350390100006 Arujá (SP)    7.68  98.8 0.688</code></pre>
 <p>Outro elemento importante é a grafia do nome da coluna que identifica cada UDH. Em <strong>dados_RMSP</strong>, a grafia da coluna é <strong>UDH_Atlas</strong>, enquanto no objeto <strong>UDH</strong>, a grafia é <strong>UDH_ATLAS</strong>. Embora o conteúdo seja o mesmo, a mistura entre caixa alta e caixa baixa nas letras, não permite a união entre a tabela e a geometria. Vamos, então, corrigir a grafia no objeto <strong>dados_RMSP</strong>.</p>
-<div class="sourceCode" id="cb397"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb397-1"><a href="quanti3.html#cb397-1" tabindex="-1"></a><span class="co">#para alterar o nome da coluna UDH_Atlas</span></span>
-<span id="cb397-2"><a href="quanti3.html#cb397-2" tabindex="-1"></a><span class="fu">names</span>(dados_RMSP) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&#39;UDH_ATLAS&#39;</span>, <span class="st">&#39;NOME_MUN&#39;</span>, <span class="st">&#39;P_SUPER&#39;</span>, <span class="st">&#39;T_LUZ&#39;</span>, <span class="st">&#39;IDHM&#39;</span>)</span>
-<span id="cb397-3"><a href="quanti3.html#cb397-3" tabindex="-1"></a><span class="co">#para verificar que a alteração foi feita</span></span>
-<span id="cb397-4"><a href="quanti3.html#cb397-4" tabindex="-1"></a><span class="fu">names</span>(dados_RMSP)</span></code></pre></div>
+<div class="sourceCode" id="cb377"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb377-1"><a href="quanti3.html#cb377-1" tabindex="-1"></a><span class="co">#para alterar o nome da coluna UDH_Atlas</span></span>
+<span id="cb377-2"><a href="quanti3.html#cb377-2" tabindex="-1"></a><span class="fu">names</span>(dados_RMSP) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&#39;UDH_ATLAS&#39;</span>, <span class="st">&#39;NOME_MUN&#39;</span>, <span class="st">&#39;P_SUPER&#39;</span>, <span class="st">&#39;T_LUZ&#39;</span>, <span class="st">&#39;IDHM&#39;</span>)</span>
+<span id="cb377-3"><a href="quanti3.html#cb377-3" tabindex="-1"></a><span class="co">#para verificar que a alteração foi feita</span></span>
+<span id="cb377-4"><a href="quanti3.html#cb377-4" tabindex="-1"></a><span class="fu">names</span>(dados_RMSP)</span></code></pre></div>
 <pre><code>## [1] &quot;UDH_ATLAS&quot; &quot;NOME_MUN&quot;  &quot;P_SUPER&quot;   &quot;T_LUZ&quot;     &quot;IDHM&quot;</code></pre>
 <p>Com a tabela compatível com o shapefile, podemos uni-los. Vamos chamar o novo objeto de “udh_dados_rmsp” e usar a função <code>left_join</code>, indicando o campo de união (UDH_Atlas). Uniremos o data.frame “dados_RMSP” ao objeto “sf” (simple feature) “UDH”. Então, tranformamos o novo objeto em classe “sf” com a função <code>st_as_sf</code>.</p>
-<div class="sourceCode" id="cb399"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb399-1"><a href="quanti3.html#cb399-1" tabindex="-1"></a><span class="co">#para unir o arquivo shapefile com o dataframe</span></span>
-<span id="cb399-2"><a href="quanti3.html#cb399-2" tabindex="-1"></a>udh_dados_rmsp <span class="ot">&lt;-</span> UDH <span class="sc">%&gt;%</span></span>
-<span id="cb399-3"><a href="quanti3.html#cb399-3" tabindex="-1"></a>  <span class="fu">left_join</span>(dados_RMSP, <span class="at">by =</span> <span class="st">&quot;UDH_ATLAS&quot;</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb399-4"><a href="quanti3.html#cb399-4" tabindex="-1"></a>  <span class="fu">st_as_sf</span>()</span>
-<span id="cb399-5"><a href="quanti3.html#cb399-5" tabindex="-1"></a><span class="co">#para conferir os nomes das colunas</span></span>
-<span id="cb399-6"><a href="quanti3.html#cb399-6" tabindex="-1"></a><span class="fu">names</span>(udh_dados_rmsp)</span></code></pre></div>
-<pre><code>## [1] &quot;UDH_ATLAS&quot;  &quot;CD_GEOCODM&quot; &quot;NM_MUNICIP&quot; &quot;RM&quot;         &quot;NOME_MUN&quot;  
-## [6] &quot;P_SUPER&quot;    &quot;T_LUZ&quot;      &quot;IDHM&quot;       &quot;geometry&quot;</code></pre>
-<div class="sourceCode" id="cb401"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb401-1"><a href="quanti3.html#cb401-1" tabindex="-1"></a><span class="co">#conferindo o tipo de objeto obtido</span></span>
-<span id="cb401-2"><a href="quanti3.html#cb401-2" tabindex="-1"></a><span class="fu">head</span>(udh_dados_rmsp)</span></code></pre></div>
+<div class="sourceCode" id="cb379"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb379-1"><a href="quanti3.html#cb379-1" tabindex="-1"></a><span class="co">#para unir o arquivo shapefile com o dataframe</span></span>
+<span id="cb379-2"><a href="quanti3.html#cb379-2" tabindex="-1"></a>udh_dados_rmsp <span class="ot">&lt;-</span> UDH <span class="sc">%&gt;%</span></span>
+<span id="cb379-3"><a href="quanti3.html#cb379-3" tabindex="-1"></a>  <span class="fu">left_join</span>(dados_RMSP, <span class="at">by =</span> <span class="st">&quot;UDH_ATLAS&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb379-4"><a href="quanti3.html#cb379-4" tabindex="-1"></a>  <span class="fu">st_as_sf</span>()</span>
+<span id="cb379-5"><a href="quanti3.html#cb379-5" tabindex="-1"></a><span class="co">#para conferir os nomes das colunas</span></span>
+<span id="cb379-6"><a href="quanti3.html#cb379-6" tabindex="-1"></a><span class="fu">names</span>(udh_dados_rmsp)</span></code></pre></div>
+<pre><code>## [1] &quot;UDH_ATLAS&quot;  &quot;CD_GEOCODM&quot; &quot;NM_MUNICIP&quot; &quot;RM&quot;         &quot;NOME_MUN&quot;   &quot;P_SUPER&quot;   
+## [7] &quot;T_LUZ&quot;      &quot;IDHM&quot;       &quot;geometry&quot;</code></pre>
+<div class="sourceCode" id="cb381"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb381-1"><a href="quanti3.html#cb381-1" tabindex="-1"></a><span class="co">#conferindo o tipo de objeto obtido</span></span>
+<span id="cb381-2"><a href="quanti3.html#cb381-2" tabindex="-1"></a><span class="fu">head</span>(udh_dados_rmsp)</span></code></pre></div>
 <pre><code>## Simple feature collection with 6 features and 8 fields
 ## Geometry type: MULTIPOLYGON
 ## Dimension:     XY
 ## Bounding box:  xmin: -46.37286 ymin: -23.39725 xmax: -46.28883 ymax: -23.32145
 ## Geodetic CRS:  WGS 84
-##       UDH_ATLAS CD_GEOCODM NM_MUNICIP  RM   NOME_MUN P_SUPER  T_LUZ
-## 1 1350390100001    3503901   ARUJ\xc1 635 Arujá (SP)    0.62  99.72
-## 2 1350390100001    3503901   ARUJ\xc1 635 Arujá (SP)    6.87  99.70
-## 3 1350390100002    3503901   ARUJ\xc1 635 Arujá (SP)    0.93 100.00
-## 4 1350390100002    3503901   ARUJ\xc1 635 Arujá (SP)    3.12 100.00
-## 5 1350390100003    3503901   ARUJ\xc1 635 Arujá (SP)    7.68  98.75
-## 6 1350390100003    3503901   ARUJ\xc1 635 Arujá (SP)   20.41 100.00
-##    IDHM                       geometry
-## 1 0.584 MULTIPOLYGON (((-46.37286 -...
-## 2 0.733 MULTIPOLYGON (((-46.37286 -...
-## 3 0.584 MULTIPOLYGON (((-46.31341 -...
-## 4 0.695 MULTIPOLYGON (((-46.31341 -...
-## 5 0.688 MULTIPOLYGON (((-46.28883 -...
-## 6 0.812 MULTIPOLYGON (((-46.28883 -...</code></pre>
+##       UDH_ATLAS CD_GEOCODM NM_MUNICIP  RM   NOME_MUN P_SUPER  T_LUZ  IDHM
+## 1 1350390100001    3503901   ARUJ\xc1 635 Arujá (SP)    0.62  99.72 0.584
+## 2 1350390100001    3503901   ARUJ\xc1 635 Arujá (SP)    6.87  99.70 0.733
+## 3 1350390100002    3503901   ARUJ\xc1 635 Arujá (SP)    0.93 100.00 0.584
+## 4 1350390100002    3503901   ARUJ\xc1 635 Arujá (SP)    3.12 100.00 0.695
+## 5 1350390100003    3503901   ARUJ\xc1 635 Arujá (SP)    7.68  98.75 0.688
+## 6 1350390100003    3503901   ARUJ\xc1 635 Arujá (SP)   20.41 100.00 0.812
+##                         geometry
+## 1 MULTIPOLYGON (((-46.37286 -...
+## 2 MULTIPOLYGON (((-46.37286 -...
+## 3 MULTIPOLYGON (((-46.31341 -...
+## 4 MULTIPOLYGON (((-46.31341 -...
+## 5 MULTIPOLYGON (((-46.28883 -...
+## 6 MULTIPOLYGON (((-46.28883 -...</code></pre>
 </div>
 <div id="mapas-coropléticos" class="section level2 hasAnchor" number="10.2">
 <h2><span class="header-section-number">10.2</span> Mapas coropléticos<a href="quanti3.html#mapas-coropléticos" class="anchor-section" aria-label="Anchor link to header"></a></h2>
@@ -445,32 +446,24 @@ Vamos ler o arquivo xlsx e criar um objeto em R com o nome de “dadosUDH”.</p
 </ul>
 <p>Todos esses aspectos influirão na percepção visual do padrão espacial resultante.
 Vamos olhar o resumo das variáveis em nosso banco de dados.</p>
-<div class="sourceCode" id="cb403"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb403-1"><a href="quanti3.html#cb403-1" tabindex="-1"></a><span class="co">#para resumir os dados quantitativos</span></span>
-<span id="cb403-2"><a href="quanti3.html#cb403-2" tabindex="-1"></a><span class="fu">summary</span>(udh_dados_rmsp)</span></code></pre></div>
-<pre><code>##   UDH_ATLAS          CD_GEOCODM         NM_MUNICIP       
-##  Length:5716        Length:5716        Length:5716       
-##  Class :character   Class :character   Class :character  
-##  Mode  :character   Mode  :character   Mode  :character  
-##                                                          
-##                                                          
-##                                                          
-##                                                          
-##       RM              NOME_MUN            P_SUPER     
-##  Length:5716        Length:5716        Min.   : 0.00  
-##  Class :character   Class :character   1st Qu.: 2.18  
-##  Mode  :character   Mode  :character   Median : 5.85  
-##                                        Mean   :12.42  
-##                                        3rd Qu.:16.98  
-##                                        Max.   :77.07  
-##                                        NA&#39;s   :131    
-##      T_LUZ             IDHM                 geometry   
-##  Min.   : 95.07   Min.   :0.4790   MULTIPOLYGON :5716  
-##  1st Qu.: 99.90   1st Qu.:0.6450   epsg:4326    :   0  
-##  Median :100.00   Median :0.7150   +proj=long...:   0  
-##  Mean   : 99.88   Mean   :0.7188                       
-##  3rd Qu.:100.00   3rd Qu.:0.7930                       
-##  Max.   :100.00   Max.   :0.9650                       
-##  NA&#39;s   :131      NA&#39;s   :131</code></pre>
+<div class="sourceCode" id="cb383"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb383-1"><a href="quanti3.html#cb383-1" tabindex="-1"></a><span class="co">#para resumir os dados quantitativos</span></span>
+<span id="cb383-2"><a href="quanti3.html#cb383-2" tabindex="-1"></a><span class="fu">summary</span>(udh_dados_rmsp)</span></code></pre></div>
+<pre><code>##   UDH_ATLAS          CD_GEOCODM         NM_MUNICIP             RM           
+##  Length:5716        Length:5716        Length:5716        Length:5716       
+##  Class :character   Class :character   Class :character   Class :character  
+##  Mode  :character   Mode  :character   Mode  :character   Mode  :character  
+##                                                                             
+##                                                                             
+##                                                                             
+##                                                                             
+##    NOME_MUN            P_SUPER          T_LUZ             IDHM                 geometry   
+##  Length:5716        Min.   : 0.00   Min.   : 95.07   Min.   :0.4790   MULTIPOLYGON :5716  
+##  Class :character   1st Qu.: 2.18   1st Qu.: 99.90   1st Qu.:0.6450   epsg:4326    :   0  
+##  Mode  :character   Median : 5.85   Median :100.00   Median :0.7150   +proj=long...:   0  
+##                     Mean   :12.42   Mean   : 99.88   Mean   :0.7188                       
+##                     3rd Qu.:16.98   3rd Qu.:100.00   3rd Qu.:0.7930                       
+##                     Max.   :77.07   Max.   :100.00   Max.   :0.9650                       
+##                     NA&#39;s   :131     NA&#39;s   :131      NA&#39;s   :131</code></pre>
 <p>Existem três variáveis que nos interessam para elaborar mapas coropléticos. O arquivo “A - DICIONÁRIO dos indicadores do Atlas.xlsx” apresenta a explicação de todas as variáveis do banco de dados.</p>
 <p>A variável <strong>P_SUPER</strong> é o percentual das pessoas ocupadas com nível de escolaridade superior completo (Razão entre o número de pessoas de 18 anos ou mais de idade ocupadas e que já concluíram a graduação do ensino superior e o número total de pessoas ocupadas nessa faixa etária, multiplicada por 100). É importantíssimo que saibamos exatamente a definição das variáveis utilizadas para que possamos interpretar adequadamente os resultados obtidos.</p>
 <p>A variável <strong>T_LUZ</strong> é o percentual da população que vive em domicílios com energia elétrica (Razão entre a população que vive em domicílios particulares permanentes com iluminação elétrica e a população total residente em domicílios particulares permanentes, multiplicada por 100. Considera-se iluminação proveniente ou não de uma rede geral, com ou sem medidor).</p>
@@ -490,86 +483,81 @@ Vamos, então, examinar os histogramas das variáveis IDHM, P_SUPER e T_LUZ.</p>
 <div id="histogramas-das-variáveis" class="section level3 hasAnchor" number="10.2.2">
 <h3><span class="header-section-number">10.2.2</span> Histogramas das variáveis<a href="quanti3.html#histogramas-das-variáveis" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Com o pacote <strong>ggplot2</strong> vamos criar um objeto <strong>histo_idhm</strong>. Inicialmente, usamos a função <code>ggplot</code>, indicando o nome do objeto <em>sf</em> e da variável de interesse (IDHM). Adicionamos a função <code>geom_histogram</code>, definindo o número de classes para o histograma, que não precisa ser o número de classes do mapa (neste caso usamos bins=12). Definimos o eixo y como “density” porque é requerido para desenharmos a curva normal. Escolhemos a cor de contorno das colunas como “blue” e a cor de preenchimento como “lightblue”. Como vimos com a função <code>summary</code>, existem 131 UDHs com valores faltantes (NAs). Precisamos desconsiderar estas unidades usando <code>na.rm = T</code>. A função <code>geom_vline</code> desenha uma linha vertical sobre o histograma. Vamos usá-la para posicionar o valor da média do conjunto de dados (<em>mean</em>). Definimos a espessura da linha (size=1), sua cor (<em>orange</em>, laranja) e o tipo de traçado (<em>dashed</em>, pontilhado). Para o desenho da curva normal sobre o histograma, precisamos da função <code>stat_function</code>. Definimos o tipo de função (fun = dnorm), a cor da linha (colour= “red”), sua espessura (size = 1) e os argumentos, indicando a média, sem os valores faltantes (mean e na.rm = T) e o desvio padrão (<em>standard deviation</em> = sd), indicando (sd e na.rm = T). O mesmo código será usado para as variáveis P_SUPER e T_LUZ, apenas mudando os nomes das variáveis.</p>
-<div class="sourceCode" id="cb405"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb405-1"><a href="quanti3.html#cb405-1" tabindex="-1"></a>histo_idhm <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(udh_dados_rmsp, <span class="fu">aes</span>(<span class="at">x=</span>IDHM))<span class="sc">+</span> <span class="co"># Draw histogram with density</span></span>
-<span id="cb405-2"><a href="quanti3.html#cb405-2" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins=</span><span class="dv">12</span>, <span class="fu">aes</span>(<span class="at">y =</span> <span class="fu">after_stat</span>(density)), </span>
-<span id="cb405-3"><a href="quanti3.html#cb405-3" tabindex="-1"></a>                              <span class="at">colour =</span> <span class="st">&quot;blue&quot;</span>, </span>
-<span id="cb405-4"><a href="quanti3.html#cb405-4" tabindex="-1"></a>                              <span class="at">fill=</span><span class="st">&quot;lightblue&quot;</span>, </span>
-<span id="cb405-5"><a href="quanti3.html#cb405-5" tabindex="-1"></a>                              <span class="at">na.rm =</span> T)<span class="sc">+</span></span>
-<span id="cb405-6"><a href="quanti3.html#cb405-6" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="fu">mean</span>(udh_dados_rmsp<span class="sc">$</span>IDHM, <span class="at">na.rm =</span> T), </span>
-<span id="cb405-7"><a href="quanti3.html#cb405-7" tabindex="-1"></a>             <span class="at">linewidth =</span> <span class="dv">1</span>, </span>
-<span id="cb405-8"><a href="quanti3.html#cb405-8" tabindex="-1"></a>             <span class="at">colour =</span> <span class="st">&quot;orange&quot;</span>, </span>
-<span id="cb405-9"><a href="quanti3.html#cb405-9" tabindex="-1"></a>             <span class="at">linetype =</span> <span class="st">&quot;dashed&quot;</span>)<span class="sc">+</span></span>
-<span id="cb405-10"><a href="quanti3.html#cb405-10" tabindex="-1"></a>  <span class="fu">stat_function</span>(<span class="at">fun =</span> dnorm, </span>
-<span id="cb405-11"><a href="quanti3.html#cb405-11" tabindex="-1"></a>                <span class="at">colour =</span> <span class="st">&quot;red&quot;</span>, </span>
-<span id="cb405-12"><a href="quanti3.html#cb405-12" tabindex="-1"></a>                <span class="at">size =</span> <span class="dv">1</span>,</span>
-<span id="cb405-13"><a href="quanti3.html#cb405-13" tabindex="-1"></a>                <span class="at">args =</span> <span class="fu">list</span>(<span class="at">mean =</span> <span class="fu">mean</span>(udh_dados_rmsp<span class="sc">$</span>IDHM, <span class="at">na.rm =</span> T),</span>
-<span id="cb405-14"><a href="quanti3.html#cb405-14" tabindex="-1"></a>                            <span class="at">sd =</span> <span class="fu">sd</span>(udh_dados_rmsp<span class="sc">$</span>IDHM, <span class="at">na.rm =</span> T))</span>
-<span id="cb405-15"><a href="quanti3.html#cb405-15" tabindex="-1"></a>  )</span></code></pre></div>
-<pre><code>## Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
-## ℹ Please use `linewidth` instead.
-## This warning is displayed once every 8 hours.
-## Call `lifecycle::last_lifecycle_warnings()` to see where this warning
-## was generated.</code></pre>
-<div class="sourceCode" id="cb407"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb407-1"><a href="quanti3.html#cb407-1" tabindex="-1"></a>histo_luz <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(udh_dados_rmsp, <span class="fu">aes</span>(<span class="at">x=</span>T_LUZ)) <span class="sc">+</span> <span class="co"># Draw histogram with density</span></span>
-<span id="cb407-2"><a href="quanti3.html#cb407-2" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins=</span><span class="dv">30</span>, <span class="fu">aes</span>(<span class="at">y =</span> <span class="fu">after_stat</span>(density)), </span>
-<span id="cb407-3"><a href="quanti3.html#cb407-3" tabindex="-1"></a>                              <span class="at">colour =</span> <span class="st">&quot;blue&quot;</span>,</span>
-<span id="cb407-4"><a href="quanti3.html#cb407-4" tabindex="-1"></a>                              <span class="at">fill=</span><span class="st">&quot;lightblue&quot;</span>, </span>
-<span id="cb407-5"><a href="quanti3.html#cb407-5" tabindex="-1"></a>                              <span class="at">na.rm =</span> T)<span class="sc">+</span></span>
-<span id="cb407-6"><a href="quanti3.html#cb407-6" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="fu">mean</span>(udh_dados_rmsp<span class="sc">$</span>T_LUZ, <span class="at">na.rm =</span> T), </span>
-<span id="cb407-7"><a href="quanti3.html#cb407-7" tabindex="-1"></a>             <span class="at">linewidth =</span> <span class="dv">1</span>, </span>
-<span id="cb407-8"><a href="quanti3.html#cb407-8" tabindex="-1"></a>             <span class="at">colour =</span> <span class="st">&quot;orange&quot;</span>, </span>
-<span id="cb407-9"><a href="quanti3.html#cb407-9" tabindex="-1"></a>             <span class="at">linetype =</span> <span class="st">&quot;dashed&quot;</span>)<span class="sc">+</span></span>
-<span id="cb407-10"><a href="quanti3.html#cb407-10" tabindex="-1"></a>  <span class="fu">stat_function</span>(<span class="at">fun =</span> dnorm, <span class="at">colour =</span> <span class="st">&quot;red&quot;</span>, </span>
-<span id="cb407-11"><a href="quanti3.html#cb407-11" tabindex="-1"></a>                <span class="at">size =</span> <span class="dv">1</span>,</span>
-<span id="cb407-12"><a href="quanti3.html#cb407-12" tabindex="-1"></a>                <span class="at">args =</span> <span class="fu">list</span>(<span class="at">mean =</span> <span class="fu">mean</span>(udh_dados_rmsp<span class="sc">$</span>T_LUZ, <span class="at">na.rm =</span> T),</span>
-<span id="cb407-13"><a href="quanti3.html#cb407-13" tabindex="-1"></a>                            <span class="at">sd =</span> <span class="fu">sd</span>(udh_dados_rmsp<span class="sc">$</span>T_LUZ, <span class="at">na.rm =</span> T))</span>
-<span id="cb407-14"><a href="quanti3.html#cb407-14" tabindex="-1"></a>  )</span></code></pre></div>
-<div class="sourceCode" id="cb408"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb408-1"><a href="quanti3.html#cb408-1" tabindex="-1"></a>histo_sup <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(udh_dados_rmsp, <span class="fu">aes</span>(<span class="at">x=</span>P_SUPER)) <span class="sc">+</span>     <span class="co"># Draw histogram with density</span></span>
-<span id="cb408-2"><a href="quanti3.html#cb408-2" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins=</span><span class="dv">30</span>, <span class="fu">aes</span>(<span class="at">y =</span> <span class="fu">after_stat</span>(density)), </span>
-<span id="cb408-3"><a href="quanti3.html#cb408-3" tabindex="-1"></a>                              <span class="at">colour =</span> <span class="st">&quot;blue&quot;</span>,</span>
-<span id="cb408-4"><a href="quanti3.html#cb408-4" tabindex="-1"></a>                              <span class="at">fill=</span><span class="st">&quot;lightblue&quot;</span>, </span>
-<span id="cb408-5"><a href="quanti3.html#cb408-5" tabindex="-1"></a>                              <span class="at">na.rm =</span> T)<span class="sc">+</span></span>
-<span id="cb408-6"><a href="quanti3.html#cb408-6" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="fu">mean</span>(udh_dados_rmsp<span class="sc">$</span>P_SUPER, <span class="at">na.rm =</span> T),</span>
-<span id="cb408-7"><a href="quanti3.html#cb408-7" tabindex="-1"></a>             <span class="at">linewidth =</span> <span class="dv">1</span>, </span>
-<span id="cb408-8"><a href="quanti3.html#cb408-8" tabindex="-1"></a>             <span class="at">colour =</span> <span class="st">&quot;orange&quot;</span>, </span>
-<span id="cb408-9"><a href="quanti3.html#cb408-9" tabindex="-1"></a>             <span class="at">linetype =</span> <span class="st">&quot;dashed&quot;</span>)<span class="sc">+</span></span>
-<span id="cb408-10"><a href="quanti3.html#cb408-10" tabindex="-1"></a>  <span class="fu">stat_function</span>(<span class="at">fun =</span> dnorm, <span class="at">colour =</span> <span class="st">&quot;red&quot;</span>, </span>
-<span id="cb408-11"><a href="quanti3.html#cb408-11" tabindex="-1"></a>                <span class="at">size =</span> <span class="dv">1</span>,</span>
-<span id="cb408-12"><a href="quanti3.html#cb408-12" tabindex="-1"></a>                <span class="at">args =</span> <span class="fu">list</span>(<span class="at">mean =</span> <span class="fu">mean</span>(udh_dados_rmsp<span class="sc">$</span>P_SUPER, <span class="at">na.rm =</span> T),</span>
-<span id="cb408-13"><a href="quanti3.html#cb408-13" tabindex="-1"></a>                            <span class="at">sd =</span> <span class="fu">sd</span>(udh_dados_rmsp<span class="sc">$</span>P_SUPER, <span class="at">na.rm =</span> T))</span>
-<span id="cb408-14"><a href="quanti3.html#cb408-14" tabindex="-1"></a>                )</span></code></pre></div>
+<div class="sourceCode" id="cb385"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb385-1"><a href="quanti3.html#cb385-1" tabindex="-1"></a>histo_idhm <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(udh_dados_rmsp, <span class="fu">aes</span>(<span class="at">x=</span>IDHM))<span class="sc">+</span> <span class="co"># Draw histogram with density</span></span>
+<span id="cb385-2"><a href="quanti3.html#cb385-2" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins=</span><span class="dv">12</span>, <span class="fu">aes</span>(<span class="at">y =</span> <span class="fu">after_stat</span>(density)), </span>
+<span id="cb385-3"><a href="quanti3.html#cb385-3" tabindex="-1"></a>                              <span class="at">colour =</span> <span class="st">&quot;blue&quot;</span>, </span>
+<span id="cb385-4"><a href="quanti3.html#cb385-4" tabindex="-1"></a>                              <span class="at">fill=</span><span class="st">&quot;lightblue&quot;</span>, </span>
+<span id="cb385-5"><a href="quanti3.html#cb385-5" tabindex="-1"></a>                              <span class="at">na.rm =</span> T)<span class="sc">+</span></span>
+<span id="cb385-6"><a href="quanti3.html#cb385-6" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="fu">mean</span>(udh_dados_rmsp<span class="sc">$</span>IDHM, <span class="at">na.rm =</span> T), </span>
+<span id="cb385-7"><a href="quanti3.html#cb385-7" tabindex="-1"></a>             <span class="at">linewidth =</span> <span class="dv">1</span>, </span>
+<span id="cb385-8"><a href="quanti3.html#cb385-8" tabindex="-1"></a>             <span class="at">colour =</span> <span class="st">&quot;orange&quot;</span>, </span>
+<span id="cb385-9"><a href="quanti3.html#cb385-9" tabindex="-1"></a>             <span class="at">linetype =</span> <span class="st">&quot;dashed&quot;</span>)<span class="sc">+</span></span>
+<span id="cb385-10"><a href="quanti3.html#cb385-10" tabindex="-1"></a>  <span class="fu">stat_function</span>(<span class="at">fun =</span> dnorm, </span>
+<span id="cb385-11"><a href="quanti3.html#cb385-11" tabindex="-1"></a>                <span class="at">colour =</span> <span class="st">&quot;red&quot;</span>, </span>
+<span id="cb385-12"><a href="quanti3.html#cb385-12" tabindex="-1"></a>                <span class="at">size =</span> <span class="dv">1</span>,</span>
+<span id="cb385-13"><a href="quanti3.html#cb385-13" tabindex="-1"></a>                <span class="at">args =</span> <span class="fu">list</span>(<span class="at">mean =</span> <span class="fu">mean</span>(udh_dados_rmsp<span class="sc">$</span>IDHM, <span class="at">na.rm =</span> T),</span>
+<span id="cb385-14"><a href="quanti3.html#cb385-14" tabindex="-1"></a>                            <span class="at">sd =</span> <span class="fu">sd</span>(udh_dados_rmsp<span class="sc">$</span>IDHM, <span class="at">na.rm =</span> T))</span>
+<span id="cb385-15"><a href="quanti3.html#cb385-15" tabindex="-1"></a>  )</span></code></pre></div>
+<div class="sourceCode" id="cb386"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb386-1"><a href="quanti3.html#cb386-1" tabindex="-1"></a>histo_luz <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(udh_dados_rmsp, <span class="fu">aes</span>(<span class="at">x=</span>T_LUZ)) <span class="sc">+</span> <span class="co"># Draw histogram with density</span></span>
+<span id="cb386-2"><a href="quanti3.html#cb386-2" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins=</span><span class="dv">30</span>, <span class="fu">aes</span>(<span class="at">y =</span> <span class="fu">after_stat</span>(density)), </span>
+<span id="cb386-3"><a href="quanti3.html#cb386-3" tabindex="-1"></a>                              <span class="at">colour =</span> <span class="st">&quot;blue&quot;</span>,</span>
+<span id="cb386-4"><a href="quanti3.html#cb386-4" tabindex="-1"></a>                              <span class="at">fill=</span><span class="st">&quot;lightblue&quot;</span>, </span>
+<span id="cb386-5"><a href="quanti3.html#cb386-5" tabindex="-1"></a>                              <span class="at">na.rm =</span> T)<span class="sc">+</span></span>
+<span id="cb386-6"><a href="quanti3.html#cb386-6" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="fu">mean</span>(udh_dados_rmsp<span class="sc">$</span>T_LUZ, <span class="at">na.rm =</span> T), </span>
+<span id="cb386-7"><a href="quanti3.html#cb386-7" tabindex="-1"></a>             <span class="at">linewidth =</span> <span class="dv">1</span>, </span>
+<span id="cb386-8"><a href="quanti3.html#cb386-8" tabindex="-1"></a>             <span class="at">colour =</span> <span class="st">&quot;orange&quot;</span>, </span>
+<span id="cb386-9"><a href="quanti3.html#cb386-9" tabindex="-1"></a>             <span class="at">linetype =</span> <span class="st">&quot;dashed&quot;</span>)<span class="sc">+</span></span>
+<span id="cb386-10"><a href="quanti3.html#cb386-10" tabindex="-1"></a>  <span class="fu">stat_function</span>(<span class="at">fun =</span> dnorm, <span class="at">colour =</span> <span class="st">&quot;red&quot;</span>, </span>
+<span id="cb386-11"><a href="quanti3.html#cb386-11" tabindex="-1"></a>                <span class="at">size =</span> <span class="dv">1</span>,</span>
+<span id="cb386-12"><a href="quanti3.html#cb386-12" tabindex="-1"></a>                <span class="at">args =</span> <span class="fu">list</span>(<span class="at">mean =</span> <span class="fu">mean</span>(udh_dados_rmsp<span class="sc">$</span>T_LUZ, <span class="at">na.rm =</span> T),</span>
+<span id="cb386-13"><a href="quanti3.html#cb386-13" tabindex="-1"></a>                            <span class="at">sd =</span> <span class="fu">sd</span>(udh_dados_rmsp<span class="sc">$</span>T_LUZ, <span class="at">na.rm =</span> T))</span>
+<span id="cb386-14"><a href="quanti3.html#cb386-14" tabindex="-1"></a>  )</span></code></pre></div>
+<div class="sourceCode" id="cb387"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb387-1"><a href="quanti3.html#cb387-1" tabindex="-1"></a>histo_sup <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(udh_dados_rmsp, <span class="fu">aes</span>(<span class="at">x=</span>P_SUPER)) <span class="sc">+</span>     <span class="co"># Draw histogram with density</span></span>
+<span id="cb387-2"><a href="quanti3.html#cb387-2" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins=</span><span class="dv">30</span>, <span class="fu">aes</span>(<span class="at">y =</span> <span class="fu">after_stat</span>(density)), </span>
+<span id="cb387-3"><a href="quanti3.html#cb387-3" tabindex="-1"></a>                              <span class="at">colour =</span> <span class="st">&quot;blue&quot;</span>,</span>
+<span id="cb387-4"><a href="quanti3.html#cb387-4" tabindex="-1"></a>                              <span class="at">fill=</span><span class="st">&quot;lightblue&quot;</span>, </span>
+<span id="cb387-5"><a href="quanti3.html#cb387-5" tabindex="-1"></a>                              <span class="at">na.rm =</span> T)<span class="sc">+</span></span>
+<span id="cb387-6"><a href="quanti3.html#cb387-6" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="fu">mean</span>(udh_dados_rmsp<span class="sc">$</span>P_SUPER, <span class="at">na.rm =</span> T),</span>
+<span id="cb387-7"><a href="quanti3.html#cb387-7" tabindex="-1"></a>             <span class="at">linewidth =</span> <span class="dv">1</span>, </span>
+<span id="cb387-8"><a href="quanti3.html#cb387-8" tabindex="-1"></a>             <span class="at">colour =</span> <span class="st">&quot;orange&quot;</span>, </span>
+<span id="cb387-9"><a href="quanti3.html#cb387-9" tabindex="-1"></a>             <span class="at">linetype =</span> <span class="st">&quot;dashed&quot;</span>)<span class="sc">+</span></span>
+<span id="cb387-10"><a href="quanti3.html#cb387-10" tabindex="-1"></a>  <span class="fu">stat_function</span>(<span class="at">fun =</span> dnorm, <span class="at">colour =</span> <span class="st">&quot;red&quot;</span>, </span>
+<span id="cb387-11"><a href="quanti3.html#cb387-11" tabindex="-1"></a>                <span class="at">size =</span> <span class="dv">1</span>,</span>
+<span id="cb387-12"><a href="quanti3.html#cb387-12" tabindex="-1"></a>                <span class="at">args =</span> <span class="fu">list</span>(<span class="at">mean =</span> <span class="fu">mean</span>(udh_dados_rmsp<span class="sc">$</span>P_SUPER, <span class="at">na.rm =</span> T),</span>
+<span id="cb387-13"><a href="quanti3.html#cb387-13" tabindex="-1"></a>                            <span class="at">sd =</span> <span class="fu">sd</span>(udh_dados_rmsp<span class="sc">$</span>P_SUPER, <span class="at">na.rm =</span> T))</span>
+<span id="cb387-14"><a href="quanti3.html#cb387-14" tabindex="-1"></a>                )</span></code></pre></div>
 <p>Para plotar os três histogramas, vamos usar o pacote <strong>gridExtra</strong> e a função <code>grid.arrange</code>. Para esta função, listamos os três objetos, indicamos que sejam organizados em 3 colunas (ncol=3) e definimos a altura dos gráficos para 5 cm.</p>
-<div class="sourceCode" id="cb409"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb409-1"><a href="quanti3.html#cb409-1" tabindex="-1"></a><span class="co">#para plotar os 3 histogramas em uma única coluna</span></span>
-<span id="cb409-2"><a href="quanti3.html#cb409-2" tabindex="-1"></a><span class="fu">grid.arrange</span>(histo_idhm, </span>
-<span id="cb409-3"><a href="quanti3.html#cb409-3" tabindex="-1"></a>             histo_luz, </span>
-<span id="cb409-4"><a href="quanti3.html#cb409-4" tabindex="-1"></a>             histo_sup, </span>
-<span id="cb409-5"><a href="quanti3.html#cb409-5" tabindex="-1"></a>             <span class="at">ncol=</span><span class="dv">3</span>, </span>
-<span id="cb409-6"><a href="quanti3.html#cb409-6" tabindex="-1"></a>             <span class="at">heights =</span> <span class="fu">unit</span>(<span class="fu">c</span>(<span class="dv">5</span>, <span class="dv">1</span>), <span class="fu">c</span>(<span class="st">&#39;cm&#39;</span>, <span class="st">&#39;null&#39;</span>))</span>
-<span id="cb409-7"><a href="quanti3.html#cb409-7" tabindex="-1"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb388"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb388-1"><a href="quanti3.html#cb388-1" tabindex="-1"></a><span class="co">#para plotar os 3 histogramas em uma única coluna</span></span>
+<span id="cb388-2"><a href="quanti3.html#cb388-2" tabindex="-1"></a><span class="fu">grid.arrange</span>(histo_idhm, </span>
+<span id="cb388-3"><a href="quanti3.html#cb388-3" tabindex="-1"></a>             histo_luz, </span>
+<span id="cb388-4"><a href="quanti3.html#cb388-4" tabindex="-1"></a>             histo_sup, </span>
+<span id="cb388-5"><a href="quanti3.html#cb388-5" tabindex="-1"></a>             <span class="at">ncol=</span><span class="dv">3</span>, </span>
+<span id="cb388-6"><a href="quanti3.html#cb388-6" tabindex="-1"></a>             <span class="at">heights =</span> <span class="fu">unit</span>(<span class="fu">c</span>(<span class="dv">5</span>, <span class="dv">1</span>), <span class="fu">c</span>(<span class="st">&#39;cm&#39;</span>, <span class="st">&#39;null&#39;</span>))</span>
+<span id="cb388-7"><a href="quanti3.html#cb388-7" tabindex="-1"></a>)</span></code></pre></div>
 <p><img src="bookdownproj_files/figure-html/unnamed-chunk-182-1.png" width="960" /></p>
 <p>Os histogramas permitem verificar que IDHM tem uma distribuição muito próxima à distribuição normal, com simetria nítida. P_SUPER e T_LUZ apresentam fortes assimetrias. A maior parte dos valores de T_LUZ se encontram entre 99 e 100%. P_SUPER tem a maior parte das UDHs com valores abaixo da linha tracejada laranja que representa a média do conjunto de dados.</p>
 <p>Vamos elaborar os mapas sem classes das três variáveis. Para corrigir a geometria do shapefile, vamos usar o comando a seguir, tornando-a válida.</p>
-<div class="sourceCode" id="cb410"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb410-1"><a href="quanti3.html#cb410-1" tabindex="-1"></a><span class="co">#para tornar válida a geometria de udh_dados_rmsp</span></span>
-<span id="cb410-2"><a href="quanti3.html#cb410-2" tabindex="-1"></a>udh_dados_rmsp <span class="ot">&lt;-</span> sf<span class="sc">::</span><span class="fu">st_make_valid</span>(udh_dados_rmsp)</span></code></pre></div>
+<div class="sourceCode" id="cb389"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb389-1"><a href="quanti3.html#cb389-1" tabindex="-1"></a><span class="co">#para tornar válida a geometria de udh_dados_rmsp</span></span>
+<span id="cb389-2"><a href="quanti3.html#cb389-2" tabindex="-1"></a>udh_dados_rmsp <span class="ot">&lt;-</span> sf<span class="sc">::</span><span class="fu">st_make_valid</span>(udh_dados_rmsp)</span></code></pre></div>
 <p>Para os mapas coropléticos, vamos usar o pacote <strong>tmap</strong>, cuja documentação completa pode ser encontrada <a href="https://cran.r-project.org/web/packages/tmap/tmap.pdf">aqui</a>. Este pacote oferece uma abordagem flexível e fácil para criar mapas temáticos. Usa a gramática dos gráficos em camadas com sintaxe parecida com <strong>ggplot2</strong>.</p>
 <p>Vamos usar a função <strong>tm_shape</strong> para indicar o nome do arquivo shapefile que contém os dados. Com o sinal + adicionamos <strong>tm_fill</strong> para indicar o nome da variável, o título que aparecerá na legenda e a forma de dividir os intervalos das classes. Nesta primeira visualização vamos fazer os três mapas do tipo “sem classes”, com legenda contínua. Em seguida, usamos <strong>tmap_arrange</strong> para plotarmos os três mapas em uma única linha, definindo a altura dos mapas.</p>
-<div class="sourceCode" id="cb411"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb411-1"><a href="quanti3.html#cb411-1" tabindex="-1"></a><span class="co">#para definir o modo estático</span></span>
-<span id="cb411-2"><a href="quanti3.html#cb411-2" tabindex="-1"></a><span class="fu">tmap_mode</span>(<span class="at">mode =</span> <span class="st">&quot;plot&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb390"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb390-1"><a href="quanti3.html#cb390-1" tabindex="-1"></a><span class="co">#para definir o modo estático</span></span>
+<span id="cb390-2"><a href="quanti3.html#cb390-2" tabindex="-1"></a><span class="fu">tmap_mode</span>(<span class="at">mode =</span> <span class="st">&quot;plot&quot;</span>)</span></code></pre></div>
 <pre><code>## tmap mode set to plotting</code></pre>
-<div class="sourceCode" id="cb413"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb413-1"><a href="quanti3.html#cb413-1" tabindex="-1"></a>map_idhm <span class="ot">&lt;-</span> <span class="fu">tm_shape</span>(udh_dados_rmsp) <span class="sc">+</span> <span class="co">#indica o nome do arquivo shapefile que será mapeado</span></span>
-<span id="cb413-2"><a href="quanti3.html#cb413-2" tabindex="-1"></a>  <span class="fu">tm_fill</span>(<span class="at">col =</span> <span class="st">&quot;IDHM&quot;</span>,<span class="at">title =</span> <span class="st">&quot;IDHM&quot;</span>,<span class="at">style =</span> <span class="st">&quot;cont&quot;</span>) <span class="sc">+</span> <span class="co">#indica a variável e escala contínua</span></span>
-<span id="cb413-3"><a href="quanti3.html#cb413-3" tabindex="-1"></a>  <span class="fu">tm_scale_bar</span>()                                        <span class="co">#adiciona a barra de escala</span></span>
-<span id="cb413-4"><a href="quanti3.html#cb413-4" tabindex="-1"></a></span>
-<span id="cb413-5"><a href="quanti3.html#cb413-5" tabindex="-1"></a>map_psuper <span class="ot">&lt;-</span> <span class="fu">tm_shape</span>(udh_dados_rmsp) <span class="sc">+</span> <span class="co">#indica o nome do arquivo shapefile que será mapeado</span></span>
-<span id="cb413-6"><a href="quanti3.html#cb413-6" tabindex="-1"></a>  <span class="fu">tm_fill</span>(<span class="at">col =</span> <span class="st">&quot;P_SUPER&quot;</span>,<span class="at">title =</span> <span class="st">&quot;% nível superior&quot;</span>,<span class="at">style =</span> <span class="st">&quot;cont&quot;</span>) <span class="sc">+</span> <span class="co">#indica a variável e escala contínua</span></span>
-<span id="cb413-7"><a href="quanti3.html#cb413-7" tabindex="-1"></a>  <span class="fu">tm_scale_bar</span>()          <span class="co">#adiciona a barra de escala</span></span>
-<span id="cb413-8"><a href="quanti3.html#cb413-8" tabindex="-1"></a></span>
-<span id="cb413-9"><a href="quanti3.html#cb413-9" tabindex="-1"></a>map_tluz <span class="ot">&lt;-</span> <span class="fu">tm_shape</span>(udh_dados_rmsp) <span class="sc">+</span> <span class="co">#indica o nome do arquivo shapefile que será mapeado</span></span>
-<span id="cb413-10"><a href="quanti3.html#cb413-10" tabindex="-1"></a>  <span class="fu">tm_fill</span>(<span class="at">col =</span> <span class="st">&quot;T_LUZ&quot;</span>,<span class="at">title =</span> <span class="st">&quot;% energia&quot;</span>,<span class="at">style =</span> <span class="st">&quot;cont&quot;</span>) <span class="sc">+</span> <span class="co">#indica a variável e escala contínua</span></span>
-<span id="cb413-11"><a href="quanti3.html#cb413-11" tabindex="-1"></a>  <span class="fu">tm_scale_bar</span>()       <span class="co">#adiciona a barra de escala</span></span>
-<span id="cb413-12"><a href="quanti3.html#cb413-12" tabindex="-1"></a></span>
-<span id="cb413-13"><a href="quanti3.html#cb413-13" tabindex="-1"></a><span class="co">#para organizar os 3 mapas em uma linha</span></span>
-<span id="cb413-14"><a href="quanti3.html#cb413-14" tabindex="-1"></a><span class="fu">tmap_arrange</span>(map_idhm,map_psuper,map_tluz,<span class="at">nrow=</span><span class="dv">1</span>, <span class="at">heights =</span> <span class="fu">unit</span>(<span class="fu">c</span>(<span class="dv">8</span>, <span class="dv">1</span>), <span class="fu">c</span>(<span class="st">&#39;cm&#39;</span>, <span class="st">&#39;null&#39;</span>))) </span></code></pre></div>
+<div class="sourceCode" id="cb392"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb392-1"><a href="quanti3.html#cb392-1" tabindex="-1"></a>map_idhm <span class="ot">&lt;-</span> <span class="fu">tm_shape</span>(udh_dados_rmsp) <span class="sc">+</span> <span class="co">#indica o nome do arquivo shapefile que será mapeado</span></span>
+<span id="cb392-2"><a href="quanti3.html#cb392-2" tabindex="-1"></a>  <span class="fu">tm_fill</span>(<span class="at">col =</span> <span class="st">&quot;IDHM&quot;</span>,<span class="at">title =</span> <span class="st">&quot;IDHM&quot;</span>,<span class="at">style =</span> <span class="st">&quot;cont&quot;</span>) <span class="sc">+</span> <span class="co">#indica a variável e escala contínua</span></span>
+<span id="cb392-3"><a href="quanti3.html#cb392-3" tabindex="-1"></a>  <span class="fu">tm_scale_bar</span>()                                        <span class="co">#adiciona a barra de escala</span></span>
+<span id="cb392-4"><a href="quanti3.html#cb392-4" tabindex="-1"></a></span>
+<span id="cb392-5"><a href="quanti3.html#cb392-5" tabindex="-1"></a>map_psuper <span class="ot">&lt;-</span> <span class="fu">tm_shape</span>(udh_dados_rmsp) <span class="sc">+</span> <span class="co">#indica o nome do arquivo shapefile que será mapeado</span></span>
+<span id="cb392-6"><a href="quanti3.html#cb392-6" tabindex="-1"></a>  <span class="fu">tm_fill</span>(<span class="at">col =</span> <span class="st">&quot;P_SUPER&quot;</span>,<span class="at">title =</span> <span class="st">&quot;% nível superior&quot;</span>,<span class="at">style =</span> <span class="st">&quot;cont&quot;</span>) <span class="sc">+</span> <span class="co">#indica a variável e escala contínua</span></span>
+<span id="cb392-7"><a href="quanti3.html#cb392-7" tabindex="-1"></a>  <span class="fu">tm_scale_bar</span>()          <span class="co">#adiciona a barra de escala</span></span>
+<span id="cb392-8"><a href="quanti3.html#cb392-8" tabindex="-1"></a></span>
+<span id="cb392-9"><a href="quanti3.html#cb392-9" tabindex="-1"></a>map_tluz <span class="ot">&lt;-</span> <span class="fu">tm_shape</span>(udh_dados_rmsp) <span class="sc">+</span> <span class="co">#indica o nome do arquivo shapefile que será mapeado</span></span>
+<span id="cb392-10"><a href="quanti3.html#cb392-10" tabindex="-1"></a>  <span class="fu">tm_fill</span>(<span class="at">col =</span> <span class="st">&quot;T_LUZ&quot;</span>,<span class="at">title =</span> <span class="st">&quot;% energia&quot;</span>,<span class="at">style =</span> <span class="st">&quot;cont&quot;</span>) <span class="sc">+</span> <span class="co">#indica a variável e escala contínua</span></span>
+<span id="cb392-11"><a href="quanti3.html#cb392-11" tabindex="-1"></a>  <span class="fu">tm_scale_bar</span>()       <span class="co">#adiciona a barra de escala</span></span>
+<span id="cb392-12"><a href="quanti3.html#cb392-12" tabindex="-1"></a></span>
+<span id="cb392-13"><a href="quanti3.html#cb392-13" tabindex="-1"></a><span class="co">#para organizar os 3 mapas em uma linha</span></span>
+<span id="cb392-14"><a href="quanti3.html#cb392-14" tabindex="-1"></a><span class="fu">tmap_arrange</span>(map_idhm,map_psuper,map_tluz,<span class="at">nrow=</span><span class="dv">1</span>, <span class="at">heights =</span> <span class="fu">unit</span>(<span class="fu">c</span>(<span class="dv">8</span>, <span class="dv">1</span>), <span class="fu">c</span>(<span class="st">&#39;cm&#39;</span>, <span class="st">&#39;null&#39;</span>))) </span></code></pre></div>
 <p><img src="bookdownproj_files/figure-html/unnamed-chunk-184-1.png" width="960" />
 Os mapas sem classes serão úteis para avaliar os mapas com classes que faremos.</p>
 </div>
@@ -584,32 +572,32 @@ Os mapas sem classes serão úteis para avaliar os mapas com classes que faremos
 <p>As outras opções utilizam algoritmos específicos que podem ser consultadas com o símbolo <code>?</code> antes de seu nome (e.g., <code>?dpih</code>) e incluem “kmeans”, “hclust”, “bclust”, “fisher”, “jenks”, “dpih”, “headtails” e “log10_pretty”.
 Os gradientes contínuos (para mapas sem classes) são: “cont”, “order” e “log10”.
 Vamos comparar os mapas usando as seguintes escalas: “equal”, “quantile”, “jenks” e “sd”, por serem as mais utilizadas.</p>
-<div class="sourceCode" id="cb414"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb414-1"><a href="quanti3.html#cb414-1" tabindex="-1"></a>idhm_cont <span class="ot">&lt;-</span> <span class="fu">tm_shape</span>(udh_dados_rmsp) <span class="sc">+</span> <span class="co">#indica o nome do arquivo shapefile que será mapeado</span></span>
-<span id="cb414-2"><a href="quanti3.html#cb414-2" tabindex="-1"></a>  <span class="fu">tm_fill</span>(<span class="at">col =</span> <span class="st">&quot;IDHM&quot;</span>,<span class="at">title =</span> <span class="st">&quot;IDHM&quot;</span>,<span class="at">style =</span> <span class="st">&quot;cont&quot;</span>) <span class="sc">+</span> <span class="co">#indica a variável e escala contínua</span></span>
-<span id="cb414-3"><a href="quanti3.html#cb414-3" tabindex="-1"></a>  <span class="fu">tm_layout</span>(<span class="at">title =</span> <span class="st">&quot;Cont&quot;</span>, <span class="at">title.size =</span> <span class="fl">0.6</span>, <span class="at">legend.title.size =</span> <span class="fl">0.5</span>, <span class="at">legend.text.size =</span> <span class="fl">0.5</span>, <span class="at">legend.outside =</span> <span class="cn">TRUE</span>)<span class="sc">+</span> <span class="co">#define o layout</span></span>
-<span id="cb414-4"><a href="quanti3.html#cb414-4" tabindex="-1"></a>  <span class="fu">tm_scale_bar</span>()                              <span class="co">#adiciona a barra de escala</span></span>
-<span id="cb414-5"><a href="quanti3.html#cb414-5" tabindex="-1"></a></span>
-<span id="cb414-6"><a href="quanti3.html#cb414-6" tabindex="-1"></a>idhm_eq <span class="ot">&lt;-</span> <span class="fu">tm_shape</span>(udh_dados_rmsp) <span class="sc">+</span> <span class="co">#indica o nome do arquivo shapefile que será mapeado</span></span>
-<span id="cb414-7"><a href="quanti3.html#cb414-7" tabindex="-1"></a>  <span class="fu">tm_fill</span>(<span class="at">col =</span> <span class="st">&quot;IDHM&quot;</span>,<span class="at">title =</span> <span class="st">&quot;IDHM&quot;</span>,<span class="at">n =</span> <span class="dv">7</span>, <span class="at">style =</span> <span class="st">&quot;equal&quot;</span>, <span class="at">legend.hist =</span> <span class="cn">TRUE</span>) <span class="sc">+</span></span>
-<span id="cb414-8"><a href="quanti3.html#cb414-8" tabindex="-1"></a>  <span class="fu">tm_layout</span>(<span class="at">title =</span> <span class="st">&quot;Equal&quot;</span>, <span class="at">title.size =</span> <span class="fl">0.6</span>, <span class="at">legend.title.size =</span> <span class="fl">0.5</span>, <span class="at">legend.text.size =</span> <span class="fl">0.5</span>, <span class="at">legend.outside =</span> <span class="cn">TRUE</span>)<span class="sc">+</span></span>
-<span id="cb414-9"><a href="quanti3.html#cb414-9" tabindex="-1"></a>  <span class="fu">tm_scale_bar</span>()</span>
-<span id="cb414-10"><a href="quanti3.html#cb414-10" tabindex="-1"></a></span>
-<span id="cb414-11"><a href="quanti3.html#cb414-11" tabindex="-1"></a>idhm_qt <span class="ot">&lt;-</span> <span class="fu">tm_shape</span>(udh_dados_rmsp) <span class="sc">+</span> </span>
-<span id="cb414-12"><a href="quanti3.html#cb414-12" tabindex="-1"></a>  <span class="fu">tm_fill</span>(<span class="at">col =</span> <span class="st">&quot;IDHM&quot;</span>,<span class="at">title =</span> <span class="st">&quot;IDHM&quot;</span>,<span class="at">n =</span> <span class="dv">7</span>, <span class="at">style =</span> <span class="st">&quot;quantile&quot;</span>, <span class="at">legend.hist =</span> <span class="cn">TRUE</span>) <span class="sc">+</span></span>
-<span id="cb414-13"><a href="quanti3.html#cb414-13" tabindex="-1"></a>  <span class="fu">tm_layout</span>(<span class="at">title =</span> <span class="st">&quot;Quantile&quot;</span>, <span class="at">title.size =</span> <span class="fl">0.6</span>, <span class="at">legend.title.size =</span> <span class="fl">0.5</span>, <span class="at">legend.text.size =</span> <span class="fl">0.5</span>, <span class="at">legend.outside =</span> <span class="cn">TRUE</span>)<span class="sc">+</span></span>
-<span id="cb414-14"><a href="quanti3.html#cb414-14" tabindex="-1"></a>  <span class="fu">tm_scale_bar</span>()</span>
-<span id="cb414-15"><a href="quanti3.html#cb414-15" tabindex="-1"></a></span>
-<span id="cb414-16"><a href="quanti3.html#cb414-16" tabindex="-1"></a>idhm_jk <span class="ot">&lt;-</span> <span class="fu">tm_shape</span>(udh_dados_rmsp) <span class="sc">+</span> </span>
-<span id="cb414-17"><a href="quanti3.html#cb414-17" tabindex="-1"></a>  <span class="fu">tm_fill</span>(<span class="at">col =</span> <span class="st">&quot;IDHM&quot;</span>,<span class="at">title =</span> <span class="st">&quot;IDHM&quot;</span>,<span class="at">n =</span> <span class="dv">7</span>, <span class="at">style =</span> <span class="st">&quot;jenks&quot;</span>, <span class="at">legend.hist =</span> <span class="cn">TRUE</span>) <span class="sc">+</span></span>
-<span id="cb414-18"><a href="quanti3.html#cb414-18" tabindex="-1"></a>  <span class="fu">tm_layout</span>(<span class="at">title =</span> <span class="st">&quot;Jenks&quot;</span>, <span class="at">title.size =</span> <span class="fl">0.6</span>, <span class="at">legend.title.size =</span> <span class="fl">0.5</span>, <span class="at">legend.text.size =</span> <span class="fl">0.5</span>, <span class="at">legend.outside =</span> <span class="cn">TRUE</span>)<span class="sc">+</span></span>
-<span id="cb414-19"><a href="quanti3.html#cb414-19" tabindex="-1"></a>  <span class="fu">tm_scale_bar</span>()</span>
-<span id="cb414-20"><a href="quanti3.html#cb414-20" tabindex="-1"></a></span>
-<span id="cb414-21"><a href="quanti3.html#cb414-21" tabindex="-1"></a>idhm_sd <span class="ot">&lt;-</span> <span class="fu">tm_shape</span>(udh_dados_rmsp) <span class="sc">+</span> </span>
-<span id="cb414-22"><a href="quanti3.html#cb414-22" tabindex="-1"></a>  <span class="fu">tm_fill</span>(<span class="at">col =</span> <span class="st">&quot;IDHM&quot;</span>,<span class="at">title =</span> <span class="st">&quot;IDHM&quot;</span>,<span class="at">n =</span> <span class="dv">7</span>, <span class="at">style =</span> <span class="st">&quot;sd&quot;</span>, <span class="at">palette =</span> <span class="st">&quot;RdYlGn&quot;</span>, <span class="at">legend.hist =</span> <span class="cn">TRUE</span>) <span class="sc">+</span></span>
-<span id="cb414-23"><a href="quanti3.html#cb414-23" tabindex="-1"></a>  <span class="fu">tm_layout</span>(<span class="at">title =</span> <span class="st">&quot;Standard </span><span class="sc">\n</span><span class="st">deviation&quot;</span>, <span class="at">title.size =</span> <span class="fl">0.6</span>, <span class="at">legend.title.size =</span> <span class="fl">0.5</span>, <span class="at">legend.text.size =</span> <span class="fl">0.5</span>, <span class="at">legend.outside =</span> <span class="cn">TRUE</span>)<span class="sc">+</span></span>
-<span id="cb414-24"><a href="quanti3.html#cb414-24" tabindex="-1"></a>  <span class="fu">tm_scale_bar</span>()</span>
-<span id="cb414-25"><a href="quanti3.html#cb414-25" tabindex="-1"></a></span>
-<span id="cb414-26"><a href="quanti3.html#cb414-26" tabindex="-1"></a><span class="fu">tmap_arrange</span>(idhm_cont, idhm_eq,idhm_qt,idhm_jk,idhm_sd, <span class="at">nrow=</span><span class="dv">3</span>, <span class="at">ncol =</span> <span class="dv">2</span>, <span class="at">heights =</span> <span class="fu">unit</span>(<span class="fu">c</span>(<span class="dv">5</span>, <span class="dv">5</span>), <span class="fu">c</span>(<span class="st">&#39;cm&#39;</span>, <span class="st">&#39;cm&#39;</span>))) <span class="co">#organiza a apresentação dos mapas</span></span></code></pre></div>
+<div class="sourceCode" id="cb393"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb393-1"><a href="quanti3.html#cb393-1" tabindex="-1"></a>idhm_cont <span class="ot">&lt;-</span> <span class="fu">tm_shape</span>(udh_dados_rmsp) <span class="sc">+</span> <span class="co">#indica o nome do arquivo shapefile que será mapeado</span></span>
+<span id="cb393-2"><a href="quanti3.html#cb393-2" tabindex="-1"></a>  <span class="fu">tm_fill</span>(<span class="at">col =</span> <span class="st">&quot;IDHM&quot;</span>,<span class="at">title =</span> <span class="st">&quot;IDHM&quot;</span>,<span class="at">style =</span> <span class="st">&quot;cont&quot;</span>) <span class="sc">+</span> <span class="co">#indica a variável e escala contínua</span></span>
+<span id="cb393-3"><a href="quanti3.html#cb393-3" tabindex="-1"></a>  <span class="fu">tm_layout</span>(<span class="at">title =</span> <span class="st">&quot;Cont&quot;</span>, <span class="at">title.size =</span> <span class="fl">0.6</span>, <span class="at">legend.title.size =</span> <span class="fl">0.5</span>, <span class="at">legend.text.size =</span> <span class="fl">0.5</span>, <span class="at">legend.outside =</span> <span class="cn">TRUE</span>)<span class="sc">+</span> <span class="co">#define o layout</span></span>
+<span id="cb393-4"><a href="quanti3.html#cb393-4" tabindex="-1"></a>  <span class="fu">tm_scale_bar</span>()                              <span class="co">#adiciona a barra de escala</span></span>
+<span id="cb393-5"><a href="quanti3.html#cb393-5" tabindex="-1"></a></span>
+<span id="cb393-6"><a href="quanti3.html#cb393-6" tabindex="-1"></a>idhm_eq <span class="ot">&lt;-</span> <span class="fu">tm_shape</span>(udh_dados_rmsp) <span class="sc">+</span> <span class="co">#indica o nome do arquivo shapefile que será mapeado</span></span>
+<span id="cb393-7"><a href="quanti3.html#cb393-7" tabindex="-1"></a>  <span class="fu">tm_fill</span>(<span class="at">col =</span> <span class="st">&quot;IDHM&quot;</span>,<span class="at">title =</span> <span class="st">&quot;IDHM&quot;</span>,<span class="at">n =</span> <span class="dv">7</span>, <span class="at">style =</span> <span class="st">&quot;equal&quot;</span>, <span class="at">legend.hist =</span> <span class="cn">TRUE</span>) <span class="sc">+</span></span>
+<span id="cb393-8"><a href="quanti3.html#cb393-8" tabindex="-1"></a>  <span class="fu">tm_layout</span>(<span class="at">title =</span> <span class="st">&quot;Equal&quot;</span>, <span class="at">title.size =</span> <span class="fl">0.6</span>, <span class="at">legend.title.size =</span> <span class="fl">0.5</span>, <span class="at">legend.text.size =</span> <span class="fl">0.5</span>, <span class="at">legend.outside =</span> <span class="cn">TRUE</span>)<span class="sc">+</span></span>
+<span id="cb393-9"><a href="quanti3.html#cb393-9" tabindex="-1"></a>  <span class="fu">tm_scale_bar</span>()</span>
+<span id="cb393-10"><a href="quanti3.html#cb393-10" tabindex="-1"></a></span>
+<span id="cb393-11"><a href="quanti3.html#cb393-11" tabindex="-1"></a>idhm_qt <span class="ot">&lt;-</span> <span class="fu">tm_shape</span>(udh_dados_rmsp) <span class="sc">+</span> </span>
+<span id="cb393-12"><a href="quanti3.html#cb393-12" tabindex="-1"></a>  <span class="fu">tm_fill</span>(<span class="at">col =</span> <span class="st">&quot;IDHM&quot;</span>,<span class="at">title =</span> <span class="st">&quot;IDHM&quot;</span>,<span class="at">n =</span> <span class="dv">7</span>, <span class="at">style =</span> <span class="st">&quot;quantile&quot;</span>, <span class="at">legend.hist =</span> <span class="cn">TRUE</span>) <span class="sc">+</span></span>
+<span id="cb393-13"><a href="quanti3.html#cb393-13" tabindex="-1"></a>  <span class="fu">tm_layout</span>(<span class="at">title =</span> <span class="st">&quot;Quantile&quot;</span>, <span class="at">title.size =</span> <span class="fl">0.6</span>, <span class="at">legend.title.size =</span> <span class="fl">0.5</span>, <span class="at">legend.text.size =</span> <span class="fl">0.5</span>, <span class="at">legend.outside =</span> <span class="cn">TRUE</span>)<span class="sc">+</span></span>
+<span id="cb393-14"><a href="quanti3.html#cb393-14" tabindex="-1"></a>  <span class="fu">tm_scale_bar</span>()</span>
+<span id="cb393-15"><a href="quanti3.html#cb393-15" tabindex="-1"></a></span>
+<span id="cb393-16"><a href="quanti3.html#cb393-16" tabindex="-1"></a>idhm_jk <span class="ot">&lt;-</span> <span class="fu">tm_shape</span>(udh_dados_rmsp) <span class="sc">+</span> </span>
+<span id="cb393-17"><a href="quanti3.html#cb393-17" tabindex="-1"></a>  <span class="fu">tm_fill</span>(<span class="at">col =</span> <span class="st">&quot;IDHM&quot;</span>,<span class="at">title =</span> <span class="st">&quot;IDHM&quot;</span>,<span class="at">n =</span> <span class="dv">7</span>, <span class="at">style =</span> <span class="st">&quot;jenks&quot;</span>, <span class="at">legend.hist =</span> <span class="cn">TRUE</span>) <span class="sc">+</span></span>
+<span id="cb393-18"><a href="quanti3.html#cb393-18" tabindex="-1"></a>  <span class="fu">tm_layout</span>(<span class="at">title =</span> <span class="st">&quot;Jenks&quot;</span>, <span class="at">title.size =</span> <span class="fl">0.6</span>, <span class="at">legend.title.size =</span> <span class="fl">0.5</span>, <span class="at">legend.text.size =</span> <span class="fl">0.5</span>, <span class="at">legend.outside =</span> <span class="cn">TRUE</span>)<span class="sc">+</span></span>
+<span id="cb393-19"><a href="quanti3.html#cb393-19" tabindex="-1"></a>  <span class="fu">tm_scale_bar</span>()</span>
+<span id="cb393-20"><a href="quanti3.html#cb393-20" tabindex="-1"></a></span>
+<span id="cb393-21"><a href="quanti3.html#cb393-21" tabindex="-1"></a>idhm_sd <span class="ot">&lt;-</span> <span class="fu">tm_shape</span>(udh_dados_rmsp) <span class="sc">+</span> </span>
+<span id="cb393-22"><a href="quanti3.html#cb393-22" tabindex="-1"></a>  <span class="fu">tm_fill</span>(<span class="at">col =</span> <span class="st">&quot;IDHM&quot;</span>,<span class="at">title =</span> <span class="st">&quot;IDHM&quot;</span>,<span class="at">n =</span> <span class="dv">7</span>, <span class="at">style =</span> <span class="st">&quot;sd&quot;</span>, <span class="at">palette =</span> <span class="st">&quot;RdYlGn&quot;</span>, <span class="at">legend.hist =</span> <span class="cn">TRUE</span>) <span class="sc">+</span></span>
+<span id="cb393-23"><a href="quanti3.html#cb393-23" tabindex="-1"></a>  <span class="fu">tm_layout</span>(<span class="at">title =</span> <span class="st">&quot;Standard </span><span class="sc">\n</span><span class="st">deviation&quot;</span>, <span class="at">title.size =</span> <span class="fl">0.6</span>, <span class="at">legend.title.size =</span> <span class="fl">0.5</span>, <span class="at">legend.text.size =</span> <span class="fl">0.5</span>, <span class="at">legend.outside =</span> <span class="cn">TRUE</span>)<span class="sc">+</span></span>
+<span id="cb393-24"><a href="quanti3.html#cb393-24" tabindex="-1"></a>  <span class="fu">tm_scale_bar</span>()</span>
+<span id="cb393-25"><a href="quanti3.html#cb393-25" tabindex="-1"></a></span>
+<span id="cb393-26"><a href="quanti3.html#cb393-26" tabindex="-1"></a><span class="fu">tmap_arrange</span>(idhm_cont, idhm_eq,idhm_qt,idhm_jk,idhm_sd, <span class="at">nrow=</span><span class="dv">3</span>, <span class="at">ncol =</span> <span class="dv">2</span>, <span class="at">heights =</span> <span class="fu">unit</span>(<span class="fu">c</span>(<span class="dv">5</span>, <span class="dv">5</span>), <span class="fu">c</span>(<span class="st">&#39;cm&#39;</span>, <span class="st">&#39;cm&#39;</span>))) <span class="co">#organiza a apresentação dos mapas</span></span></code></pre></div>
 <p><img src="bookdownproj_files/figure-html/unnamed-chunk-185-1.png" width="672" /></p>
 <p>Os diferentes intervalos adotados para os mapas do IDHM nos mostram que quando o histograma da variável apresenta distribuição próxima da normal, a divisão por jenks ou a divisão por desvio-padrão fornecem padrões bem semelhantes ao do mapa sem classes.</p>
 <p>Siga o código anterior e olhe os mapas para P_SUPER e T_LUZ.</p>
@@ -617,16 +605,16 @@ Vamos comparar os mapas usando as seguintes escalas: “equal”, “quantile”
 <p>E como é o acesso à energia elétrica na maior Região Metropolitana do Brasil? Vimos nos histogramas que estes dados também são muito assimétricos. Elabore os mapas para T_LUZ para avaliar a divisão mais adequada.</p>
 <p>As divisões pelo algoritmo de Jenks e segundo desvio-padrão são as que mais se aproximam do mapa sem classes. Os mapas mostram que o valor mais baixo é 95,1%. O mapa com intervalos do algoritmo de Jenks é o que separa melhor os valores mais altos (99,9 a 100%), permitindo a identificação de diferenças sutis.</p>
 <p>O pacote <strong>classInt</strong> apresenta a função <code>jenks.test</code> que avalia a acurácia dos intervalos criados segundo os diferentes algoritmos. Antes de criarmos objetos do tipo <em>classIntervals</em>, vamos filtrar os NAs das variáveis de interesse.</p>
-<div class="sourceCode" id="cb415"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb415-1"><a href="quanti3.html#cb415-1" tabindex="-1"></a><span class="co">#para selecionar apenas dados que não são NAs</span></span>
-<span id="cb415-2"><a href="quanti3.html#cb415-2" tabindex="-1"></a>idhm.final <span class="ot">&lt;-</span> udh_dados_rmsp <span class="sc">%&gt;%</span></span>
-<span id="cb415-3"><a href="quanti3.html#cb415-3" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span>(<span class="fu">is.na</span>(IDHM)))</span>
-<span id="cb415-4"><a href="quanti3.html#cb415-4" tabindex="-1"></a><span class="co">#para ver as dimensões do objeto filtrado</span></span>
-<span id="cb415-5"><a href="quanti3.html#cb415-5" tabindex="-1"></a><span class="fu">dim</span>(idhm.final)</span></code></pre></div>
+<div class="sourceCode" id="cb394"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb394-1"><a href="quanti3.html#cb394-1" tabindex="-1"></a><span class="co">#para selecionar apenas dados que não são NAs</span></span>
+<span id="cb394-2"><a href="quanti3.html#cb394-2" tabindex="-1"></a>idhm.final <span class="ot">&lt;-</span> udh_dados_rmsp <span class="sc">%&gt;%</span></span>
+<span id="cb394-3"><a href="quanti3.html#cb394-3" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span>(<span class="fu">is.na</span>(IDHM)))</span>
+<span id="cb394-4"><a href="quanti3.html#cb394-4" tabindex="-1"></a><span class="co">#para ver as dimensões do objeto filtrado</span></span>
+<span id="cb394-5"><a href="quanti3.html#cb394-5" tabindex="-1"></a><span class="fu">dim</span>(idhm.final)</span></code></pre></div>
 <pre><code>## [1] 5585    9</code></pre>
-<div class="sourceCode" id="cb417"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb417-1"><a href="quanti3.html#cb417-1" tabindex="-1"></a><span class="co">#para ver a classe do objeto</span></span>
-<span id="cb417-2"><a href="quanti3.html#cb417-2" tabindex="-1"></a><span class="fu">class</span>(idhm.final)</span></code></pre></div>
+<div class="sourceCode" id="cb396"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb396-1"><a href="quanti3.html#cb396-1" tabindex="-1"></a><span class="co">#para ver a classe do objeto</span></span>
+<span id="cb396-2"><a href="quanti3.html#cb396-2" tabindex="-1"></a><span class="fu">class</span>(idhm.final)</span></code></pre></div>
 <pre><code>## [1] &quot;sf&quot;         &quot;data.frame&quot;</code></pre>
-<div class="sourceCode" id="cb419"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb419-1"><a href="quanti3.html#cb419-1" tabindex="-1"></a><span class="fu">str</span>(idhm.final)</span></code></pre></div>
+<div class="sourceCode" id="cb398"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb398-1"><a href="quanti3.html#cb398-1" tabindex="-1"></a><span class="fu">str</span>(idhm.final)</span></code></pre></div>
 <pre><code>## Classes &#39;sf&#39; and &#39;data.frame&#39;:   5585 obs. of  9 variables:
 ##  $ UDH_ATLAS : chr  &quot;1350390100001&quot; &quot;1350390100001&quot; &quot;1350390100002&quot; &quot;1350390100002&quot; ...
 ##  $ CD_GEOCODM: chr  &quot;3503901&quot; &quot;3503901&quot; &quot;3503901&quot; &quot;3503901&quot; ...
@@ -644,63 +632,63 @@ Vamos comparar os mapas usando as seguintes escalas: “equal”, “quantile”
 ##  - attr(*, &quot;agr&quot;)= Factor w/ 3 levels &quot;constant&quot;,&quot;aggregate&quot;,..: NA NA NA NA NA NA NA NA
 ##   ..- attr(*, &quot;names&quot;)= chr [1:8] &quot;UDH_ATLAS&quot; &quot;CD_GEOCODM&quot; &quot;NM_MUNICIP&quot; &quot;RM&quot; ...</code></pre>
 <p>Vamos calcular objetos do tipo classInt para avaliar a acurácia dos intervalos para cada tipo de discretização. Existem 2 índices: índice de Jenks e o Tabular Accuracy Index (TAI). Antes, vamos criar paletas de cores: <strong>pal1</strong> e <strong>opar</strong>.</p>
-<div class="sourceCode" id="cb421"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb421-1"><a href="quanti3.html#cb421-1" tabindex="-1"></a>pal1 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;wheat1&quot;</span>, <span class="st">&quot;red3&quot;</span>)</span>
-<span id="cb421-2"><a href="quanti3.html#cb421-2" tabindex="-1"></a>opar <span class="ot">&lt;-</span> <span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">3</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb400"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb400-1"><a href="quanti3.html#cb400-1" tabindex="-1"></a>pal1 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;wheat1&quot;</span>, <span class="st">&quot;red3&quot;</span>)</span>
+<span id="cb400-2"><a href="quanti3.html#cb400-2" tabindex="-1"></a>opar <span class="ot">&lt;-</span> <span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">3</span>))</span></code></pre></div>
 <p>Vamos criar objetos do tipo classIntervals para IDHM para cada estilo disponível.</p>
-<div class="sourceCode" id="cb422"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb422-1"><a href="quanti3.html#cb422-1" tabindex="-1"></a>idhm_fixed <span class="ot">&lt;-</span> <span class="fu">classIntervals</span>(idhm.final<span class="sc">$</span>IDHM, <span class="at">n=</span><span class="dv">7</span>, <span class="at">style=</span><span class="st">&quot;fixed&quot;</span>,</span>
-<span id="cb422-2"><a href="quanti3.html#cb422-2" tabindex="-1"></a> <span class="at">fixedBreaks=</span><span class="fu">c</span>(<span class="fl">0.4</span>, <span class="fl">0.5</span>, <span class="fl">0.55</span>, <span class="fl">0.6</span>, <span class="fl">0.7</span>, <span class="fl">0.8</span>, <span class="fl">0.9</span>, <span class="fl">0.965</span>))</span>
-<span id="cb422-3"><a href="quanti3.html#cb422-3" tabindex="-1"></a>idhm_sd <span class="ot">&lt;-</span> <span class="fu">classIntervals</span>(idhm.final<span class="sc">$</span>IDHM, <span class="at">n=</span><span class="dv">7</span>, <span class="at">style=</span><span class="st">&quot;sd&quot;</span>)</span>
-<span id="cb422-4"><a href="quanti3.html#cb422-4" tabindex="-1"></a>idhm_equal <span class="ot">&lt;-</span> <span class="fu">classIntervals</span>(idhm.final<span class="sc">$</span>IDHM, <span class="at">n=</span><span class="dv">7</span>, <span class="at">style=</span><span class="st">&quot;equal&quot;</span>)</span>
-<span id="cb422-5"><a href="quanti3.html#cb422-5" tabindex="-1"></a>idhm_quant <span class="ot">&lt;-</span> <span class="fu">classIntervals</span>(idhm.final<span class="sc">$</span>IDHM, <span class="at">n=</span><span class="dv">7</span>, <span class="at">style=</span><span class="st">&quot;quantile&quot;</span>)</span>
-<span id="cb422-6"><a href="quanti3.html#cb422-6" tabindex="-1"></a>idhm_kmeans <span class="ot">&lt;-</span> <span class="fu">classIntervals</span>(idhm.final<span class="sc">$</span>IDHM, <span class="at">n=</span><span class="dv">7</span>, <span class="at">style=</span><span class="st">&quot;kmeans&quot;</span>)</span>
-<span id="cb422-7"><a href="quanti3.html#cb422-7" tabindex="-1"></a>idhm_pretty <span class="ot">&lt;-</span> <span class="fu">classIntervals</span>(idhm.final<span class="sc">$</span>IDHM, <span class="at">n=</span><span class="dv">7</span>, <span class="at">style=</span><span class="st">&quot;pretty&quot;</span>)</span>
-<span id="cb422-8"><a href="quanti3.html#cb422-8" tabindex="-1"></a>idhm_hclust <span class="ot">&lt;-</span> <span class="fu">classIntervals</span>(idhm.final<span class="sc">$</span>IDHM, <span class="at">n=</span><span class="dv">7</span>, <span class="at">style=</span><span class="st">&quot;hclust&quot;</span>)</span>
-<span id="cb422-9"><a href="quanti3.html#cb422-9" tabindex="-1"></a>idhm_bclust <span class="ot">&lt;-</span> <span class="fu">classIntervals</span>(idhm.final<span class="sc">$</span>IDHM, <span class="at">n=</span><span class="dv">7</span>, <span class="at">style=</span><span class="st">&quot;bclust&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb401"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb401-1"><a href="quanti3.html#cb401-1" tabindex="-1"></a>idhm_fixed <span class="ot">&lt;-</span> <span class="fu">classIntervals</span>(idhm.final<span class="sc">$</span>IDHM, <span class="at">n=</span><span class="dv">7</span>, <span class="at">style=</span><span class="st">&quot;fixed&quot;</span>,</span>
+<span id="cb401-2"><a href="quanti3.html#cb401-2" tabindex="-1"></a> <span class="at">fixedBreaks=</span><span class="fu">c</span>(<span class="fl">0.4</span>, <span class="fl">0.5</span>, <span class="fl">0.55</span>, <span class="fl">0.6</span>, <span class="fl">0.7</span>, <span class="fl">0.8</span>, <span class="fl">0.9</span>, <span class="fl">0.965</span>))</span>
+<span id="cb401-3"><a href="quanti3.html#cb401-3" tabindex="-1"></a>idhm_sd <span class="ot">&lt;-</span> <span class="fu">classIntervals</span>(idhm.final<span class="sc">$</span>IDHM, <span class="at">n=</span><span class="dv">7</span>, <span class="at">style=</span><span class="st">&quot;sd&quot;</span>)</span>
+<span id="cb401-4"><a href="quanti3.html#cb401-4" tabindex="-1"></a>idhm_equal <span class="ot">&lt;-</span> <span class="fu">classIntervals</span>(idhm.final<span class="sc">$</span>IDHM, <span class="at">n=</span><span class="dv">7</span>, <span class="at">style=</span><span class="st">&quot;equal&quot;</span>)</span>
+<span id="cb401-5"><a href="quanti3.html#cb401-5" tabindex="-1"></a>idhm_quant <span class="ot">&lt;-</span> <span class="fu">classIntervals</span>(idhm.final<span class="sc">$</span>IDHM, <span class="at">n=</span><span class="dv">7</span>, <span class="at">style=</span><span class="st">&quot;quantile&quot;</span>)</span>
+<span id="cb401-6"><a href="quanti3.html#cb401-6" tabindex="-1"></a>idhm_kmeans <span class="ot">&lt;-</span> <span class="fu">classIntervals</span>(idhm.final<span class="sc">$</span>IDHM, <span class="at">n=</span><span class="dv">7</span>, <span class="at">style=</span><span class="st">&quot;kmeans&quot;</span>)</span>
+<span id="cb401-7"><a href="quanti3.html#cb401-7" tabindex="-1"></a>idhm_pretty <span class="ot">&lt;-</span> <span class="fu">classIntervals</span>(idhm.final<span class="sc">$</span>IDHM, <span class="at">n=</span><span class="dv">7</span>, <span class="at">style=</span><span class="st">&quot;pretty&quot;</span>)</span>
+<span id="cb401-8"><a href="quanti3.html#cb401-8" tabindex="-1"></a>idhm_hclust <span class="ot">&lt;-</span> <span class="fu">classIntervals</span>(idhm.final<span class="sc">$</span>IDHM, <span class="at">n=</span><span class="dv">7</span>, <span class="at">style=</span><span class="st">&quot;hclust&quot;</span>)</span>
+<span id="cb401-9"><a href="quanti3.html#cb401-9" tabindex="-1"></a>idhm_bclust <span class="ot">&lt;-</span> <span class="fu">classIntervals</span>(idhm.final<span class="sc">$</span>IDHM, <span class="at">n=</span><span class="dv">7</span>, <span class="at">style=</span><span class="st">&quot;bclust&quot;</span>)</span></code></pre></div>
 <pre><code>## Committee Member: 1(1) 2(1) 3(1) 4(1) 5(1) 6(1) 7(1) 8(1) 9(1) 10(1)
 ## Computing Hierarchical Clustering</code></pre>
-<div class="sourceCode" id="cb424"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb424-1"><a href="quanti3.html#cb424-1" tabindex="-1"></a>idhm_fisher <span class="ot">&lt;-</span> <span class="fu">classIntervals</span>(idhm.final<span class="sc">$</span>IDHM, <span class="at">n=</span><span class="dv">7</span>, <span class="at">style=</span><span class="st">&quot;fisher&quot;</span>)</span>
-<span id="cb424-2"><a href="quanti3.html#cb424-2" tabindex="-1"></a>idhm_jenks <span class="ot">&lt;-</span> <span class="fu">classIntervals</span>(idhm.final<span class="sc">$</span>IDHM, <span class="at">n=</span><span class="dv">7</span>, <span class="at">style=</span><span class="st">&quot;jenks&quot;</span>)</span>
-<span id="cb424-3"><a href="quanti3.html#cb424-3" tabindex="-1"></a>idhm_dpih <span class="ot">&lt;-</span> <span class="fu">classIntervals</span>(idhm.final<span class="sc">$</span>IDHM, <span class="at">n=</span><span class="dv">7</span>, <span class="at">style=</span><span class="st">&quot;dpih&quot;</span>)</span>
-<span id="cb424-4"><a href="quanti3.html#cb424-4" tabindex="-1"></a>idhm_headtails <span class="ot">&lt;-</span> <span class="fu">classIntervals</span>(idhm.final<span class="sc">$</span>IDHM, <span class="at">n=</span><span class="dv">7</span>, <span class="at">style=</span><span class="st">&quot;headtails&quot;</span>)</span>
-<span id="cb424-5"><a href="quanti3.html#cb424-5" tabindex="-1"></a>idhm_maximum <span class="ot">&lt;-</span> <span class="fu">classIntervals</span>(idhm.final<span class="sc">$</span>IDHM, <span class="at">n=</span><span class="dv">7</span>, <span class="at">style=</span><span class="st">&quot;maximum&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb403"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb403-1"><a href="quanti3.html#cb403-1" tabindex="-1"></a>idhm_fisher <span class="ot">&lt;-</span> <span class="fu">classIntervals</span>(idhm.final<span class="sc">$</span>IDHM, <span class="at">n=</span><span class="dv">7</span>, <span class="at">style=</span><span class="st">&quot;fisher&quot;</span>)</span>
+<span id="cb403-2"><a href="quanti3.html#cb403-2" tabindex="-1"></a>idhm_jenks <span class="ot">&lt;-</span> <span class="fu">classIntervals</span>(idhm.final<span class="sc">$</span>IDHM, <span class="at">n=</span><span class="dv">7</span>, <span class="at">style=</span><span class="st">&quot;jenks&quot;</span>)</span>
+<span id="cb403-3"><a href="quanti3.html#cb403-3" tabindex="-1"></a>idhm_dpih <span class="ot">&lt;-</span> <span class="fu">classIntervals</span>(idhm.final<span class="sc">$</span>IDHM, <span class="at">n=</span><span class="dv">7</span>, <span class="at">style=</span><span class="st">&quot;dpih&quot;</span>)</span>
+<span id="cb403-4"><a href="quanti3.html#cb403-4" tabindex="-1"></a>idhm_headtails <span class="ot">&lt;-</span> <span class="fu">classIntervals</span>(idhm.final<span class="sc">$</span>IDHM, <span class="at">n=</span><span class="dv">7</span>, <span class="at">style=</span><span class="st">&quot;headtails&quot;</span>)</span>
+<span id="cb403-5"><a href="quanti3.html#cb403-5" tabindex="-1"></a>idhm_maximum <span class="ot">&lt;-</span> <span class="fu">classIntervals</span>(idhm.final<span class="sc">$</span>IDHM, <span class="at">n=</span><span class="dv">7</span>, <span class="at">style=</span><span class="st">&quot;maximum&quot;</span>)</span></code></pre></div>
 <p>Vamos, então, comparar os índices dos diferentes estilos de discretização. Quanto mais próximos de 1 para <em>Goodness of Fit</em> e para <em>Tabular accuracy</em>, maior a acurácia do estilo.</p>
-<div class="sourceCode" id="cb425"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb425-1"><a href="quanti3.html#cb425-1" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">jenks.tests</span>(idhm_fixed))</span></code></pre></div>
+<div class="sourceCode" id="cb404"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb404-1"><a href="quanti3.html#cb404-1" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">jenks.tests</span>(idhm_fixed))</span></code></pre></div>
 <pre><code>##        # classes  Goodness of fit Tabular accuracy 
 ##        7.0000000        0.9379771        0.7503345</code></pre>
-<div class="sourceCode" id="cb427"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb427-1"><a href="quanti3.html#cb427-1" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">jenks.tests</span>(idhm_sd))</span></code></pre></div>
+<div class="sourceCode" id="cb406"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb406-1"><a href="quanti3.html#cb406-1" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">jenks.tests</span>(idhm_sd))</span></code></pre></div>
 <pre><code>##        # classes  Goodness of fit Tabular accuracy 
 ##       10.0000000        0.9799030        0.8535586</code></pre>
-<div class="sourceCode" id="cb429"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb429-1"><a href="quanti3.html#cb429-1" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">jenks.tests</span>(idhm_equal))</span></code></pre></div>
+<div class="sourceCode" id="cb408"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb408-1"><a href="quanti3.html#cb408-1" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">jenks.tests</span>(idhm_equal))</span></code></pre></div>
 <pre><code>##        # classes  Goodness of fit Tabular accuracy 
 ##        7.0000000        0.9639592        0.8028448</code></pre>
-<div class="sourceCode" id="cb431"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb431-1"><a href="quanti3.html#cb431-1" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">jenks.tests</span>(idhm_quant))</span></code></pre></div>
+<div class="sourceCode" id="cb410"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb410-1"><a href="quanti3.html#cb410-1" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">jenks.tests</span>(idhm_quant))</span></code></pre></div>
 <pre><code>##        # classes  Goodness of fit Tabular accuracy 
 ##        7.0000000        0.9673643        0.8258333</code></pre>
-<div class="sourceCode" id="cb433"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb433-1"><a href="quanti3.html#cb433-1" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">jenks.tests</span>(idhm_kmeans))</span></code></pre></div>
+<div class="sourceCode" id="cb412"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb412-1"><a href="quanti3.html#cb412-1" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">jenks.tests</span>(idhm_kmeans))</span></code></pre></div>
 <pre><code>##        # classes  Goodness of fit Tabular accuracy 
-##        7.0000000        0.9723753        0.8336155</code></pre>
-<div class="sourceCode" id="cb435"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb435-1"><a href="quanti3.html#cb435-1" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">jenks.tests</span>(idhm_pretty))</span></code></pre></div>
+##        7.0000000        0.9690003        0.8221278</code></pre>
+<div class="sourceCode" id="cb414"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb414-1"><a href="quanti3.html#cb414-1" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">jenks.tests</span>(idhm_pretty))</span></code></pre></div>
 <pre><code>##        # classes  Goodness of fit Tabular accuracy 
 ##       11.0000000        0.9813751        0.8584816</code></pre>
-<div class="sourceCode" id="cb437"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb437-1"><a href="quanti3.html#cb437-1" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">jenks.tests</span>(idhm_hclust))</span></code></pre></div>
+<div class="sourceCode" id="cb416"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb416-1"><a href="quanti3.html#cb416-1" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">jenks.tests</span>(idhm_hclust))</span></code></pre></div>
 <pre><code>##        # classes  Goodness of fit Tabular accuracy 
 ##        7.0000000        0.9641622        0.8049719</code></pre>
-<div class="sourceCode" id="cb439"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb439-1"><a href="quanti3.html#cb439-1" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">jenks.tests</span>(idhm_bclust))</span></code></pre></div>
+<div class="sourceCode" id="cb418"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb418-1"><a href="quanti3.html#cb418-1" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">jenks.tests</span>(idhm_bclust))</span></code></pre></div>
 <pre><code>##        # classes  Goodness of fit Tabular accuracy 
-##        7.0000000        0.9585589        0.7977796</code></pre>
-<div class="sourceCode" id="cb441"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb441-1"><a href="quanti3.html#cb441-1" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">jenks.tests</span>(idhm_fisher))</span></code></pre></div>
-<pre><code>##        # classes  Goodness of fit Tabular accuracy 
-##        7.0000000        0.9724775        0.8332861</code></pre>
-<div class="sourceCode" id="cb443"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb443-1"><a href="quanti3.html#cb443-1" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">jenks.tests</span>(idhm_jenks))</span></code></pre></div>
+##        7.0000000        0.9696044        0.8257839</code></pre>
+<div class="sourceCode" id="cb420"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb420-1"><a href="quanti3.html#cb420-1" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">jenks.tests</span>(idhm_fisher))</span></code></pre></div>
 <pre><code>##        # classes  Goodness of fit Tabular accuracy 
 ##        7.0000000        0.9724775        0.8332861</code></pre>
-<div class="sourceCode" id="cb445"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb445-1"><a href="quanti3.html#cb445-1" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">jenks.tests</span>(idhm_dpih))</span></code></pre></div>
+<div class="sourceCode" id="cb422"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb422-1"><a href="quanti3.html#cb422-1" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">jenks.tests</span>(idhm_jenks))</span></code></pre></div>
+<pre><code>##        # classes  Goodness of fit Tabular accuracy 
+##        7.0000000        0.9724775        0.8332861</code></pre>
+<div class="sourceCode" id="cb424"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb424-1"><a href="quanti3.html#cb424-1" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">jenks.tests</span>(idhm_dpih))</span></code></pre></div>
 <pre><code>##        # classes  Goodness of fit Tabular accuracy 
 ##       29.0000000        0.9980050        0.9542532</code></pre>
-<div class="sourceCode" id="cb447"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb447-1"><a href="quanti3.html#cb447-1" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">jenks.tests</span>(idhm_headtails))</span></code></pre></div>
+<div class="sourceCode" id="cb426"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb426-1"><a href="quanti3.html#cb426-1" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">jenks.tests</span>(idhm_headtails))</span></code></pre></div>
 <pre><code>##        # classes  Goodness of fit Tabular accuracy 
 ##        2.0000000        0.6904488        0.4332091</code></pre>
-<div class="sourceCode" id="cb449"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb449-1"><a href="quanti3.html#cb449-1" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">jenks.tests</span>(idhm_maximum))</span></code></pre></div>
+<div class="sourceCode" id="cb428"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb428-1"><a href="quanti3.html#cb428-1" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">jenks.tests</span>(idhm_maximum))</span></code></pre></div>
 <pre><code>##        # classes  Goodness of fit Tabular accuracy 
 ##       8.00000000       0.08076560       0.04560482</code></pre>
 <p>Os resultados mostram que o estilo <em>dpih</em> apresenta a melhor acurácia (GOF de 0.998 e TAI de 0.954), com 29 classes. Se quisermos ficar com apenas 7 classes, os estilos com valores mais altos foram <em>jenks</em> e <em>fisher</em>.</p>
@@ -719,39 +707,37 @@ O pacote <strong>tmap</strong> oferece diversas paletas para até 20 classes. As
 <p>Vamos elaborar o mapa do IDHM da RMSP usando a melhor discretização indicada pelos intervalos definidos usando (<code>style = "fisher"</code>). A paleta de cores deve ser do tipo sequencial. Vamos escolher a paleta de laranjas (get_brewer_pal(“Oranges”).</p>
 <p>Usaremos o banco de dados de população do Portal da Fundação SEADE que contém os polígonos de todos os municípios do estado. Para baixar o arquivo compactado, usamos a linha de código a seguir. O arquivo shapefile encontra-se em: <a href="https://repositorio.seade.gov.br/dataset/9bb4f8ef-f1a4-4734-92a2-814cfc8d0974/resource/09ba3695-a6a1-44ab-9916-fd1a8aa1c980/download/populacao.zip" class="uri">https://repositorio.seade.gov.br/dataset/9bb4f8ef-f1a4-4734-92a2-814cfc8d0974/resource/09ba3695-a6a1-44ab-9916-fd1a8aa1c980/download/populacao.zip</a>. Se você já fez o mapa das figuras geométricas da população do estado de São Paulo, já tem este arquivo em seu diretório.</p>
 <p>Vamos criar o objeto <strong>pop</strong> usando a função para leitura de arquivo do tipo shapefile.</p>
-<div class="sourceCode" id="cb451"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb451-1"><a href="quanti3.html#cb451-1" tabindex="-1"></a><span class="co">#para abrir o arquivo shapefile do estado de São Paulo </span></span>
-<span id="cb451-2"><a href="quanti3.html#cb451-2" tabindex="-1"></a>pop <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">&quot;./Populacao.shp&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb430"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb430-1"><a href="quanti3.html#cb430-1" tabindex="-1"></a><span class="co">#para abrir o arquivo shapefile do estado de São Paulo </span></span>
+<span id="cb430-2"><a href="quanti3.html#cb430-2" tabindex="-1"></a>pop <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">&quot;./Populacao.shp&quot;</span>)</span></code></pre></div>
 <pre><code>## Reading layer `Populacao&#39; from data source 
-##   `C:\Users\l_viz\Documents\RCartoTematica\Populacao.shp&#39; 
-##   using driver `ESRI Shapefile&#39;
+##   `C:\Users\l_viz\Documents\RCartoTematica\Populacao.shp&#39; using driver `ESRI Shapefile&#39;
 ## Simple feature collection with 645 features and 12 fields
 ## Geometry type: MULTIPOLYGON
 ## Dimension:     XY
 ## Bounding box:  xmin: -53.10487 ymin: -25.30835 xmax: -44.1634 ymax: -19.78045
 ## Geodetic CRS:  SIRGAS 2000</code></pre>
 <p>Podemos ver as colunas de <strong>pop</strong> com a função <strong>names(pop)</strong>.</p>
-<div class="sourceCode" id="cb453"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb453-1"><a href="quanti3.html#cb453-1" tabindex="-1"></a><span class="fu">names</span>(pop)</span></code></pre></div>
-<pre><code>##  [1] &quot;Cod_ibge&quot; &quot;Nome&quot;     &quot;Rotulo&quot;   &quot;Area_Km2&quot; &quot;Den_Demo&quot; &quot;Pop&quot;     
-##  [7] &quot;RA&quot;       &quot;RG&quot;       &quot;RM&quot;       &quot;AU&quot;       &quot;RGI&quot;      &quot;RGINT&quot;   
-## [13] &quot;geometry&quot;</code></pre>
+<div class="sourceCode" id="cb432"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb432-1"><a href="quanti3.html#cb432-1" tabindex="-1"></a><span class="fu">names</span>(pop)</span></code></pre></div>
+<pre><code>##  [1] &quot;Cod_ibge&quot; &quot;Nome&quot;     &quot;Rotulo&quot;   &quot;Area_Km2&quot; &quot;Den_Demo&quot; &quot;Pop&quot;      &quot;RA&quot;       &quot;RG&quot;      
+##  [9] &quot;RM&quot;       &quot;AU&quot;       &quot;RGI&quot;      &quot;RGINT&quot;    &quot;geometry&quot;</code></pre>
 <p>O objeto <strong>pop</strong> está na projeção cartográfica SIRGAS 2000. Vamos passá-lo para WGS84 pseudo Mercator (CRS = 3857) para ficar compatível com idhm.final.</p>
-<div class="sourceCode" id="cb455"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb455-1"><a href="quanti3.html#cb455-1" tabindex="-1"></a><span class="co">#para transformar para a projeção WGS84 pseudo Mercator (crs=3857)</span></span>
-<span id="cb455-2"><a href="quanti3.html#cb455-2" tabindex="-1"></a>pop_wgs84 <span class="ot">&lt;-</span> <span class="fu">st_transform</span>(pop, <span class="at">crs=</span> <span class="dv">3857</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb434"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb434-1"><a href="quanti3.html#cb434-1" tabindex="-1"></a><span class="co">#para transformar para a projeção WGS84 pseudo Mercator (crs=3857)</span></span>
+<span id="cb434-2"><a href="quanti3.html#cb434-2" tabindex="-1"></a>pop_wgs84 <span class="ot">&lt;-</span> <span class="fu">st_transform</span>(pop, <span class="at">crs=</span> <span class="dv">3857</span>)</span></code></pre></div>
 <p>Vamos criar um objeto “idhm.final.fisher” que será o mapa do IDHM na RMSP. Primeiro vamos adicionar a camada dos polígonos dos municípios do estado de São Paulo (pop_wgs84), indicando que a extensão deverá corresponder à camada “idhm.final”. Para que ela fique com os polígonos em cinza, usaremos tm_fill(). A segunda camada a ser adicionada é a que contém os dados de IDHM (idhm.final). A camada será preenchida com o valor do IDHM (tm_fill(col = “IDHM”)). A discretização será feita usando o estilo “fisher”, paleta de cores laranja e adicionaremos o histograma da legenda. O layout conterá o título do mapa e o fundo do mapa será azul bem claro (aliceblue). A terceira camada será novamente a camada dos polígonos dos municípios, desta vez, sem preenchimento. As bordas dos municípios será em branco (white), com largura igual a 1. Adicionaremos a fonte dos dados e os créditos de elaboração do mapa. A barra de escala será adicionada com um tamanho relativo de 20% do tamanho do mapa (width = 0.2). A posição da barra de escala é definida considerando-se que o canto inferior esquerdo corresponde à posição (0,0) e o canto superior direito é (1,1). Assim, o começo da escala estará na posição 0.71 no sentido horizontal e a 0.13, no vertical. Por último, pedimos para visualizar o mapa “idhm.final.fisher” e o salvamos com a extensão png. Para isso usamos a função <code>tmap_save</code>. O arquivo será salvo com resolução de 300 dpi.</p>
-<div class="sourceCode" id="cb456"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb456-1"><a href="quanti3.html#cb456-1" tabindex="-1"></a>idhm.final.fisher <span class="ot">&lt;-</span> <span class="fu">tm_shape</span>(pop_wgs84, <span class="at">bbox =</span> idhm.final)<span class="sc">+</span></span>
-<span id="cb456-2"><a href="quanti3.html#cb456-2" tabindex="-1"></a>  <span class="fu">tm_fill</span>()<span class="sc">+</span></span>
-<span id="cb456-3"><a href="quanti3.html#cb456-3" tabindex="-1"></a>  <span class="fu">tm_shape</span>(idhm.final) <span class="sc">+</span> <span class="co">#indica o nome do arquivo shapefile que será mapeado</span></span>
-<span id="cb456-4"><a href="quanti3.html#cb456-4" tabindex="-1"></a>  <span class="fu">tm_fill</span>(<span class="at">col =</span> <span class="st">&quot;IDHM&quot;</span>,<span class="at">title =</span> <span class="st">&quot;IDHM&quot;</span>, <span class="at">style =</span> <span class="st">&quot;fisher&quot;</span>, <span class="at">palette =</span> <span class="st">&quot;Oranges&quot;</span>, <span class="at">legend.hist =</span> <span class="cn">TRUE</span>) <span class="sc">+</span></span>
-<span id="cb456-5"><a href="quanti3.html#cb456-5" tabindex="-1"></a>  <span class="fu">tm_layout</span>(<span class="at">title =</span> <span class="st">&quot;IDHM na RMSP&quot;</span>, <span class="at">title.size =</span> <span class="fl">0.8</span>, <span class="at">legend.title.size =</span> <span class="fl">0.5</span>, <span class="at">legend.text.size =</span> <span class="fl">0.5</span>, <span class="at">legend.outside =</span> <span class="cn">TRUE</span>, <span class="at">bg.color =</span> <span class="st">&quot;aliceblue&quot;</span>)<span class="sc">+</span></span>
-<span id="cb456-6"><a href="quanti3.html#cb456-6" tabindex="-1"></a>  <span class="fu">tm_shape</span>(pop_wgs84)<span class="sc">+</span></span>
-<span id="cb456-7"><a href="quanti3.html#cb456-7" tabindex="-1"></a>  <span class="fu">tm_borders</span>(<span class="at">col =</span> <span class="st">&quot;white&quot;</span>, <span class="at">lwd =</span> <span class="dv">1</span>)<span class="sc">+</span></span>
-<span id="cb456-8"><a href="quanti3.html#cb456-8" tabindex="-1"></a>  <span class="fu">tm_credits</span>(<span class="st">&quot;Fonte: http://www.atlasbrasil.org.br</span><span class="sc">\n</span><span class="st"> 2022 Ligiaviz&quot;</span>, <span class="at">position =</span> <span class="fu">c</span>(<span class="st">&quot;RIGHT&quot;</span>, <span class="st">&quot;BOTTOM&quot;</span>))<span class="sc">+</span></span>
-<span id="cb456-9"><a href="quanti3.html#cb456-9" tabindex="-1"></a>  <span class="fu">tm_scale_bar</span>(<span class="at">width =</span> <span class="fl">0.2</span>, <span class="at">position =</span> <span class="fu">c</span>(<span class="st">&quot;0.71&quot;</span>, <span class="st">&quot;0.13&quot;</span>))</span>
-<span id="cb456-10"><a href="quanti3.html#cb456-10" tabindex="-1"></a><span class="co">#para visualizar o mapa</span></span>
-<span id="cb456-11"><a href="quanti3.html#cb456-11" tabindex="-1"></a>idhm.final.fisher</span></code></pre></div>
+<div class="sourceCode" id="cb435"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb435-1"><a href="quanti3.html#cb435-1" tabindex="-1"></a>idhm.final.fisher <span class="ot">&lt;-</span> <span class="fu">tm_shape</span>(pop_wgs84, <span class="at">bbox =</span> idhm.final)<span class="sc">+</span></span>
+<span id="cb435-2"><a href="quanti3.html#cb435-2" tabindex="-1"></a>  <span class="fu">tm_fill</span>()<span class="sc">+</span></span>
+<span id="cb435-3"><a href="quanti3.html#cb435-3" tabindex="-1"></a>  <span class="fu">tm_shape</span>(idhm.final) <span class="sc">+</span> <span class="co">#indica o nome do arquivo shapefile que será mapeado</span></span>
+<span id="cb435-4"><a href="quanti3.html#cb435-4" tabindex="-1"></a>  <span class="fu">tm_fill</span>(<span class="at">col =</span> <span class="st">&quot;IDHM&quot;</span>,<span class="at">title =</span> <span class="st">&quot;IDHM&quot;</span>, <span class="at">style =</span> <span class="st">&quot;fisher&quot;</span>, <span class="at">palette =</span> <span class="st">&quot;Oranges&quot;</span>, <span class="at">legend.hist =</span> <span class="cn">TRUE</span>) <span class="sc">+</span></span>
+<span id="cb435-5"><a href="quanti3.html#cb435-5" tabindex="-1"></a>  <span class="fu">tm_layout</span>(<span class="at">title =</span> <span class="st">&quot;IDHM na RMSP&quot;</span>, <span class="at">title.size =</span> <span class="fl">0.8</span>, <span class="at">legend.title.size =</span> <span class="fl">0.5</span>, <span class="at">legend.text.size =</span> <span class="fl">0.5</span>, <span class="at">legend.outside =</span> <span class="cn">TRUE</span>, <span class="at">bg.color =</span> <span class="st">&quot;aliceblue&quot;</span>)<span class="sc">+</span></span>
+<span id="cb435-6"><a href="quanti3.html#cb435-6" tabindex="-1"></a>  <span class="fu">tm_shape</span>(pop_wgs84)<span class="sc">+</span></span>
+<span id="cb435-7"><a href="quanti3.html#cb435-7" tabindex="-1"></a>  <span class="fu">tm_borders</span>(<span class="at">col =</span> <span class="st">&quot;white&quot;</span>, <span class="at">lwd =</span> <span class="dv">1</span>)<span class="sc">+</span></span>
+<span id="cb435-8"><a href="quanti3.html#cb435-8" tabindex="-1"></a>  <span class="fu">tm_credits</span>(<span class="st">&quot;Fonte: http://www.atlasbrasil.org.br</span><span class="sc">\n</span><span class="st"> 2022 Ligiaviz&quot;</span>, <span class="at">position =</span> <span class="fu">c</span>(<span class="st">&quot;RIGHT&quot;</span>, <span class="st">&quot;BOTTOM&quot;</span>))<span class="sc">+</span></span>
+<span id="cb435-9"><a href="quanti3.html#cb435-9" tabindex="-1"></a>  <span class="fu">tm_scale_bar</span>(<span class="at">width =</span> <span class="fl">0.2</span>, <span class="at">position =</span> <span class="fu">c</span>(<span class="st">&quot;0.71&quot;</span>, <span class="st">&quot;0.13&quot;</span>))</span>
+<span id="cb435-10"><a href="quanti3.html#cb435-10" tabindex="-1"></a><span class="co">#para visualizar o mapa</span></span>
+<span id="cb435-11"><a href="quanti3.html#cb435-11" tabindex="-1"></a>idhm.final.fisher</span></code></pre></div>
 <p><img src="bookdownproj_files/figure-html/unnamed-chunk-193-1.png" width="960" /></p>
-<div class="sourceCode" id="cb457"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb457-1"><a href="quanti3.html#cb457-1" tabindex="-1"></a><span class="co">#para salvar o mapa como arquivo png</span></span>
-<span id="cb457-2"><a href="quanti3.html#cb457-2" tabindex="-1"></a><span class="fu">tmap_save</span>(idhm.final.fisher, <span class="st">&quot;idhm.png&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb436"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb436-1"><a href="quanti3.html#cb436-1" tabindex="-1"></a><span class="co">#para salvar o mapa como arquivo png</span></span>
+<span id="cb436-2"><a href="quanti3.html#cb436-2" tabindex="-1"></a><span class="fu">tmap_save</span>(idhm.final.fisher, <span class="st">&quot;idhm.png&quot;</span>)</span></code></pre></div>
 <pre><code>## Map saved to C:\Users\l_viz\Documents\RCartoTematica\idhm.png</code></pre>
 <pre><code>## Resolution: 2635.027 by 1673.607 pixels</code></pre>
 <pre><code>## Size: 8.783423 by 5.57869 inches (300 dpi)</code></pre>
